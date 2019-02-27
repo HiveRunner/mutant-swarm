@@ -1,0 +1,151 @@
+body {
+    border: 1px solid black;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 40px;
+    padding-left: 20px;
+    font-family: Consolas, Courier, monospace;
+}
+
+p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 0px;
+}
+
+.sqlcode {
+    white-space: pre;
+    font-size: 16px;
+}
+
+/* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 16px;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: #DCDCDC;
+    color: #000000;
+    text-align: left;
+    border-radius: 6px;
+    padding: 8px 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 40%;
+    margin-left: -80px;
+}
+
+.popup .popuptext .popuptexttitle {
+    font-weight: bold;
+}
+
+/* Popup arrow */
+/*.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 35%;
+    margin-left: 10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}*/
+
+.popup .show {
+    visibility: visible;
+}
+
+.line_number{
+    	color:#C0C0C0;
+}
+
+.tooltip {
+   position: relative;
+   display: inline-block;
+   border-bottom: 1px dotted black;
+   color: black;
+}
+
+.tooltip .tooltiptext {
+   visibility: hidden;
+   width: max-content;
+   background-color: black;
+   color: #fff;
+   text-align: right;
+   border-radius: 6px;
+   padding: 5px 5px;
+   font-size: 16px;
+
+   /* Position the tooltip */
+   position: absolute;
+   z-index: 1;
+   top: -5px;
+   left: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+   visibility: visible;
+}
+
+/* font styles */
+
+tr {
+    background-color: #F0F0F0
+}
+
+td {
+    	padding-left: 8px;
+    	padding-right: 8px;    
+}
+
+p {
+	font-family: "Courier New", monospace;
+}
+
+h3 {
+	font-family: "Courier New", monospace;
+}
+
+.bg_killed{
+    	background-color:#90ee90;
+}
+
+.bg_survived{
+    	background-color:#ffc0cb;
+}
+
+.tr_killed{
+    	background-color:#e8ffe8;
+}
+
+.tr_survived{
+    	background-color:#f9e7ea;
+}
+
+.fg_killed{
+    	color:lightgreen;
+    	border-bottom: 2px dotted #90ee90;
+}
+
+.fg_survived{
+    	color:pink;
+    	border-bottom: 2px dotted #ffc0cb;
+}
+
+.small_margin_padding {
+  margin-bottom: 5px;
+}
+
+
+
