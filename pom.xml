@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>mutant-swarm</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>MutantSwarm</name>
   <description>MutantSwarm is a mutation testing framework for Hive SQL. It enables the identification of areas of SQL code bases that have poor test coverage and consequently may be a source of operational risk.</description>
   <inceptionYear>2018</inceptionYear>
@@ -18,7 +18,7 @@
     <connection>scm:git:git@github.com:HotelsDotCom/mutant-swarm.git</connection>
     <developerConnection>scm:git:git@github.com:HotelsDotCom/mutant-swarm.git</developerConnection>
     <url>https://github.com/HotelsDotCom/mutant-swarm</url>
-    <tag>HEAD</tag>
+    <tag>mutant-swarm-1.0.0</tag>
   </scm>
 
   <licenses>
