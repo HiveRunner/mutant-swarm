@@ -3,6 +3,11 @@
 # News
 We'll be presenting Mutant Swarm at the [2019 DataWorks conference in Barcelona!](https://dataworkssummit.com/barcelona-2019/session/mutant-tests-too-the-sql/)
 
+# Start using
+You can obtain Mutant Swarm from Maven Central: 
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.hotels/mutant-swarm/badge.svg?subject=com.hotels:mutant-swarm)](https://maven-badges.herokuapp.com/maven-central/com.hotels/mutant-swarm) [![Build Status](https://travis-ci.org/HotelsDotCom/mutant-swarm.svg?branch=master)](https://travis-ci.org/HotelsDotCom/mutant-swarm) [![Coverage Status](https://coveralls.io/repos/github/HotelsDotCom/mutant-swarm/badge.svg?branch=master)](https://coveralls.io/github/HotelsDotCom/mutant-swarm) ![GitHub license](https://img.shields.io/github/license/HotelsDotCom/mutant-swarm.svg)
+
 # Overview
 Mutant Swarm is a mutation testing framework for Hive SQL built on top of [HiveRunner](https://github.com/klarna/HiveRunner).
 It enables the identification of areas of SQL code bases that have poor test coverage and consequently may be a source
