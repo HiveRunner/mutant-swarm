@@ -51,7 +51,7 @@ You can enable Mutant Swarm on your HiveRunner test suites like so:
     <dependency>
       <groupId>com.hotels</groupId>
       <artifactId>mutant-swarm</artifactId>
-      <version>0.0.1-SNAPSHOT</version>   
+      <version>1.0.0</version>   
       <scope>test</scope>
     </dependency>
 
