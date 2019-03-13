@@ -1,5 +1,8 @@
 ![Picture of a mutated bee and title text that reads 'Mutant Swarm'](src/main/resources/img/logo.png "Mutant Swarm")
 
+# News
+We'll be presenting Mutant Swarm at the [2019 DataWorks conference in Barcelona!](https://dataworkssummit.com/barcelona-2019/session/mutant-tests-too-the-sql/)
+
 # Overview
 Mutant Swarm is a mutation testing framework for Hive SQL built on top of [HiveRunner](https://github.com/klarna/HiveRunner).
 It enables the identification of areas of SQL code bases that have poor test coverage and consequently may be a source
