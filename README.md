@@ -76,8 +76,8 @@ If you would like to ask any questions about or discuss MutantSwarm please do so
 
 [https://groups.google.com/forum/#!forum/hive-runner-user](https://groups.google.com/forum/#!forum/hive-runner-user)
 
-## Credits
+# Credits
 Conceived and designed by [Elliot West](https://github.com/teabot), developed by [Jay Green-Stevens](https://github.com/JayGreeeen).
 
-## Legal
+# Legal
 Copyright 2018-2019 Expedia, Inc.
