@@ -7,7 +7,7 @@
 \</head>
 
 \<body onload="loadMutationCountBar()">
-  \<img src="mutant-swarm-logo.png"/>
+  \<img src="logo.png"/>
 
   \<h1><results.suiteName>\</h1>
   
