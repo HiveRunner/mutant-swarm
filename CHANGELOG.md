@@ -1,5 +1,6 @@
 ## [1.0.1] - TBD
 ### Changed
+- Updated `hotels-oss-parent` version from `4.0.1` to `5.0.0`.
 - Updated `HiveRunner` version from `4.1.0` to `5.2.2`.
 - Excluded `org.pentaho.pentaho-aggdesigner-algorithm` dependency as it's not available in Maven Central.
 - Excluded `javax.jms.jms` dependency as it's not available in Maven Central.
