@@ -1,4 +1,4 @@
-## [TBD] - TBD
+## [1.0.1] - 2020-10-14
 ### Changed
 - Excluded `org.pentaho.pentaho-aggdesigner-algorithm` dependency as it's not available in Maven Central.
 - Excluded `javax.jms.jms` dependency as it's not available in Maven Central.
