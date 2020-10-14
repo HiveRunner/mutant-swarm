@@ -1,4 +1,4 @@
-## [1.0.1] - 2020-10-14
+## [TBD] - TBD
 ### Changed
 - Updated `HiveRunner` version from `4.1.0` to `5.2.2`.
 - Excluded `org.pentaho.pentaho-aggdesigner-algorithm` dependency as it's not available in Maven Central.
