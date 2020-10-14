@@ -4,6 +4,6 @@ jdk:
 os:
   - linux
 install:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version --activate-profiles coveralls
 script:
-  - mvn clean test jacoco:report coveralls:report --batch-mode -DrepoToken=${COVERALLS_REPO_TOKEN}
+  - mvn clean test jacoco:report coveralls:report --batch-mode --activate-profiles coveralls -DrepoToken=${COVERALLS_REPO_TOKEN}
