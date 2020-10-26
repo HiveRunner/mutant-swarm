@@ -19,7 +19,10 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -104,4 +107,52 @@ public class TextTest {
 		Text text = builder.build();
 		assertThat(text.getType(), is(Text.Type.SURVIVOR));
 	}
+	 @Test
+	  public void testToString() {
+	   Builder builder = new Text.Builder(4);	    
+	   builder.addChar('h');
+     builder.addChar('i');
+     builder.addKilled(killed);
+     builder.addSurvivor(survivor1);
+	   Text text = builder.build();
+	   String result = text.toString();
+	   String expected = "Text [chars=hi, survivors=[survivor1], killed=[killed], startIndex=4, mutationCount=2, type=SURVIVOR]";
+	   assertThat(result,is(expected));
+	 }
+	 @Test
+	 public void equalsNull() {
+	   Text text = new Text.Builder(4).build();
+	   Boolean result = text.equals(null);
+	   assertFalse(result);
+	 }
+	 @Test
+	 public void equalsDifferentClass() {
+	   Text text = new Text.Builder(4).build();
+	   String string = "different class, this is a string";
+	   Boolean result = text.equals(string);
+	   assertFalse(result);
+	 }
+   @Test
+   public void equalsChars() {
+     Text text = new Text.Builder(4).build();
+     Text text2 = new Text.Builder(4).build();
+     Boolean result = text.equals(text2);
+     assertTrue(result);
+   }
+   @Test
+   public void checkHashCode() {
+     Text text = new Text.Builder(4).build();
+     int result = text.hashCode();
+     System.out.println(result);
+     assertEquals(result,926272566);
+   }
+   @Test
+   public void checkMutationCount() {
+     Builder builder = new Text.Builder(4);
+     builder.addSurvivor(survivor1);
+     Text text = builder.build();
+     int result = text.getMutationCount();
+     assertEquals(result,1);
+   }
+
 }

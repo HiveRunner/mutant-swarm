@@ -18,6 +18,7 @@ package com.hotels.mutantswarm.model;
 import static java.util.Collections.singletonList;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -65,4 +66,10 @@ public class StatementFactoryTest {
     assertThat(statement.getSql(), is("SELECT * FROM x WHERE a = 1"));
   }
   
+  @Test
+  public void checkHashCode() {
+    MutantSwarmStatement statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
+    int result = statement.hashCode();
+    assertEquals(result,-520165499);
+  }
 }
