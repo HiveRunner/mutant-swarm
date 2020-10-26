@@ -143,7 +143,6 @@ public class TextTest {
    public void checkHashCode() {
      Text text = new Text.Builder(4).build();
      int result = text.hashCode();
-     System.out.println(result);
      assertEquals(result,926272566);
    }
    @Test
