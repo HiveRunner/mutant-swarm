@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,9 @@ package com.hotels.mutantswarm.exec;
 import static java.util.Arrays.asList;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -38,6 +40,8 @@ public class OutcomeTest {
   private Mutant mutant;
   @Mock
   private Mutation mutation;
+  @Mock
+  private Mutation mutation2;
   @Mock
   private TestOutcome testOutcome1, testOutcome2, testOutcome3; 
   
@@ -61,6 +65,56 @@ public class OutcomeTest {
     
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     assertThat(outcome.getState(), is(MutantState.SURVIVED));
+  }
+  
+  @Test
+  public void checkToString(){
+    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
+    Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
+    String result = outcome.toString();
+    assertThat(result,is("Outcome [mutant=mutant, mutation=mutation, state=SURVIVED, testOutcomes=[testOutcome1, testOutcome2, testOutcome3]]"));
+  }
+  
+  @Test
+  public void equalsNull() {
+    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
+    Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
+    Boolean result = outcome.equals(null);
+    assertFalse(result);
+  }
+
+  @Test
+  public void equalsMutantNull() {
+    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
+    Outcome outcome = new Outcome(null, mutation, testOutcomes);
+    Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
+    Boolean result = outcome.equals(outcome2);
+    assertFalse(result);
+  }
+  
+  @Test
+  public void equalsMutantionNull() {
+    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
+    Outcome outcome = new Outcome(mutant, null, testOutcomes);
+    Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
+    Boolean result = outcome.equals(outcome2);
+    assertFalse(result);
+  }
+  @Test
+  public void equalsSame() {
+    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
+    Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
+    Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
+    Boolean result = outcome.equals(outcome2);
+    assertTrue(result);
+  }
+  @Test
+  public void equalsDifferentMutation() {
+    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
+    Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
+    Outcome outcome2 = new Outcome(mutant, mutation2, testOutcomes);
+    Boolean result = outcome.equals(outcome2);
+    assertFalse(result);
   }
 
 }

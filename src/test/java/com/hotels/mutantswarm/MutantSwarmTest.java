@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,18 +39,18 @@ public class MutantSwarmTest {
   @HiveSQL(files = { "mutantSwarmTest/scriptToTest1.sql", "mutantSwarmTest/scriptToTest2.sql" })
   public HiveShell hiveShell;
 
-//  @Test
-//  public void test() {
-//    List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
-//    List<String> expected = Arrays.asList("1\ttrue", "3\ttrue", "3\tfalse", "5\tfalse");
-//    assertEquals(expected, result);
-//  }
+  @Test
+  public void test() {
+    List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
+    List<String> expected = Arrays.asList("1\ttrue", "3\ttrue", "3\tfalse", "5\tfalse");
+    assertEquals(expected, result);
+  }
 
-//  @Test
-//  public void test2() {
-//    List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
-//    List<String> expected = Arrays.asList("true", "false");
-//    assertEquals(expected, result);
-//  }
+  @Test
+  public void test2() {
+    List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
+    List<String> expected = Arrays.asList("true", "false");
+    assertEquals(expected, result);
+  }
 
 }

@@ -15,6 +15,7 @@
  */
 package com.hotels.mutantswarm.exec;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -172,4 +173,41 @@ public class SwarmResultsTest {
     assertThat(outcomes, is(Collections.EMPTY_LIST));
   }
 
+  @Test
+  public void equalsNull() {
+    String suiteName = "testSuite";
+    SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
+    SwarmResults swarmResults = builder.build();
+    Boolean result = swarmResults.equals(null);
+    assertFalse(result);
+  }
+  @Test
+  public void equalsSame() {
+    String suiteName = "testSuite";
+    SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
+    SwarmResults swarmResults = builder.build();
+    SwarmResults swarmResults2 = builder.build();
+    Boolean result = swarmResults.equals(swarmResults2);
+    assertTrue(result);
+  }
+  @Test
+  public void checkToString(){
+    String suiteName = "testSuite";
+    MutantState state = MutantState.KILLED;
+
+    when(mutant1.getGene()).thenReturn(gene1);
+    when(gene1.getScriptIndex()).thenReturn(0);
+    when(gene1.getStatementIndex()).thenReturn(0);
+
+    when(script1.getIndex()).thenReturn(0);
+    when(statement1.getIndex()).thenReturn(0);
+
+    SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
+    builder.addTestOutcome(suiteName, mutant1, mutation1, state);
+    
+    SwarmResults swarmResults = builder.build();
+    String result = swarmResults.toString();
+    assertThat(result,is("SwarmResults [swarm=swarm, suiteName=testSuite, outcomesByScriptIndex={Key [scriptIndex=0, statementIndex=0]=[Outcome [mutant=mutant1, mutation=mutation1, state=KILLED, testOutcomes=[TestOutcome [testName=testSuite, mutant=mutant1, mutation=mutation1, state=KILLED]]]]}]"));
+  }
+  
 }

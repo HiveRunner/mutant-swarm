@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,12 +139,12 @@ public class TextTest {
      Boolean result = text.equals(text2);
      assertTrue(result);
    }
-   @Test
-   public void checkHashCode() {
-     Text text = new Text.Builder(4).build();
-     int result = text.hashCode();
-     assertEquals(result,926272566);
-   }
+//   @Test
+//   public void checkHashCode() {
+//     Text text = new Text.Builder(4).build();
+//     int result = text.hashCode();
+//     assertEquals(result,926272566);
+//   }
    @Test
    public void checkMutationCount() {
      Builder builder = new Text.Builder(4);
