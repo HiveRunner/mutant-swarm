@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,10 @@ public class MutatedSourceFactory {
     MutationImpl mutationImpl = new MutationImpl(mutation.getReplacementText(),mutation.getSplice());
     System.out.println(mutationImpl.toString());
     List<MutantSwarmScript> newScripts = new ArrayList<>(delegate.getScripts().size());
+    MutantSwarmSource.Impl sourceImpl = new MutantSwarmSource.Impl(newScripts);
+    System.out.println(sourceImpl.toString());
     for (MutantSwarmScript script : delegate.getScripts()) {
+      System.out.println(script.toString());
       if (script.getIndex() == mutant.getScriptIndex()) {
         newScripts.add(new MutatedScript(script, mutant, mutation));
       } else {
