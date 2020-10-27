@@ -35,7 +35,7 @@ public interface Mutation {
     private String replacementText;
     private Splice splice;
 
-    MutationImpl(String replacementText, Splice splice) {
+    public MutationImpl(String replacementText, Splice splice) {
       this.replacementText = replacementText;
       this.splice = splice;
     }
@@ -83,7 +83,8 @@ public interface Mutation {
 
     @Override
     public String toString() {
-      return "MutationImpl [splice=" + splice + ", replacementText=" + replacementText + "]";
+      String spliceAsString = splice.toString();
+      return "MutationImpl [splice=" + spliceAsString + ", replacementText=" + replacementText + "]";
     }
 
   }

@@ -15,37 +15,56 @@
  */
 package com.hotels.mutantswarm.plan.gene;
 
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.hotels.mutantswarm.exec.TestOutcome;
+import com.hotels.mutantswarm.mutate.Mutation;
+import com.hotels.mutantswarm.mutate.Mutator;
+import com.hotels.mutantswarm.plan.Mutant;
 
-//@RunWith(MockitoJUnitRunner.class)
+
+@RunWith(MockitoJUnitRunner.class)
 public class GeneTest {
 
-//  @Mock
-//  private Gene gene;
-//  @Mock
-//  private Locus locus;
-//  
-//  @Before
-//  public void setupMocks() {
-//    locus = gene.getLocus();
-//  }
-//  
-//  @Test
-//  public void checkGetLocus() {
-//    locus = gene.getLocus();
-//    String result = locus.toString();
-//    System.out.println(result);
-//  }
-//  
-//  @Test
-//  public void CheckGetStatementIndex() {
-//    int result =  locus.getStatementIndex();
-//    System.out.println(result);
-//  }
-//  
+  @Mock
+  private Gene gene;
+  @Mock
+  private Locus locus;
+  @Mock
+  private Mutant mutant;
+  @Mock
+  private Mutator mutator;
+  @Mock
+  private Mutation mutation;
+  
+  @Before
+  public void setupMocks() {
+    when(mutant.getMutator()).thenReturn(mutator);
+    when(mutant.getGene()).thenReturn(gene);
+    when(mutator.apply(gene)).thenReturn(mutation);
+    when(mutant.getScriptIndex()).thenReturn(0);
+
+  }
+  
+  @Test
+  public void checkGetLocus() {
+    locus = gene.getLocus();
+    String result = locus.toString();
+    System.out.println(result);
+  }
+  
+  @Test
+  public void CheckGetStatementIndex() {
+    int result =  locus.getStatementIndex();
+    System.out.println(result);
+  }
+  
 }

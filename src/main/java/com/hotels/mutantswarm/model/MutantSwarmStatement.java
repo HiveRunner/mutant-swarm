@@ -60,7 +60,7 @@ public interface MutantSwarmStatement extends Statement {
 
     private final MutantSwarmParseDriver parseDriver;
 
-    Factory(MutantSwarmParseDriver parseDriver) {
+    public Factory(MutantSwarmParseDriver parseDriver) {
       this.parseDriver = parseDriver;
     }
 
