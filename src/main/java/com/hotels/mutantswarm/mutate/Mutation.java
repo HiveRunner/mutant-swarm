@@ -83,8 +83,7 @@ public interface Mutation {
 
     @Override
     public String toString() {
-      String spliceAsString = splice.toString();
-      return "MutationImpl [splice=" + spliceAsString + ", replacementText=" + replacementText + "]";
+      return "MutationImpl [splice=" + splice + ", replacementText=" + replacementText + "]";
     }
 
   }

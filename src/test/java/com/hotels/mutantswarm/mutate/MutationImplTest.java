@@ -2,6 +2,7 @@ package com.hotels.mutantswarm.mutate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -26,10 +27,13 @@ public class MutationImplTest {
 //  
 //  private Mutator mutator;
 //  
+
   @Before
   public void setMocks() {
-    System.out.println("this line of code is read");
     when(mutationImpl.getReplacementText()).thenReturn("<");
+    when(splice.getStartIndex()).thenReturn(49);
+    when(splice.getStopIndex()).thenReturn(49);
+    splice = new Splice(splice.getStartIndex(),splice.getStopIndex());
     when(mutationImpl.getSplice()).thenReturn(splice);
     mutationImpl = new MutationImpl(mutationImpl.getReplacementText(),mutationImpl.getSplice());
   }
@@ -37,7 +41,13 @@ public class MutationImplTest {
   @Test
   public void checktoString() {
     String result = mutationImpl.toString();
-    System.out.println(result);
-    assertEquals(result,"hello world");
+    assertEquals(result,"MutationImpl [splice=Splice [startIndex=49, endIndex=49], replacementText=<]");
+  }
+  
+  @Test
+  public void equalsSame() {
+    MutationImpl mutationImpl2 = new MutationImpl(mutationImpl.getReplacementText(),mutationImpl.getSplice());
+    boolean result = mutationImpl.equals(mutationImpl2);
+    assertTrue(result);
   }
 }
