@@ -3,12 +3,14 @@ package com.hotels.mutantswarm.model;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -44,8 +46,7 @@ public class ScriptTest {
   private TokenRewriteStream tokenStream;
   @Mock
   private CommonToken token;
-  @Mock
-  List<MutantSwarmStatement> statements;
+
   
   @Before
   public void setupMocks() throws ParseException{
@@ -55,29 +56,44 @@ public class ScriptTest {
     when(parseDriver.parse(tokenStream)).thenReturn(tree);
     when(parseDriver.extractTokens(tokenStream)).thenReturn(singletonList(token));
     
-    MutantSwarmStatement statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
-    boolean success = statements.add(statement);
-    System.out.println(success);
-    
-    //set up Script
-    when(mutantSwarmScript.getIndex()).thenReturn(0);
-    when(mutantSwarmScript.getFileName()).thenReturn("scriptToTest1.sql");
-    when(mutantSwarmScript.getPath()).thenReturn(Paths.get("/Users/shermosa/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"));
-    when(mutantSwarmScript.getStatements()).thenReturn(statements);
   }
   
   @Test
   public void checkToString() {
-    MutantSwarmScript.Impl script = new MutantSwarmScript.Impl(mutantSwarmScript.getIndex(),mutantSwarmScript.getPath(),mutantSwarmScript.getStatements());
-    System.out.println(script.toString());
+    List<MutantSwarmStatement> statements = new ArrayList<MutantSwarmStatement>();
+    MutantSwarmStatement statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
+    statements.add(statement);
+    MutantSwarmScript.Impl script = new MutantSwarmScript.Impl(0,Paths.get("/Users/shermosa/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
+    assertEquals(script.toString(), "MutantSwarmScript.Impl [index=0, name=scriptToTest1.sql, statements=[MutantSwarmStatement.Impl [index=1, sql=SELECT * FROM x WHERE a = 1, tokens=[token], tree=tree]], path=/Users/shermosa/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql]");
   }
   
-//  @Test
-//  public void equalSame() {
-//    MutantSwarmScript.Impl script = new MutantSwarmScript.Impl(mutantSwarmScript.getIndex(),mutantSwarmScript.getPath(),mutantSwarmScript.getStatements());
-//    MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(mutantSwarmScript.getIndex(),mutantSwarmScript.getPath(),mutantSwarmScript.getStatements());
-//    boolean result = script.equals(script2);
-//    assertFalse(result);
-//  }
+  @Test
+  public void equalSame() {
+    List<MutantSwarmStatement> statements = new ArrayList<MutantSwarmStatement>();
+    MutantSwarmStatement statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
+    statements.add(statement);
+    MutantSwarmScript.Impl script = new MutantSwarmScript.Impl(0,Paths.get("/Users/shermosa/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
+    MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/Users/shermosa/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
+    boolean result = script.equals(script2);
+    assertTrue(result);
+  }
+  @Test
+  public void checkGetSql() {
+    List<MutantSwarmStatement> statements = new ArrayList<MutantSwarmStatement>();
+    MutantSwarmStatement statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
+    statements.add(statement);
+    MutantSwarmScript.Impl script = new MutantSwarmScript.Impl(0,Paths.get("/Users/shermosa/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
+    String result = script.getSql();
+    assertEquals(result, "SELECT * FROM x WHERE a = 1;\n");
+  }
+  @Test
+  public void checkHashCode() {
+    List<MutantSwarmStatement> statements = new ArrayList<MutantSwarmStatement>();
+    MutantSwarmStatement statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
+    statements.add(statement);
+    MutantSwarmScript.Impl script = new MutantSwarmScript.Impl(0,Paths.get("/Users/shermosa/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
+    int result = script.hashCode();
+    assertThat(result,is(-821144429));
+  }
   
 }
