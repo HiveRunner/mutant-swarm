@@ -28,7 +28,6 @@ import com.hotels.mutantswarm.model.MutantSwarmScript;
 import com.hotels.mutantswarm.model.MutantSwarmSource;
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 import com.hotels.mutantswarm.mutate.Mutation;
-import com.hotels.mutantswarm.mutate.Mutation.MutationImpl;
 import com.hotels.mutantswarm.plan.Mutant;
 
 /**
@@ -38,13 +37,8 @@ public class MutatedSourceFactory {
 
   public MutatedSource newMutatedSource(final MutantSwarmSource delegate, Mutant mutant){
     Mutation mutation = mutant.getMutator().apply(mutant.getGene());
-    MutationImpl mutationImpl = new MutationImpl(mutation.getReplacementText(),mutation.getSplice());
-    System.out.println(mutationImpl.toString());
     List<MutantSwarmScript> newScripts = new ArrayList<>(delegate.getScripts().size());
-    MutantSwarmSource.Impl sourceImpl = new MutantSwarmSource.Impl(newScripts);
-    System.out.println(sourceImpl.toString());
     for (MutantSwarmScript script : delegate.getScripts()) {
-      System.out.println(script.toString());
       if (script.getIndex() == mutant.getScriptIndex()) {
         newScripts.add(new MutatedScript(script, mutant, mutation));
       } else {

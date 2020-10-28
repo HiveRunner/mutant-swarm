@@ -15,31 +15,9 @@
  */
 package com.apache.hadoop.hive.ql.parse;
 
-import static java.util.Collections.singletonList;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-
-import org.antlr.runtime.CommonToken;
-import org.antlr.runtime.TokenRewriteStream;
-import org.apache.hadoop.hive.ql.parse.ASTNode;
-import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
-import org.apache.hadoop.hive.ql.parse.ParseException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import com.hotels.mutantswarm.model.MutantSwarmStatement;
-import com.hotels.mutantswarm.model.MutantSwarmStatement.Factory;
-import org.apache.hadoop.hive.ql.parse.*;
-
-import org.antlr.runtime.TokenRewriteStream;
-
 //@RunWith(MockitoJUnitRunner.class)
 public class ParseDriverTest {
-  
+ 
 
 //  @Mock
 //  private MutantSwarmParseDriver parseDriver;
