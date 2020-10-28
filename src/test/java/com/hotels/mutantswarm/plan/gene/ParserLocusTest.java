@@ -32,7 +32,6 @@ public class ParserLocusTest {
   public void checkToString() {
     parserLocus = new ParserLocus(0,2,4);
     String result = parserLocus.toString();
-    System.out.println(result);
     assertEquals(result,"ParserLocus [scriptIndex=0, statementIndex=2, nodeIndex=4]");
   }
 }

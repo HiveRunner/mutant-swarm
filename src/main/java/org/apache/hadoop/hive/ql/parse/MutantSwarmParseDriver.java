@@ -46,13 +46,11 @@ public class MutantSwarmParseDriver {
 
 	public List<CommonToken> extractTokens(TokenRewriteStream tokenStream) {
 	  tokenStream.seek(0);
-	  System.out.println(tokenStream);
 		List<CommonToken> tokens = new ArrayList<>();
 		int i = 1;
 		while (tokenStream.LT(i).getType() != -1) {
 			tokens.add((CommonToken) tokenStream.LT(i++));
 		}
-		System.out.println(tokens);
 		return tokens;
 	}
 
@@ -67,7 +65,6 @@ public class MutantSwarmParseDriver {
 	}
 
 	public ASTNode parse(TokenRewriteStream tokens) throws ParseException {
-	  System.out.println("TOKENREWRITESTREAM:"+tokens+"end");
 		HiveParser parser = new HiveParser(tokens);
 		parser.setTreeAdaptor(ParseDriver.adaptor);
 		HiveParser.statement_return r = null;
@@ -122,7 +119,7 @@ public class MutantSwarmParseDriver {
 		return tree;
 	}
 
-	private static void handleSetColRefs(ASTNode tree) {
+	public static void handleSetColRefs(ASTNode tree) {
 		CalcitePlanner.ASTSearcher astSearcher = new CalcitePlanner.ASTSearcher();
 		while (true) {
 			astSearcher.reset();
