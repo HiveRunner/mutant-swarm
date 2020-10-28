@@ -66,9 +66,15 @@ public class ParseDriverTest {
     
     MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
     tree = mutantSwarmParseDriver.parse(command);
+    CalcitePlanner.ASTSearcher astSearcher = new CalcitePlanner.ASTSearcher();
+    astSearcher.reset();
     //assertEquals(node.toStringTree(),"(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))");
     //when(astSearcher.depthFirstSearch(tree,HiveParser.TOK_SETCOLREF)).thenReturn(node);
     MutantSwarmParseDriver.handleSetColRefs(tree);
+    ASTNode setCols = astSearcher.depthFirstSearch(tree, HiveParser.TOK_SETCOLREF);
+    if(setCols== null) {
+      System.out.println("setCols is null");
+    }
   }
   
 }
