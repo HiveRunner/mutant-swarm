@@ -73,7 +73,6 @@ public class StatementFactoryTest {
     MutantSwarmStatement statement2 = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
     boolean result = statement.equals(statement2);
     assertTrue(result);
-    
   }
 
 }

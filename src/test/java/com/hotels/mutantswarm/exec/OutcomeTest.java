@@ -116,5 +116,13 @@ public class OutcomeTest {
     Boolean result = outcome.equals(outcome2);
     assertFalse(result);
   }
+  
+  @Test
+  public void checkhashCode() {
+    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
+    Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
+    boolean result = (outcome.hashCode() == (int)outcome.hashCode());
+    assertTrue(result);
+  }
 
 }

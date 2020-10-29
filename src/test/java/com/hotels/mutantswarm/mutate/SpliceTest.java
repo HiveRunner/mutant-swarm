@@ -17,6 +17,7 @@ package com.hotels.mutantswarm.mutate;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -28,6 +29,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Imposter;
 import com.hotels.mutantswarm.plan.gene.Gene;
 import com.hotels.mutantswarm.plan.gene.LexerGene;
 import com.hotels.mutantswarm.plan.gene.ParserGene;
@@ -81,6 +83,20 @@ public class SpliceTest {
   public void unknownGeneType(){
     Splice.Factory spliceFactory = new Splice.Factory();
     spliceFactory.newInstance(gene);
+  }
+  
+  @Test
+  public void checkhashCode() {
+
+    when(lexerGene.getTokens()).thenReturn(tokens);
+    when(tokens.get(0)).thenReturn(token);
+    
+    when(token.getStartIndex()).thenReturn(2);
+    when(token.getStopIndex()).thenReturn(5);
+    Splice.Factory spliceFactory = new Splice.Factory();
+    Splice splice = spliceFactory.newInstance(lexerGene);
+    boolean result = (splice.hashCode() == (int)splice.hashCode());
+    assertTrue(result);
   }
 
 }

@@ -15,8 +15,11 @@
  */
 package com.hotels.mutantswarm.exec;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +50,12 @@ public class TestOutcomeTest {
   @Test
   public void checkEquals() {
     boolean result = testOutcome.equals(testOutcome2);
+    assertTrue(result);
+  }
+  
+  @Test
+  public void checkhashCode() {
+    boolean result = (testOutcome.hashCode() == (int)testOutcome.hashCode());
     assertTrue(result);
   }
   
