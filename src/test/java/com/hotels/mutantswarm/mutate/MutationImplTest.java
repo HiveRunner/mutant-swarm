@@ -16,7 +16,6 @@
 package com.hotels.mutantswarm.mutate;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -27,8 +26,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.mutate.Mutation.MutationImpl;
-
-//MutationImpl [splice=Splice [startIndex=49, endIndex=49], replacementText=<]
 
 @RunWith(MockitoJUnitRunner.class)
 public class MutationImplTest {
@@ -55,9 +52,10 @@ public class MutationImplTest {
   }
   
   @Test
-  public void equalsSame() {
+  public void equalSame() {
     MutationImpl mutationImpl2 = new MutationImpl(mutationImpl.getReplacementText(),mutationImpl.getSplice());
     boolean result = mutationImpl.equals(mutationImpl2);
     assertTrue(result);
   }
+  
 }

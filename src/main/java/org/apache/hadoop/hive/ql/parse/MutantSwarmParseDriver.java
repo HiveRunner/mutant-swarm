@@ -145,7 +145,6 @@ public class MutantSwarmParseDriver {
 	 * @param searcher
 	 *            AST searcher to reuse.
 	 */
-
 	private static void processSetColsNode(ASTNode setCols, ASTSearcher searcher) {
 		searcher.reset();
 		CommonTree rootNode = setCols;

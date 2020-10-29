@@ -15,7 +15,6 @@
  */
 package com.hotels.mutantswarm.exec;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -181,6 +180,7 @@ public class SwarmResultsTest {
     Boolean result = swarmResults.equals(null);
     assertFalse(result);
   }
+  
   @Test
   public void equalsSame() {
     String suiteName = "testSuite";
@@ -190,6 +190,7 @@ public class SwarmResultsTest {
     Boolean result = swarmResults.equals(swarmResults2);
     assertTrue(result);
   }
+  
   @Test
   public void checkToString(){
     String suiteName = "testSuite";

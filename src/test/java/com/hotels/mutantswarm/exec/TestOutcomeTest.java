@@ -15,11 +15,7 @@
  */
 package com.hotels.mutantswarm.exec;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +25,7 @@ import com.hotels.mutantswarm.mutate.Mutation;
 import com.hotels.mutantswarm.plan.Mutant;
 
 public class TestOutcomeTest {
+  
   @Mock
   private String testName;
   @Mock
@@ -39,6 +36,7 @@ public class TestOutcomeTest {
   private MutantState state;
   
   private TestOutcome testOutcome;
+  
   private TestOutcome testOutcome2;
   
   @Before
@@ -48,7 +46,7 @@ public class TestOutcomeTest {
   }
   
   @Test
-  public void checkEquals() {
+  public void equalsSame() {
     boolean result = testOutcome.equals(testOutcome2);
     assertTrue(result);
   }

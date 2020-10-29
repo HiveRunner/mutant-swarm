@@ -16,15 +16,11 @@
 package com.hotels.mutantswarm.model;
 
 import static java.util.Collections.singletonList;
-import static java.util.Collections.unmodifiableList;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,16 +50,15 @@ public class ScriptTest {
   private TokenRewriteStream tokenStream;
   @Mock
   private CommonToken token;
-  
+
   private MutantSwarmStatement statement;
   private List<MutantSwarmStatement> statements;
   private MutantSwarmScript.Impl script;
   private Factory factory;
 
-  
+
   @Before
   public void setupMocks() throws ParseException{
-    //set up list of statements
     factory = new MutantSwarmStatement.Factory(parseDriver);
     when(parseDriver.lex("SELECT * FROM x WHERE a = 1")).thenReturn(tokenStream);
     when(parseDriver.parse(tokenStream)).thenReturn(tree);
@@ -72,49 +67,47 @@ public class ScriptTest {
     statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
     statements.add(statement);
     script = new MutantSwarmScript.Impl(0,Paths.get("/Users/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
-    
-    
   }
-  
+
   @Test
   public void checkToString() {
     assertEquals(script.toString(), "MutantSwarmScript.Impl [index=0, name=scriptToTest1.sql, statements=[MutantSwarmStatement.Impl [index=1, sql=SELECT * FROM x WHERE a = 1, tokens=[token], tree=tree]], path=/Users/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql]");
   }
-  
+
   @Test
   public void equalSame() {
     MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/Users/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
     boolean result = script.equals(script2);
     assertTrue(result);
   }
-  
+
   @Test
   public void equalDifferentPath() {
     MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/Usejjrs/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
     boolean result = script.equals(script2);
     assertFalse(result);
   }
-  
+
   @Test
   public void equalNull() {
     boolean result = script.equals(null);
     assertFalse(result);
   }
-  
+
   @Test
   public void checkGetSql() {
     String result = script.getSql();
     assertEquals(result, "SELECT * FROM x WHERE a = 1;\n");
   }
-  
+
   @Test
   public void checkGetFileName() {
     String result = script.getFileName();
     assertEquals(result, "scriptToTest1.sql");
   }
-  
+
   @Test
-  public void checkhashCode() {
+  public void checkHashCode() {
     boolean result = (script.hashCode() == (int)script.hashCode());
     assertTrue(result);
   }

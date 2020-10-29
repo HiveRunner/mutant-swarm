@@ -29,7 +29,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Imposter;
 import com.hotels.mutantswarm.plan.gene.Gene;
 import com.hotels.mutantswarm.plan.gene.LexerGene;
 import com.hotels.mutantswarm.plan.gene.ParserGene;
@@ -87,7 +86,6 @@ public class SpliceTest {
   
   @Test
   public void checkhashCode() {
-
     when(lexerGene.getTokens()).thenReturn(tokens);
     when(tokens.get(0)).thenReturn(token);
     
@@ -101,7 +99,6 @@ public class SpliceTest {
   
   @Test
   public void checkEquals() {
-
     when(lexerGene.getTokens()).thenReturn(tokens);
     when(tokens.get(0)).thenReturn(token);
     

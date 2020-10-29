@@ -15,10 +15,8 @@
  */
 package com.hotels.mutantswarm.mutate;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -32,8 +30,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.hotels.mutantswarm.exec.Outcome;
-import com.hotels.mutantswarm.exec.TestOutcome;
 import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Imposter;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -137,7 +133,7 @@ public class LexerMutatorStoreTest {
     LexerMutatorStore lexerStore = new LexerMutatorStore();
     lexerStore.getMutatorsFor(position, null);
   }
-  
+
   @Test
   public void checkEquals() {
     Imposter imposter4 = new Imposter(4,"hello");
@@ -145,20 +141,19 @@ public class LexerMutatorStoreTest {
     boolean result = imposter4.equals(imposter5);
     assertTrue(result);
   }
-  
+
   @Test
   public void checkToString() {
     Imposter imposter4 = new Imposter(4,"hello");
     String result = imposter4.toString();
     assertEquals(result,"Imposter [tokenId=4, text=hello]");
   }
-  
+
   @Test
   public void checkhashCode() {
     Imposter imposter4 = new Imposter(4,"hello");
     boolean result = (imposter4.hashCode() == (int)imposter4.hashCode());
     assertTrue(result);
   }
-
 
 }
