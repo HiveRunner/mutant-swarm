@@ -18,8 +18,11 @@ package com.apache.hadoop.hive.ql.parse;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.LinkedList;
+
 import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.apache.hadoop.hive.ql.parse.CalcitePlanner;
+import org.apache.hadoop.hive.ql.parse.CalcitePlanner.ASTSearcher;
 import org.apache.hadoop.hive.ql.parse.HiveParser;
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.apache.hadoop.hive.ql.parse.ParseException;
@@ -50,6 +53,7 @@ public class ParseDriverTest {
         "SELECT c\n" + 
         "from bar\n" + 
         "where b = 3";
+    
   }
   @Test
   public void checkParseCommand() throws ParseException {
@@ -57,7 +61,7 @@ public class ParseDriverTest {
     MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
     node = mutantSwarmParseDriver.parse(command);
     assertEquals(node.toStringTree(),"(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))");
-        
+
   }
 
   
@@ -66,13 +70,20 @@ public class ParseDriverTest {
     
     MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
     tree = mutantSwarmParseDriver.parse(command);
-    CalcitePlanner.ASTSearcher astSearcher = new CalcitePlanner.ASTSearcher();
+    CalcitePlanner.ASTSearcher astSearcher = new CalcitePlanner.ASTSearcher(){
+      final LinkedList<ASTNode> searchQueue = new LinkedList<ASTNode>();
+      @Override
+      public ASTNode depthFirstSearch(ASTNode ast, int token) {
+        return ast;
+      }
+    };
     astSearcher.reset();
     //assertEquals(node.toStringTree(),"(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))");
     //when(astSearcher.depthFirstSearch(tree,HiveParser.TOK_SETCOLREF)).thenReturn(node);
-    MutantSwarmParseDriver.handleSetColRefs(tree);
+    //MutantSwarmParseDriver.handleSetColRefs(tree);
     ASTNode setCols = astSearcher.depthFirstSearch(tree, HiveParser.TOK_SETCOLREF);
-    if(setCols== null) {
+    mutantSwarmParseDriver.processSetColsNode(setCols, astSearcher);
+    if(setCols == null) {
       System.out.println("setCols is null");
     }
   }

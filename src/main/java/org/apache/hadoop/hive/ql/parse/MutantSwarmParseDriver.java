@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.apache.hadoop.hive.ql.parse;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -102,7 +103,26 @@ public class MutantSwarmParseDriver {
 		}
 		return parse(lex(command));
 	}
+	
 
+
+//  ASTSearcher aSTSearcher = new ASTSearcher(){
+//  final LinkedList<ASTNode> searchQueue = new LinkedList<ASTNode>();
+//  @Override
+//  public ASTNode depthFirstSearch(ASTNode ast, int token) {
+//    searchQueue.clear();
+//    searchQueue.add(ast);
+//    while (!searchQueue.isEmpty()) {
+//      ASTNode next = searchQueue.poll();
+//      if (next.getType() == token) return next;
+//      for (int j = 0; j < next.getChildCount(); ++j) {
+//        searchQueue.add((ASTNode) next.getChild(j));
+//      }
+//    }
+//    return null;
+//  }
+//  };
+  
 	/**
 	 * Performs a descent of the leftmost branch of a tree, stopping when either
 	 * a node with a non-null token is found or the leaf level is encountered.
@@ -129,7 +149,7 @@ public class MutantSwarmParseDriver {
 			processSetColsNode(setCols, astSearcher);
 		}
 	}
-
+	
 	/**
 	 * Replaces a spurious TOK_SETCOLREF added by parser with column names
 	 * referring to the query in e.g. a union. This is to maintain the
@@ -144,7 +164,7 @@ public class MutantSwarmParseDriver {
 	 * @param searcher
 	 *            AST searcher to reuse.
 	 */
-	private static void processSetColsNode(ASTNode setCols, ASTSearcher searcher) {
+	public static void processSetColsNode(ASTNode setCols, ASTSearcher searcher) {
 		searcher.reset();
 		CommonTree rootNode = setCols;
 		while (rootNode != null && rootNode.getType() != HiveParser.TOK_INSERT) {
