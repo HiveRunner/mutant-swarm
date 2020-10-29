@@ -54,7 +54,6 @@ public interface MutantSwarmScript extends Script {
       this.statements = unmodifiableList(statements);
     }
 
-
     @Override
     public int getIndex() {
       return index;

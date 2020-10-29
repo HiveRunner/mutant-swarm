@@ -33,12 +33,6 @@ import org.mockito.stubbing.OngoingStubbing;
 
 //@RunWith(MockitoJUnitRunner.class)
 public class ParseDriverTest {
-  
-////command
-//CREATE TABLE foobar AS
-//SELECT c
-//from bar
-//where b = 3
 
   private ASTNode tree;
   
@@ -53,8 +47,8 @@ public class ParseDriverTest {
         "SELECT c\n" + 
         "from bar\n" + 
         "where b = 3";
-    
   }
+  
   @Test
   public void checkParseCommand() throws ParseException {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,6 +96,22 @@ public class SpliceTest {
     Splice.Factory spliceFactory = new Splice.Factory();
     Splice splice = spliceFactory.newInstance(lexerGene);
     boolean result = (splice.hashCode() == (int)splice.hashCode());
+    assertTrue(result);
+  }
+  
+  @Test
+  public void checkEquals() {
+
+    when(lexerGene.getTokens()).thenReturn(tokens);
+    when(tokens.get(0)).thenReturn(token);
+    
+    when(token.getStartIndex()).thenReturn(2);
+    when(token.getStopIndex()).thenReturn(5);
+    
+    Splice.Factory spliceFactory = new Splice.Factory();
+    Splice splice = spliceFactory.newInstance(lexerGene);
+    Splice splice2 = spliceFactory.newInstance(lexerGene);
+    boolean result = (splice.equals(splice2));
     assertTrue(result);
   }
 

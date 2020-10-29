@@ -46,11 +46,11 @@ public class MutantSwarmTest {
     assertEquals(expected, result);
   }
 
-//  @Test
-//  public void test2() {
-//    List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
-//    List<String> expected = Arrays.asList("true", "false");
-//    assertEquals(expected, result);
-//  }
+  @Test
+  public void test2() {
+    List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
+    List<String> expected = Arrays.asList("true", "false");
+    assertEquals(expected, result);
+  }
 
 }

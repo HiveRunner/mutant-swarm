@@ -103,26 +103,7 @@ public class MutantSwarmParseDriver {
 		}
 		return parse(lex(command));
 	}
-	
 
-
-//  ASTSearcher aSTSearcher = new ASTSearcher(){
-//  final LinkedList<ASTNode> searchQueue = new LinkedList<ASTNode>();
-//  @Override
-//  public ASTNode depthFirstSearch(ASTNode ast, int token) {
-//    searchQueue.clear();
-//    searchQueue.add(ast);
-//    while (!searchQueue.isEmpty()) {
-//      ASTNode next = searchQueue.poll();
-//      if (next.getType() == token) return next;
-//      for (int j = 0; j < next.getChildCount(); ++j) {
-//        searchQueue.add((ASTNode) next.getChild(j));
-//      }
-//    }
-//    return null;
-//  }
-//  };
-  
 	/**
 	 * Performs a descent of the leftmost branch of a tree, stopping when either
 	 * a node with a non-null token is found or the leaf level is encountered.
