@@ -38,6 +38,7 @@ public class MutatedSourceFactory {
   public MutatedSource newMutatedSource(final MutantSwarmSource delegate, Mutant mutant){
     Mutation mutation = mutant.getMutator().apply(mutant.getGene());
     List<MutantSwarmScript> newScripts = new ArrayList<>(delegate.getScripts().size());
+    
     for (MutantSwarmScript script : delegate.getScripts()) {
       if (script.getIndex() == mutant.getScriptIndex()) {
         newScripts.add(new MutatedScript(script, mutant, mutation));
