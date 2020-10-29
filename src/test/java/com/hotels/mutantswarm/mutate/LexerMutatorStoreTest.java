@@ -17,6 +17,7 @@ package com.hotels.mutantswarm.mutate;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -132,6 +133,21 @@ public class LexerMutatorStoreTest {
     int position = 0;
     LexerMutatorStore lexerStore = new LexerMutatorStore();
     lexerStore.getMutatorsFor(position, null);
+  }
+  
+  @Test
+  public void checkEquals() {
+    Imposter imposter4 = new Imposter(4,"hello");
+    Imposter imposter5 = new Imposter(4,"hello");
+    boolean result = imposter4.equals(imposter5);
+    assertTrue(result);
+  }
+  
+  @Test
+  public void checkToString() {
+    Imposter imposter4 = new Imposter(4,"hello");
+    String result = imposter4.toString();
+    assertEquals(result,"Imposter [tokenId=4, text=hello]");
   }
 
 
