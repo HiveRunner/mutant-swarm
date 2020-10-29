@@ -145,7 +145,8 @@ public class MutantSwarmParseDriver {
 	 * @param searcher
 	 *            AST searcher to reuse.
 	 */
-	public static void processSetColsNode(ASTNode setCols, ASTSearcher searcher) {
+
+	private static void processSetColsNode(ASTNode setCols, ASTSearcher searcher) {
 		searcher.reset();
 		CommonTree rootNode = setCols;
 		while (rootNode != null && rootNode.getType() != HiveParser.TOK_INSERT) {

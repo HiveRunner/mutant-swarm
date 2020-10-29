@@ -32,17 +32,12 @@ import com.hotels.mutantswarm.mutate.Mutation.MutationImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MutationImplTest {
-
-//  @Mock
-//  private String replacementText;
+  
   @Mock
   private Splice splice;
   @Mock
   private MutationImpl mutationImpl;
-//  
-//  private Mutator mutator;
-//  
-
+  
   @Before
   public void setMocks() {
     when(mutationImpl.getReplacementText()).thenReturn("<");
