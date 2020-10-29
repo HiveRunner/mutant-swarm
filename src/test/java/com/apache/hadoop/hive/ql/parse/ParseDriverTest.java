@@ -31,16 +31,14 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.stubbing.OngoingStubbing;
 
-//@RunWith(MockitoJUnitRunner.class)
 public class ParseDriverTest {
 
   private ASTNode tree;
-  
+
   private ASTNode node;
-  
+
   private String command;
-  
-  
+
   @Before
   public void setUpMocks() {
     command = "CREATE TABLE foobar AS\n" + 
@@ -48,20 +46,18 @@ public class ParseDriverTest {
         "from bar\n" + 
         "where b = 3";
   }
-  
+
   @Test
   public void checkParseCommand() throws ParseException {
-
     MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
     node = mutantSwarmParseDriver.parse(command);
     assertEquals(node.toStringTree(),"(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))");
-
   }
 
+// Ignore this for now
   
 //  @Test
 //  public void checkProcessSetColsNode() throws ParseException {
-//    
 //    MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
 //    tree = mutantSwarmParseDriver.parse(command);
 //    CalcitePlanner.ASTSearcher astSearcher = new CalcitePlanner.ASTSearcher(){
@@ -81,5 +77,5 @@ public class ParseDriverTest {
 //      System.out.println("setCols is null");
 //    }
 //  }
-  
+
 }

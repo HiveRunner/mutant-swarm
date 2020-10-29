@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -45,9 +46,15 @@ public class OutcomeTest {
   @Mock
   private TestOutcome testOutcome1, testOutcome2, testOutcome3; 
   
+  private List<TestOutcome> testOutcomes;
+  
+  @Before
+  public void setUpMocks() {
+    testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
+  }
+  
   @Test
   public void testStateKilled(){
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     when(testOutcome1.getState()).thenReturn(MutantState.SURVIVED);
     when(testOutcome2.getState()).thenReturn(MutantState.KILLED);
     when(testOutcome3.getState()).thenReturn(MutantState.SURVIVED);
@@ -58,7 +65,6 @@ public class OutcomeTest {
   
   @Test
   public void testStateSurvived(){
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     when(testOutcome1.getState()).thenReturn(MutantState.SURVIVED);
     when(testOutcome2.getState()).thenReturn(MutantState.SURVIVED);
     when(testOutcome3.getState()).thenReturn(MutantState.SURVIVED);
@@ -69,7 +75,6 @@ public class OutcomeTest {
   
   @Test
   public void checkToString(){
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     String result = outcome.toString();
     assertThat(result,is("Outcome [mutant=mutant, mutation=mutation, state=SURVIVED, testOutcomes=[testOutcome1, testOutcome2, testOutcome3]]"));
@@ -77,7 +82,6 @@ public class OutcomeTest {
   
   @Test
   public void equalsNull() {
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     Boolean result = outcome.equals(null);
     assertFalse(result);
@@ -85,7 +89,6 @@ public class OutcomeTest {
 
   @Test
   public void equalsMutantNull() {
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     Outcome outcome = new Outcome(null, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
     Boolean result = outcome.equals(outcome2);
@@ -94,23 +97,22 @@ public class OutcomeTest {
   
   @Test
   public void equalsMutantionNull() {
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     Outcome outcome = new Outcome(mutant, null, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
     Boolean result = outcome.equals(outcome2);
     assertFalse(result);
   }
+  
   @Test
   public void equalsSame() {
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
     Boolean result = outcome.equals(outcome2);
     assertTrue(result);
   }
+  
   @Test
   public void equalsDifferentMutation() {
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation2, testOutcomes);
     Boolean result = outcome.equals(outcome2);
@@ -119,7 +121,6 @@ public class OutcomeTest {
   
   @Test
   public void checkhashCode() {
-    List<TestOutcome> testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     boolean result = (outcome.hashCode() == (int)outcome.hashCode());
     assertTrue(result);
