@@ -33,17 +33,13 @@ public class MutationImplTest {
   
   @Mock
   private Splice splice;
-  @Mock
+  
   private MutationImpl mutationImpl;
   
   @Before
   public void setMocks() {
-    when(mutationImpl.getReplacementText()).thenReturn("<");
-    when(splice.getStartIndex()).thenReturn(49);
-    when(splice.getStopIndex()).thenReturn(49);
-    splice = new Splice(splice.getStartIndex(),splice.getStopIndex());
-    when(mutationImpl.getSplice()).thenReturn(splice);
-    mutationImpl = new MutationImpl(mutationImpl.getReplacementText(),mutationImpl.getSplice());
+    splice = new Splice(49,49);
+    mutationImpl = new MutationImpl("<",splice);
   }
   
   @Test
