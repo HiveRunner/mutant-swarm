@@ -15,6 +15,8 @@
  */
 package com.hotels.mutantswarm.mutate;
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
  * The result of altering a gene Mutated with a specific Mutator Used to modify the original SQL.
  */
@@ -35,7 +37,8 @@ public interface Mutation {
     private String replacementText;
     private Splice splice;
 
-    public MutationImpl(String replacementText, Splice splice) {
+    @VisibleForTesting
+    MutationImpl(String replacementText, Splice splice) {
       this.replacementText = replacementText;
       this.splice = splice;
     }
