@@ -16,9 +16,9 @@
 package com.hotels.mutantswarm.model;
 
 import static java.util.Collections.singletonList;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Paths;
@@ -78,20 +78,20 @@ public class ScriptTest {
   public void equalSame() {
     MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/Users/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
     boolean result = script.equals(script2);
-    assertTrue(result);
+    assertThat(result, is(true));
   }
 
   @Test
   public void equalDifferentPath() {
     MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/Usejjrs/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
     boolean result = script.equals(script2);
-    assertFalse(result);
+    assertThat(result, is(false));
   }
 
   @Test
   public void equalNull() {
     boolean result = script.equals(null);
-    assertFalse(result);
+    assertThat(result, is(false));
   }
 
   @Test
@@ -109,7 +109,7 @@ public class ScriptTest {
   @Test
   public void checkHashCode() {
     boolean result = (script.hashCode() == (int)script.hashCode());
-    assertTrue(result);
+    assertThat(result, is(true));
   }
 
 }

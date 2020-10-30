@@ -15,7 +15,8 @@
  */
 package com.hotels.mutantswarm.exec;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,14 +48,12 @@ public class TestOutcomeTest {
   
   @Test
   public void equalsSame() {
-    boolean result = testOutcome.equals(testOutcome2);
-    assertTrue(result);
+    assertThat(testOutcome.equals(testOutcome2), is(true));
   }
   
   @Test
   public void checkhashCode() {
-    boolean result = (testOutcome.hashCode() == (int)testOutcome.hashCode());
-    assertTrue(result);
+    assertThat(testOutcome.hashCode() == (int)testOutcome.hashCode(), is(true));
   }
   
 }

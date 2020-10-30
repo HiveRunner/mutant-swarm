@@ -19,7 +19,6 @@ import static java.util.Collections.singletonList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import org.antlr.runtime.CommonToken;
@@ -70,8 +69,7 @@ public class StatementFactoryTest {
   public void equalsSame() {
     MutantSwarmStatement statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
     MutantSwarmStatement statement2 = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
-    boolean result = statement.equals(statement2);
-    assertTrue(result);
+    assertThat(statement.equals(statement2), is(true));
   }
 
 }

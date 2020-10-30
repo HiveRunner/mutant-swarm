@@ -18,7 +18,6 @@ package com.hotels.mutantswarm.mutate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -139,7 +138,7 @@ public class LexerMutatorStoreTest {
     Imposter imposter4 = new Imposter(4,"hello");
     Imposter imposter5 = new Imposter(4,"hello");
     boolean result = imposter4.equals(imposter5);
-    assertTrue(result);
+    assertThat(result, is(true));
   }
 
   @Test
@@ -153,7 +152,7 @@ public class LexerMutatorStoreTest {
   public void checkhashCode() {
     Imposter imposter4 = new Imposter(4,"hello");
     boolean result = (imposter4.hashCode() == (int)imposter4.hashCode());
-    assertTrue(result);
+    assertThat(result, is(true));
   }
 
 }

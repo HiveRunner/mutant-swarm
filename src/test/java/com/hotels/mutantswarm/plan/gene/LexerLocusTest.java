@@ -15,8 +15,9 @@
  */
 package com.hotels.mutantswarm.plan.gene;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +51,7 @@ public class LexerLocusTest {
   @Test
   public void equalsSame() {
     boolean result = lexerLocus.equals(lexerLocus2);
-    assertTrue(result);
+    assertThat(result, is(true));
   }
-
 
 }

@@ -18,9 +18,7 @@ package com.hotels.mutantswarm.exec;
 import static java.util.Arrays.asList;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.List;

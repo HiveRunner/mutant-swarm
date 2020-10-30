@@ -15,7 +15,8 @@
  */
 package com.hotels.mutantswarm.util;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.antlr.runtime.CommonToken;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class PrettyTreeTest {
   public void checkHasLocation() {
     CommonToken token = new CommonToken(null, 3, 4, 2, 3);
     boolean result = PrettyTree.hasLocation(token);
-    assertTrue(result);
+    assertThat(result, is(true));
   }
 
 }

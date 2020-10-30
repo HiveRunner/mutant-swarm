@@ -15,8 +15,9 @@
  */
 package com.hotels.mutantswarm.mutate;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -55,7 +56,7 @@ public class MutationImplTest {
   public void equalSame() {
     MutationImpl mutationImpl2 = new MutationImpl(mutationImpl.getReplacementText(),mutationImpl.getSplice());
     boolean result = mutationImpl.equals(mutationImpl2);
-    assertTrue(result);
+    assertThat(result, is(true));
   }
   
 }

@@ -20,9 +20,7 @@ import static java.util.Collections.singletonList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -125,7 +123,7 @@ public class TextTest {
   public void equalsNull() {
     Text text = new Text.Builder(4).build();
     Boolean result = text.equals(null);
-    assertFalse(result);
+    assertThat(result, is(false));
   }
 
   @Test
@@ -133,7 +131,7 @@ public class TextTest {
     Text text = new Text.Builder(4).build();
     String string = "different class, this is a string";
     Boolean result = text.equals(string);
-    assertFalse(result);
+    assertThat(result, is(false));
   }
 
   @Test
@@ -141,14 +139,14 @@ public class TextTest {
     Text text = new Text.Builder(4).build();
     Text text2 = new Text.Builder(4).build();
     Boolean result = text.equals(text2);
-    assertTrue(result);
+    assertThat(result, is(true));
   }
 
   @Test
   public void checkhashCode() {
     Text text = new Text.Builder(4).build();
     boolean result = (text.hashCode() == (int)text.hashCode());
-    assertTrue(result);
+    assertThat(result, is(true));
   }
 
   @Test

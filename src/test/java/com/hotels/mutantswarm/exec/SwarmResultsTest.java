@@ -177,8 +177,7 @@ public class SwarmResultsTest {
     String suiteName = "testSuite";
     SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
     SwarmResults swarmResults = builder.build();
-    Boolean result = swarmResults.equals(null);
-    assertFalse(result);
+    assertThat(swarmResults.equals(null), is(false));
   }
   
   @Test
@@ -187,8 +186,7 @@ public class SwarmResultsTest {
     SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
     SwarmResults swarmResults = builder.build();
     SwarmResults swarmResults2 = builder.build();
-    Boolean result = swarmResults.equals(swarmResults2);
-    assertTrue(result);
+    assertThat(swarmResults.equals(swarmResults2), is(true));
   }
   
   @Test

@@ -15,8 +15,9 @@
  */
 package com.hotels.mutantswarm.plan.gene;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,7 @@ public class ParserLocusTest {
     parserLocus = new ParserLocus(0,2,4);
     parserLocus2 = new ParserLocus(0,2,4);
     boolean result = parserLocus.equals(parserLocus2);
-    assertTrue(result);
+    assertThat(result, is(true));
   }
   
   @Test

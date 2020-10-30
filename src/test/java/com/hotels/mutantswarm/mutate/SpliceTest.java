@@ -17,7 +17,6 @@ package com.hotels.mutantswarm.mutate;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -94,7 +93,7 @@ public class SpliceTest {
     Splice.Factory spliceFactory = new Splice.Factory();
     Splice splice = spliceFactory.newInstance(lexerGene);
     boolean result = (splice.hashCode() == (int)splice.hashCode());
-    assertTrue(result);
+    assertThat(result, is(true));
   }
   
   @Test
@@ -108,8 +107,7 @@ public class SpliceTest {
     Splice.Factory spliceFactory = new Splice.Factory();
     Splice splice = spliceFactory.newInstance(lexerGene);
     Splice splice2 = spliceFactory.newInstance(lexerGene);
-    boolean result = (splice.equals(splice2));
-    assertTrue(result);
+    assertThat((splice.equals(splice2)), is(true));
   }
 
 }
