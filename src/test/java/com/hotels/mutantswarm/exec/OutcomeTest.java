@@ -83,47 +83,42 @@ public class OutcomeTest {
   @Test
   public void equalsNull() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
-    Boolean result = outcome.equals(null);
-    assertFalse(result);
+    assertThat(outcome.equals(null), is(false));
   }
 
   @Test
   public void equalsMutantNull() {
     Outcome outcome = new Outcome(null, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
-    Boolean result = outcome.equals(outcome2);
-    assertFalse(result);
+    assertThat(outcome.equals(outcome2), is(false));
   }
   
   @Test
   public void equalsMutantionNull() {
     Outcome outcome = new Outcome(mutant, null, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
-    Boolean result = outcome.equals(outcome2);
-    assertFalse(result);
+    assertThat(outcome.equals(outcome2), is(false));
   }
   
   @Test
   public void equalsSame() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
-    Boolean result = outcome.equals(outcome2);
-    assertTrue(result);
+    assertThat(outcome.equals(outcome2), is(true));
   }
   
   @Test
   public void equalsDifferentMutation() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation2, testOutcomes);
-    Boolean result = outcome.equals(outcome2);
-    assertFalse(result);
+    assertThat(outcome.equals(outcome2), is(false));
   }
   
   @Test
   public void checkhashCode() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     boolean result = (outcome.hashCode() == (int)outcome.hashCode());
-    assertTrue(result);
+    assertThat(result, is(true));
   }
 
 }
