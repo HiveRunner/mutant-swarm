@@ -54,7 +54,7 @@ public class ParseDriverTest {
     assertEquals(node.toStringTree(),"(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))");
   }
 
-// Ignore this for now
+// Ignore this for now, its just my attempt at testing the method processSetColsNode() and failing miserably :(
   
 //  @Test
 //  public void checkProcessSetColsNode() throws ParseException {
