@@ -39,9 +39,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.hotels.mutantswarm.model.MutantSwarmStatement.Factory;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ScriptTest {
-  @Mock
-  MutantSwarmScript.Impl mutantSwarmScript;
+public class MutantSwarmScriptTest {
   @Mock
   private MutantSwarmParseDriver parseDriver;
   @Mock
