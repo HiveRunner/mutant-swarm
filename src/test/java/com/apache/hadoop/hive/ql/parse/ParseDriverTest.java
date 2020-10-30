@@ -43,8 +43,8 @@ public class ParseDriverTest {
   public void setUpMocks() {
     command = "CREATE TABLE foobar AS\n" + 
         "SELECT c\n" + 
-        "from bar\n" + 
-        "where b = 3";
+        "FROM bar\n" + 
+        "WHERE b = 3";
   }
 
   @Test

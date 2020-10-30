@@ -129,7 +129,6 @@ public class MutantSwarmParseDriver {
 			processSetColsNode(setCols, astSearcher);
 		}
 	}
-	
 	/**
 	 * Replaces a spurious TOK_SETCOLREF added by parser with column names
 	 * referring to the query in e.g. a union. This is to maintain the
