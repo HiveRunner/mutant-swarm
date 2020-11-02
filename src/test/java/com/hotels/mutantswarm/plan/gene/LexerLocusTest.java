@@ -34,7 +34,7 @@ public class LexerLocusTest {
   private LexerLocus lexerLocus2;
 
   @Before
-  public void setUpMocks() {
+  public void setUp() {
     List<Integer> indexes = new ArrayList<Integer>();
     indexes.add(1);
     indexes.add(2);
