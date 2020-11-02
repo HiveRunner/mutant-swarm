@@ -37,15 +37,7 @@ public class ParseDriverTest {
 
   private ASTNode node;
 
-  private String command;
-
-  @Before
-  public void setUpMocks() {
-    command = "CREATE TABLE foobar AS\n" + 
-        "SELECT c\n" + 
-        "FROM bar\n" + 
-        "WHERE b = 3";
-  }
+  private String command = "CREATE TABLE foobar AS\nSELECT c\nFROM bar\nWHERE b = 3";
 
   @Test
   public void checkParseCommand() throws ParseException {

@@ -64,17 +64,17 @@ public class MutantSwarmScriptTest {
     statements = new ArrayList<MutantSwarmStatement>();
     statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
     statements.add(statement);
-    script = new MutantSwarmScript.Impl(0,Paths.get("/Users/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
+    script = new MutantSwarmScript.Impl(0,Paths.get("/some/path/to/scriptToTest1.sql"),statements);
   }
 
   @Test
   public void checkToString() {
-    assertEquals(script.toString(), "MutantSwarmScript.Impl [index=0, name=scriptToTest1.sql, statements=[MutantSwarmStatement.Impl [index=1, sql=SELECT * FROM x WHERE a = 1, tokens=[token], tree=tree]], path=/Users/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql]");
+    assertEquals(script.toString(), "MutantSwarmScript.Impl [index=0, name=scriptToTest1.sql, statements=[MutantSwarmStatement.Impl [index=1, sql=SELECT * FROM x WHERE a = 1, tokens=[token], tree=tree]], path=/some/path/to/scriptToTest1.sql]");
   }
 
   @Test
   public void equalSame() {
-    MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/Users/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
+    MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/some/path/to/scriptToTest1.sql"),statements);
     boolean result = script.equals(script2);
     assertThat(result, is(true));
     assertThat(script.hashCode() == script2.hashCode(), is(true));
@@ -82,7 +82,7 @@ public class MutantSwarmScriptTest {
 
   @Test
   public void equalDifferentPath() {
-    MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/Usejjrs/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
+    MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("wrongpath/some/path/to/scriptToTest1.sql"),statements);
     boolean result = script.equals(script2);
     assertThat(result, is(false));
   }

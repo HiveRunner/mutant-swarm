@@ -25,7 +25,6 @@ import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.apache.hadoop.hive.ql.parse.ParseException;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.klarna.hiverunner.builder.Statement;
 
 /**
