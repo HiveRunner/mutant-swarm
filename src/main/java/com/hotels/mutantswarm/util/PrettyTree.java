@@ -53,7 +53,7 @@ public class PrettyTree {
     }
   }
 
-  static boolean hasLocation(CommonToken token) {
+  private static boolean hasLocation(CommonToken token) {
     return token.getStartIndex() > 0 && token.getStopIndex() >= token.getStartIndex();
   }
 
