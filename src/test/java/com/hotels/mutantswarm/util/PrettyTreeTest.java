@@ -29,8 +29,7 @@ public class PrettyTreeTest {
   @Test
   public void checkHasLocation() {
     CommonToken token = new CommonToken(null, 3, 4, 2, 3);
-    boolean result = PrettyTree.hasLocation(token);
-    assertThat(result, is(true));
+    assertThat(PrettyTree.hasLocation(token), is(true));
   }
 
 }
