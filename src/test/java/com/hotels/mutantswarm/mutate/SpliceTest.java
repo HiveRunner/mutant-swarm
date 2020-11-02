@@ -84,20 +84,7 @@ public class SpliceTest {
   }
   
   @Test
-  public void checkhashCode() {
-    when(lexerGene.getTokens()).thenReturn(tokens);
-    when(tokens.get(0)).thenReturn(token);
-    
-    when(token.getStartIndex()).thenReturn(2);
-    when(token.getStopIndex()).thenReturn(5);
-    Splice.Factory spliceFactory = new Splice.Factory();
-    Splice splice = spliceFactory.newInstance(lexerGene);
-    boolean result = (splice.hashCode() == (int)splice.hashCode());
-    assertThat(result, is(true));
-  }
-  
-  @Test
-  public void checkEquals() {
+  public void equalSame() {
     when(lexerGene.getTokens()).thenReturn(tokens);
     when(tokens.get(0)).thenReturn(token);
     
@@ -108,6 +95,7 @@ public class SpliceTest {
     Splice splice = spliceFactory.newInstance(lexerGene);
     Splice splice2 = spliceFactory.newInstance(lexerGene);
     assertThat((splice.equals(splice2)), is(true));
+    assertThat(splice.hashCode() == splice2.hashCode(), is(true));
   }
 
 }

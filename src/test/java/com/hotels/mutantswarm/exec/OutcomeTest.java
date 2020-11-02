@@ -99,10 +99,11 @@ public class OutcomeTest {
   }
   
   @Test
-  public void equalsSame() {
+  public void equalSame() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
     assertThat(outcome.equals(outcome2), is(true));
+    assertThat(outcome.hashCode() == outcome2.hashCode(), is(true));
   }
   
   @Test
@@ -110,13 +111,6 @@ public class OutcomeTest {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation2, testOutcomes);
     assertThat(outcome.equals(outcome2), is(false));
-  }
-  
-  @Test
-  public void checkhashCode() {
-    Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
-    boolean result = (outcome.hashCode() == (int)outcome.hashCode());
-    assertThat(result, is(true));
   }
 
 }

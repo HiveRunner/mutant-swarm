@@ -47,13 +47,9 @@ public class TestOutcomeTest {
   }
   
   @Test
-  public void equalsSame() {
+  public void equalSame() {
     assertThat(testOutcome.equals(testOutcome2), is(true));
+    assertThat(testOutcome.hashCode() == testOutcome2.hashCode(), is(true));
   }
-  
-  @Test
-  public void checkhashCode() {
-    assertThat(testOutcome.hashCode() == (int)testOutcome.hashCode(), is(true));
-  }
-  
+
 }

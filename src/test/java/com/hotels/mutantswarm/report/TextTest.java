@@ -135,18 +135,12 @@ public class TextTest {
   }
 
   @Test
-  public void equalsChars() {
+  public void equalSame() {
     Text text = new Text.Builder(4).build();
     Text text2 = new Text.Builder(4).build();
     Boolean result = text.equals(text2);
     assertThat(result, is(true));
-  }
-
-  @Test
-  public void checkhashCode() {
-    Text text = new Text.Builder(4).build();
-    boolean result = (text.hashCode() == (int)text.hashCode());
-    assertThat(result, is(true));
+    assertThat(text.hashCode() == text2.hashCode(), is(true));
   }
 
   @Test

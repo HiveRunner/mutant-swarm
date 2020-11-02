@@ -77,6 +77,7 @@ public class MutantSwarmScriptTest {
     MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/Users/user/eclipse-workspace/mutant-swarm/target/test-classes/mutantSwarmTest/scriptToTest1.sql"),statements);
     boolean result = script.equals(script2);
     assertThat(result, is(true));
+    assertThat(script.hashCode() == script2.hashCode(), is(true));
   }
 
   @Test
@@ -102,12 +103,6 @@ public class MutantSwarmScriptTest {
   public void checkGetFileName() {
     String result = script.getFileName();
     assertEquals(result, "scriptToTest1.sql");
-  }
-
-  @Test
-  public void checkHashCode() {
-    boolean result = (script.hashCode() == (int)script.hashCode());
-    assertThat(result, is(true));
   }
 
 }

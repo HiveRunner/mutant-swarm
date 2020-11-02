@@ -134,11 +134,12 @@ public class LexerMutatorStoreTest {
   }
 
   @Test
-  public void checkEquals() {
+  public void equalSame() {
     Imposter imposter4 = new Imposter(4,"hello");
     Imposter imposter5 = new Imposter(4,"hello");
     boolean result = imposter4.equals(imposter5);
     assertThat(result, is(true));
+    assertThat(imposter4.hashCode() == imposter5.hashCode(), is(true));
   }
 
   @Test
@@ -146,13 +147,6 @@ public class LexerMutatorStoreTest {
     Imposter imposter4 = new Imposter(4,"hello");
     String result = imposter4.toString();
     assertEquals(result,"Imposter [tokenId=4, text=hello]");
-  }
-
-  @Test
-  public void checkhashCode() {
-    Imposter imposter4 = new Imposter(4,"hello");
-    boolean result = (imposter4.hashCode() == (int)imposter4.hashCode());
-    assertThat(result, is(true));
   }
 
 }
