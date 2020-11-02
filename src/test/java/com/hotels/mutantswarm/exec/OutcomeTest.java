@@ -47,7 +47,7 @@ public class OutcomeTest {
   private List<TestOutcome> testOutcomes;
   
   @Before
-  public void setUpMocks() {
+  public void setUp() {
     testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
   }
   
