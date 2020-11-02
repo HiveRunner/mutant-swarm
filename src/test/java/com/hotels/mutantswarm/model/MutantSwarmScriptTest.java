@@ -54,7 +54,6 @@ public class MutantSwarmScriptTest {
   private MutantSwarmScript.Impl script;
   private Factory factory;
 
-
   @Before
   public void setupMocks() throws ParseException{
     factory = new MutantSwarmStatement.Factory(parseDriver);
