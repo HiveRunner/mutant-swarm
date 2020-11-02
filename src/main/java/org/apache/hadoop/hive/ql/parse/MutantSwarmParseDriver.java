@@ -119,7 +119,7 @@ public class MutantSwarmParseDriver {
 		return tree;
 	}
 
-	public static void handleSetColRefs(ASTNode tree) {
+	private static void handleSetColRefs(ASTNode tree) {
 		CalcitePlanner.ASTSearcher astSearcher = new CalcitePlanner.ASTSearcher();
 		while (true) {
 			astSearcher.reset();
