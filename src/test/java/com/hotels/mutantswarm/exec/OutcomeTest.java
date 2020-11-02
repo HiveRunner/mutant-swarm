@@ -92,7 +92,7 @@ public class OutcomeTest {
   }
   
   @Test
-  public void equalsMutantionNull() {
+  public void equalsMutationNull() {
     Outcome outcome = new Outcome(mutant, null, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
     assertThat(outcome.equals(outcome2), is(false));
