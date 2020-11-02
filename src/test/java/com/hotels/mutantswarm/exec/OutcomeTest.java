@@ -75,7 +75,7 @@ public class OutcomeTest {
   public void checkToString(){
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     String result = outcome.toString();
-    assertThat(result,is("Outcome [mutant=mutant, mutation=mutation, state=SURVIVED, testOutcomes=[testOutcome1, testOutcome2, testOutcome3]]"));
+    assertThat(result, is("Outcome [mutant=mutant, mutation=mutation, state=SURVIVED, testOutcomes=[testOutcome1, testOutcome2, testOutcome3]]"));
   }
   
   @Test
