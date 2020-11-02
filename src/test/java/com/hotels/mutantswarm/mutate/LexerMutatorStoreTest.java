@@ -139,14 +139,14 @@ public class LexerMutatorStoreTest {
     Imposter imposter5 = new Imposter(4,"hello");
     boolean result = imposter4.equals(imposter5);
     assertThat(result, is(true));
-    assertThat(imposter4.hashCode() == imposter5.hashCode(), is(true));
+    assertThat(imposter4.hashCode(), is(imposter5.hashCode()));
   }
 
   @Test
   public void checkToString() {
     Imposter imposter4 = new Imposter(4,"hello");
     String result = imposter4.toString();
-    assertEquals(result,"Imposter [tokenId=4, text=hello]");
+    assertThat(result, is("Imposter [tokenId=4, text=hello]"));
   }
 
 }

@@ -95,7 +95,7 @@ public class SpliceTest {
     Splice splice = spliceFactory.newInstance(lexerGene);
     Splice splice2 = spliceFactory.newInstance(lexerGene);
     assertThat((splice.equals(splice2)), is(true));
-    assertThat(splice.hashCode() == splice2.hashCode(), is(true));
+    assertThat(splice.hashCode(), is(splice2.hashCode()));
   }
 
 }

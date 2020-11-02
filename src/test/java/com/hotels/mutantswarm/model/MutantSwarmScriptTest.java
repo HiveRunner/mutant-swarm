@@ -76,7 +76,7 @@ public class MutantSwarmScriptTest {
     MutantSwarmScript.Impl script2 = new MutantSwarmScript.Impl(0,Paths.get("/some/path/to/scriptToTest1.sql"),statements);
     boolean result = script.equals(script2);
     assertThat(result, is(true));
-    assertThat(script.hashCode() == script2.hashCode(), is(true));
+    assertThat(script.hashCode(), is(script2.hashCode()));
   }
 
   @Test

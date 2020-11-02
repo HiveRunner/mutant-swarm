@@ -49,7 +49,7 @@ public class TestOutcomeTest {
   @Test
   public void equalSame() {
     assertThat(testOutcome.equals(testOutcome2), is(true));
-    assertThat(testOutcome.hashCode() == testOutcome2.hashCode(), is(true));
+    assertThat(testOutcome.hashCode(), is(testOutcome2.hashCode()));
   }
 
 }

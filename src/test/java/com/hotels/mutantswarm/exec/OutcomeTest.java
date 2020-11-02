@@ -103,7 +103,7 @@ public class OutcomeTest {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
     assertThat(outcome.equals(outcome2), is(true));
-    assertThat(outcome.hashCode() == outcome2.hashCode(), is(true));
+    assertThat(outcome.hashCode(), is(outcome2.hashCode()));
   }
   
   @Test

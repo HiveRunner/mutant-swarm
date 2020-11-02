@@ -140,7 +140,7 @@ public class TextTest {
     Text text2 = new Text.Builder(4).build();
     Boolean result = text.equals(text2);
     assertThat(result, is(true));
-    assertThat(text.hashCode() == text2.hashCode(), is(true));
+    assertThat(text.hashCode(), is(text2.hashCode()));
   }
 
   @Test
