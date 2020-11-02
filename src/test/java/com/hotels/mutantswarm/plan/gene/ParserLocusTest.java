@@ -20,17 +20,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ParserLocusTest {
   
   private ParserLocus parserLocus;
   private ParserLocus parserLocus2;
 
   @Test
-  public void equalsSame() {
+  public void equalSame() {
     parserLocus = new ParserLocus(0,2,4);
     parserLocus2 = new ParserLocus(0,2,4);
     boolean result = parserLocus.equals(parserLocus2);

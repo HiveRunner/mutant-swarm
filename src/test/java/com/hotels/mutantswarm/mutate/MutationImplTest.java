@@ -18,20 +18,14 @@ package com.hotels.mutantswarm.mutate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.mutate.Mutation.MutationImpl;
 
-@RunWith(MockitoJUnitRunner.class)
 public class MutationImplTest {
-  
-  @Mock
+
   private Splice splice;
   
   private MutationImpl mutationImpl;

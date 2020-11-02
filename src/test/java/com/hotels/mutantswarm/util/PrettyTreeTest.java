@@ -20,10 +20,7 @@ import static org.junit.Assert.assertThat;
 
 import org.antlr.runtime.CommonToken;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class PrettyTreeTest {
 
   @Test
