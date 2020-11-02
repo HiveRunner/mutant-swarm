@@ -19,7 +19,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -149,7 +148,7 @@ public class TextTest {
     builder.addSurvivor(survivor1);
     Text text = builder.build();
     int result = text.getMutationCount();
-    assertEquals(result,1);
+    assertThat(result,is(1));
   }
 
 }

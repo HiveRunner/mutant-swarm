@@ -16,7 +16,6 @@
 package com.hotels.mutantswarm.mutate;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -39,7 +38,7 @@ public class MutationImplTest {
   @Test
   public void checktoString() {
     String result = mutationImpl.toString();
-    assertEquals(result,"MutationImpl [splice=Splice [startIndex=49, endIndex=49], replacementText=<]");
+    assertThat(result,is("MutationImpl [splice=Splice [startIndex=49, endIndex=49], replacementText=<]"));
   }
   
   @Test

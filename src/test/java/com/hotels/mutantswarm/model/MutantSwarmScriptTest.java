@@ -17,7 +17,6 @@ package com.hotels.mutantswarm.model;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -95,7 +94,7 @@ public class MutantSwarmScriptTest {
   @Test
   public void checkGetSql() {
     String result = script.getSql();
-    assertEquals(result, "SELECT * FROM x WHERE a = 1;\n");
+    assertThat(result, is("SELECT * FROM x WHERE a = 1;\n"));
   }
 
   @Test

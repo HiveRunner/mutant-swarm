@@ -16,7 +16,6 @@
 package com.hotels.mutantswarm.plan.gene;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class LexerLocusTest {
   @Test
   public void checkToString() {
     String result = lexerLocus.toString();
-    assertEquals(result,"LexerLocus [scriptIndex=2, statementIndex=3, indexes=[1, 2]]");
+    assertThat(result,is("LexerLocus [scriptIndex=2, statementIndex=3, indexes=[1, 2]]"));
   }
 
   @Test

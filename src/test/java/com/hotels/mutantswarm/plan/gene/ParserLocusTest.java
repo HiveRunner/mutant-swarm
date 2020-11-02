@@ -16,7 +16,6 @@
 package com.hotels.mutantswarm.plan.gene;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -38,13 +37,13 @@ public class ParserLocusTest {
   public void checkGetNodeIndex() {
     parserLocus = new ParserLocus(0,2,4);
     int result = parserLocus.getNodeIndex();
-    assertEquals(result,4);
+    assertThat(result,is(4));
   }
   
   @Test
   public void checkToString() {
     parserLocus = new ParserLocus(0,2,4);
     String result = parserLocus.toString();
-    assertEquals(result,"ParserLocus [scriptIndex=0, statementIndex=2, nodeIndex=4]");
+    assertThat(result,is("ParserLocus [scriptIndex=0, statementIndex=2, nodeIndex=4]"));
   }
 }

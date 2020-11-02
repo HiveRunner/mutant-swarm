@@ -15,10 +15,11 @@
  */
 package com.apache.hadoop.hive.ql.parse;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.apache.hadoop.hive.ql.parse.CalcitePlanner;
@@ -43,7 +44,7 @@ public class ParseDriverTest {
   public void checkParseCommand() throws ParseException {
     MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
     node = mutantSwarmParseDriver.parse(command);
-    assertEquals(node.toStringTree(),"(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))");
+    assertThat(node.toStringTree(),is("(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))"));
   }
 
 // Ignore this for now, its just my attempt at testing the method processSetColsNode() and failing miserably :(
