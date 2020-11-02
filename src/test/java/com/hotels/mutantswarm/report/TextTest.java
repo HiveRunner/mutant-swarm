@@ -116,7 +116,7 @@ public class TextTest {
     Text text = builder.build();
     String result = text.toString();
     String expected = "Text [chars=hi, survivors=[survivor1], killed=[killed], startIndex=4, mutationCount=2, type=SURVIVOR]";
-    assertThat(result,is(expected));
+    assertThat(result, is(expected));
   }
 
   @Test
