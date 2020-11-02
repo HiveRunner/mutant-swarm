@@ -205,8 +205,7 @@ public class SwarmResultsTest {
     builder.addTestOutcome(suiteName, mutant1, mutation1, state);
     
     SwarmResults swarmResults = builder.build();
-    String result = swarmResults.toString();
-    assertThat(result,is("SwarmResults [swarm=swarm, suiteName=testSuite, outcomesByScriptIndex={Key [scriptIndex=0, statementIndex=0]=[Outcome [mutant=mutant1, mutation=mutation1, state=KILLED, testOutcomes=[TestOutcome [testName=testSuite, mutant=mutant1, mutation=mutation1, state=KILLED]]]]}]"));
+    assertThat(swarmResults.toString(),is("SwarmResults [swarm=swarm, suiteName=testSuite, outcomesByScriptIndex={Key [scriptIndex=0, statementIndex=0]=[Outcome [mutant=mutant1, mutation=mutation1, state=KILLED, testOutcomes=[TestOutcome [testName=testSuite, mutant=mutant1, mutation=mutation1, state=KILLED]]]]}]"));
   }
   
 }

@@ -25,6 +25,7 @@ import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.apache.hadoop.hive.ql.parse.ParseException;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.klarna.hiverunner.builder.Statement;
 
 /**
@@ -60,6 +61,7 @@ public interface MutantSwarmStatement extends Statement {
 
     private final MutantSwarmParseDriver parseDriver;
 
+    @VisibleForTesting
     Factory(MutantSwarmParseDriver parseDriver) {
       this.parseDriver = parseDriver;
     }
