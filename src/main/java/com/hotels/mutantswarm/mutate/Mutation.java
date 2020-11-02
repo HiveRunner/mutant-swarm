@@ -37,7 +37,6 @@ public interface Mutation {
     private String replacementText;
     private Splice splice;
 
-    @VisibleForTesting
     MutationImpl(String replacementText, Splice splice) {
       this.replacementText = replacementText;
       this.splice = splice;

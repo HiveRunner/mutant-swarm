@@ -61,7 +61,6 @@ public interface MutantSwarmStatement extends Statement {
 
     private final MutantSwarmParseDriver parseDriver;
 
-    @VisibleForTesting
     Factory(MutantSwarmParseDriver parseDriver) {
       this.parseDriver = parseDriver;
     }
