@@ -15,8 +15,6 @@
  */
 package com.hotels.mutantswarm.mutate;
 
-import com.google.common.annotations.VisibleForTesting;
-
 /**
  * The result of altering a gene Mutated with a specific Mutator Used to modify the original SQL.
  */
