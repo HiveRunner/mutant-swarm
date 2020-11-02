@@ -68,7 +68,7 @@ public class MutantSwarmScriptTest {
 
   @Test
   public void checkToString() {
-    assertEquals(script.toString(), "MutantSwarmScript.Impl [index=0, name=scriptToTest1.sql, statements=[MutantSwarmStatement.Impl [index=1, sql=SELECT * FROM x WHERE a = 1, tokens=[token], tree=tree]], path=/some/path/to/scriptToTest1.sql]");
+    assertThat(script.toString(), is("MutantSwarmScript.Impl [index=0, name=scriptToTest1.sql, statements=[MutantSwarmStatement.Impl [index=1, sql=SELECT * FROM x WHERE a = 1, tokens=[token], tree=tree]], path=/some/path/to/scriptToTest1.sql]"));
   }
 
   @Test
@@ -101,7 +101,7 @@ public class MutantSwarmScriptTest {
   @Test
   public void checkGetFileName() {
     String result = script.getFileName();
-    assertEquals(result, "scriptToTest1.sql");
+    assertThat(result, is("scriptToTest1.sql"));
   }
 
 }
