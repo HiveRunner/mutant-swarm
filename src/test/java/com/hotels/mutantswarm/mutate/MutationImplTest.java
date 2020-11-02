@@ -37,7 +37,7 @@ public class MutationImplTest {
   private MutationImpl mutationImpl;
   
   @Before
-  public void setMocks() {
+  public void setUp() {
     splice = new Splice(49,49);
     mutationImpl = new MutationImpl("<",splice);
   }
