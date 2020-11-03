@@ -44,6 +44,7 @@ public class PrettyTree {
       System.out.print("\t\t\t");
       System.out.print(node.getText());
     }
+    System.out.println();
 
     ArrayList<Node> children = node.getChildren();
     if (children != null) {
