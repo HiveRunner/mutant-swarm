@@ -31,7 +31,7 @@ public class LexerLocusTest {
 
   @Before
   public void setUp() {
-    List<Integer> indexes = new ArrayList<Integer>();
+    List<Integer> indexes = Arrays.asList(1,2);
     indexes.add(1);
     indexes.add(2);
     lexerLocus = new LexerLocus(2,3,indexes);
