@@ -18,34 +18,20 @@ package com.hotels.mutantswarm.exec;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import com.hotels.mutantswarm.mutate.Mutation;
 import com.hotels.mutantswarm.plan.Mutant;
 
 public class TestOutcomeTest {
-  
-  @Mock
-  private String testName;
-  @Mock
-  private Mutant mutant;
-  @Mock
-  private Mutation mutation;
-  @Mock
-  private MutantState state;
-  
-  private TestOutcome testOutcome;
-  
-  private TestOutcome testOutcome2;
-  
-  @Before
-  public void setUpMocks() {
-    testOutcome = new TestOutcome(testName,mutant,mutation,state);
-    testOutcome2 = new TestOutcome(testName,mutant,mutation,state);
-  }
-  
+
+  private String testName = "This is a test name";
+  private Mutant mutant = null;
+  private Mutation mutation = null;
+  private MutantState state = MutantState.SURVIVED;
+  private TestOutcome testOutcome = new TestOutcome(testName,mutant,mutation,state);
+  private TestOutcome testOutcome2 = new TestOutcome(testName,mutant,mutation,state);
+
   @Test
   public void equalSame() {
     assertThat(testOutcome.equals(testOutcome2), is(true));

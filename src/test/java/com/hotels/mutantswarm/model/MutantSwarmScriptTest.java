@@ -49,7 +49,7 @@ public class MutantSwarmScriptTest {
   private CommonToken token;
 
   private MutantSwarmStatement statement;
-  private List<MutantSwarmStatement> statements;
+  private List<MutantSwarmStatement> statements = new ArrayList<MutantSwarmStatement>();
   private MutantSwarmScript.Impl script;
   private Factory factory;
 
@@ -59,7 +59,6 @@ public class MutantSwarmScriptTest {
     when(parseDriver.lex("SELECT * FROM x WHERE a = 1")).thenReturn(tokenStream);
     when(parseDriver.parse(tokenStream)).thenReturn(tree);
     when(parseDriver.extractTokens(tokenStream)).thenReturn(singletonList(token));
-    statements = new ArrayList<MutantSwarmStatement>();
     statement = factory.newInstance(0, 1, "SELECT * FROM x WHERE a = 1");
     statements.add(statement);
     script = new MutantSwarmScript.Impl(0,Paths.get("/some/path/to/scriptToTest1.sql"),statements);

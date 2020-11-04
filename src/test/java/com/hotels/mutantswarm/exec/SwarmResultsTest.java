@@ -187,6 +187,7 @@ public class SwarmResultsTest {
     SwarmResults swarmResults = builder.build();
     SwarmResults swarmResults2 = builder.build();
     assertThat(swarmResults.equals(swarmResults2), is(true));
+    assertThat(swarmResults.hashCode(), is(swarmResults2.hashCode()));
   }
   
   @Test

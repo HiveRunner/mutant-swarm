@@ -18,22 +18,14 @@ package com.hotels.mutantswarm.mutate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.hotels.mutantswarm.mutate.Mutation.MutationImpl;
 
 public class MutationImplTest {
 
-  private Splice splice;
-  
-  private MutationImpl mutationImpl;
-  
-  @Before
-  public void setUp() {
-    splice = new Splice(49,49);
-    mutationImpl = new MutationImpl("<",splice);
-  }
+  private Splice splice = new Splice(49,49);
+  private MutationImpl mutationImpl = new MutationImpl("<",splice);
   
   @Test
   public void checktoString() {

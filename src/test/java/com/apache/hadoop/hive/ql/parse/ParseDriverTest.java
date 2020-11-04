@@ -39,13 +39,19 @@ public class ParseDriverTest {
   private ASTNode node;
 
   private String command = "CREATE TABLE foobar AS\nSELECT c\nFROM bar\nWHERE b = 3";
+  
+  private MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
 
   @Test
   public void checkParseCommand() throws ParseException {
-    MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
     node = mutantSwarmParseDriver.parse(command);
     assertThat(node.toStringTree(),is("(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))"));
   }
+  
+  @Test
+  public void lexParseError() throws ParseException {
+    mutantSwarmParseDriver.lex("eiwjhqfikjqebrfq");
+    }
 
 // Ignore this for now, its just my attempt at testing the method processSetColsNode() and failing miserably :(
   

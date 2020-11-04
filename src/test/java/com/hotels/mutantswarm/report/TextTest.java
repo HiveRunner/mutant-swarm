@@ -20,12 +20,12 @@ import static java.util.Collections.singletonList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.exec.MutantState;
@@ -40,9 +40,9 @@ public class TextTest {
 
   @Before
   public void setupMocks() {
-    Mockito.when(killed.getState()).thenReturn(MutantState.KILLED);
-    Mockito.when(survivor1.getState()).thenReturn(MutantState.SURVIVED);
-    Mockito.when(survivor2.getState()).thenReturn(MutantState.SURVIVED);
+    when(killed.getState()).thenReturn(MutantState.KILLED);
+    when(survivor1.getState()).thenReturn(MutantState.SURVIVED);
+    when(survivor2.getState()).thenReturn(MutantState.SURVIVED);
   }
 
   @Test
