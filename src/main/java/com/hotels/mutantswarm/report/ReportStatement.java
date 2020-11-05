@@ -33,19 +33,23 @@ class ReportStatement implements MutantSwarmStatement {
     this.delegate = delegate;
     this.lines = unmodifiableList(lines);
   }
-
+  
+  @Override
   public int getIndex() {
     return delegate.getIndex();
   }
 
+  @Override
   public String getSql() {
     return delegate.getSql();
   }
 
+  @Override
   public List<CommonToken> getTokens() {
     return delegate.getTokens();
   }
 
+  @Override
   public ASTNode getTree() {
     return delegate.getTree();
   }

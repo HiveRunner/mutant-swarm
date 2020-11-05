@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,17 @@ public class ParserMutatorStoreTest {
 
   @Test
   public void checkMutatorsForEqualInJoin() {
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("EQUAL"));
+    when((List<Tree>) node1.getAncestors()).thenReturn((List<Tree>) Arrays.asList(tree1, tree2));
+    when(tree1.getType()).thenReturn(Vocabulary.INSTANCE.getId("Number"));
+    when(tree2.getType()).thenReturn(Vocabulary.INSTANCE.getId("TOK_FULLOUTERJOIN"));
+
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.size(), is(0));
+  }
+  
+  @Test
+  public void checkMutatorsForEqualOutJoin() {
     when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("EQUAL"));
     when((List<Tree>) node1.getAncestors()).thenReturn((List<Tree>) Arrays.asList(tree1, tree2));
     when(tree1.getType()).thenReturn(Vocabulary.INSTANCE.getId("Number"));
@@ -155,6 +166,16 @@ public class ParserMutatorStoreTest {
     assertThat(mutators.size(), is(1));
     assertThat(mutators.get(0).getName(), is("lower -> upper"));
   }
+  
+  @Test
+  public void checkMutatorsForUpperFunction() {
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("Identifier"));
+    when(node1.getText()).thenReturn("upper");
+
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.size(), is(1));
+    assertThat(mutators.get(0).getName(), is("upper -> lower"));
+  }
 
   @Test
   public void checkMutatorsForStringLiteral() {
@@ -169,6 +190,54 @@ public class ParserMutatorStoreTest {
     when(node1.getType()).thenReturn(-1);
     List<Mutator> mutators = database.getMutatorsFor(node1);
     assertThat(mutators.size(), is(0));
+  }
+  
+  @Test
+  public void checkMutatorsForPlus() {
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("PLUS"));
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.size(), is(1));
+    assertThat(mutators.get(0).getDescription(), is("Op PLUS → MINUS '-'"));
+  }
+  
+  @Test
+  public void checkMutatorsForMinus() {
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("MINUS"));
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.size(), is(1));
+    assertThat(mutators.get(0).getDescription(), is("Op MINUS → PLUS '+'"));
+  }
+  
+  @Test
+  public void checkMutatorsForStar() {
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("STAR"));
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.size(), is(1));
+    assertThat(mutators.get(0).getDescription(), is("Op MUL → DIV '/'"));
+  }
+  
+  @Test
+  public void checkMutatorsForDivision() {
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("DIV"));
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.size(), is(1));
+    assertThat(mutators.get(0).getDescription(), is("Op DIV → MUL '*'"));
+  }
+  
+  @Test
+  public void checkMutatorsForFalse() {
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("KW_FALSE"));
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.size(), is(1));
+    assertThat(mutators.get(0).getDescription(), is("BooleanLiteral FALSE → TRUE 'true'"));
+  }
+  
+  @Test
+  public void checkMutatorsForTrue() {
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("KW_TRUE"));
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.size(), is(1));
+    assertThat(mutators.get(0).getDescription(), is("BooleanLiteral TRUE → FALSE 'false'"));
   }
 
 }

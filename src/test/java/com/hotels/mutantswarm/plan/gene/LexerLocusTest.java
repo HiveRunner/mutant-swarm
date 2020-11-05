@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -31,9 +32,7 @@ public class LexerLocusTest {
 
   @Before
   public void setUp() {
-    List<Integer> indexes = new ArrayList<Integer>();
-    indexes.add(1);
-    indexes.add(2);
+    List<Integer> indexes = Arrays.asList(1,2);
     lexerLocus = new LexerLocus(2,3,indexes);
     lexerLocus2 = new LexerLocus(2,3,indexes);
   }
