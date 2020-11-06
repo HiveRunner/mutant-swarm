@@ -21,7 +21,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
 import org.junit.Test;
@@ -29,6 +31,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters;
+import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Group;
+import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Group.Builder;
 import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Imposter;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -40,6 +45,10 @@ public class LexerMutatorStoreTest {
   private Imposter imposter1, imposter2, imposter3;
   @Mock
   private List<CommonToken> stream;
+  @Mock
+  private Imposters.Builder impostersBuilder;
+  @Mock
+  private Map<Integer, Imposter> imposters = new HashMap<>();
 
   @Test
   public void checkImpostersForAsc() {
@@ -147,6 +156,14 @@ public class LexerMutatorStoreTest {
     Imposter imposter4 = new Imposter(4,"hello");
     String result = imposter4.toString();
     assertThat(result, is("Imposter [tokenId=4, text=hello]"));
+  }
+  
+  @Test
+  public void checkAppliedTo() {
+    Imposter imposter = new Imposter(4,"hi");
+    CommonToken commonToken = new CommonToken(4,"hi");
+    CommonToken result = imposter.appliedTo(commonToken);
+    assertThat(result.toString(),is(commonToken.toString()));
   }
 
 }

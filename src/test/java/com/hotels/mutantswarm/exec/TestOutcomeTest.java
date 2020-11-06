@@ -19,14 +19,24 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.mutate.Mutation;
+import com.hotels.mutantswarm.mutate.Mutator;
 import com.hotels.mutantswarm.plan.Mutant;
+import com.hotels.mutantswarm.plan.gene.Gene;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TestOutcomeTest {
+  
+  @Mock
+  private Gene gene;
+  private final Mutator mutator = null;
 
   private String testName = "This is a test name";
-  private Mutant mutant = null;
+  private Mutant mutant = new Mutant(gene,mutator);
   private Mutation mutation = null;
   private MutantState state = MutantState.SURVIVED;
   private TestOutcome testOutcome = new TestOutcome(testName,mutant,mutation,state);
@@ -36,6 +46,12 @@ public class TestOutcomeTest {
   public void equalSame() {
     assertThat(testOutcome.equals(testOutcome2), is(true));
     assertThat(testOutcome.hashCode(), is(testOutcome2.hashCode()));
+  }
+  
+  @Test
+  public void checkGetMutant() {
+    Mutant result = testOutcome.getMutant();
+    assertThat(result,is(mutant));
   }
 
 }

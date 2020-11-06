@@ -19,11 +19,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.tree.Tree;
+import org.apache.hadoop.hive.ql.lib.Node;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +37,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ParserMutatorStoreTest {
 
   @Mock
-  private ASTNode node1, node2;
+  private ASTNode node1, node2, node3;
   @Mock
   private CommonToken token;
   @Mock
@@ -238,6 +240,19 @@ public class ParserMutatorStoreTest {
     List<Mutator> mutators = database.getMutatorsFor(node1);
     assertThat(mutators.size(), is(1));
     assertThat(mutators.get(0).getDescription(), is("BooleanLiteral TRUE → FALSE 'false'"));
+  }
+  
+  @Test
+  public void checkMutatorsHasBooleanChild() {
+    ArrayList<Node> children = new ArrayList<Node>();
+    children.add(node2);
+    children.add(node3);
+    when(node1.getChildren()).thenReturn(children);
+    when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("EQUAL"));
+    when(node2.getType()).thenReturn(Vocabulary.INSTANCE.getId("KW_FALSE"));
+    when(node3.getType()).thenReturn(Vocabulary.INSTANCE.getId("KW_TRUE"));
+    List<Mutator> mutators = database.getMutatorsFor(node1);
+    assertThat(mutators.get(0).getDescription(), is("Relational op EQ → NEQ '<>'"));
   }
 
 }
