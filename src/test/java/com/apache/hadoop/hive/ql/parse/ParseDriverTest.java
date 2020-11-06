@@ -21,24 +21,25 @@ import java.util.LinkedList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import org.antlr.runtime.TokenRewriteStream;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.apache.hadoop.hive.ql.parse.CalcitePlanner;
 import org.apache.hadoop.hive.ql.parse.CalcitePlanner.ASTSearcher;
 import org.apache.hadoop.hive.ql.parse.HiveParser;
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.apache.hadoop.hive.ql.parse.ParseException;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.stubbing.OngoingStubbing;
 
 public class ParseDriverTest {
+  
+  private TokenRewriteStream tokens;
 
   private ASTNode tree;
 
   private ASTNode node;
 
   private String command = "CREATE TABLE foobar AS\nSELECT c\nFROM bar\nWHERE b = 3";
+  private String command2 = "CREAGGGTE TABLE foobar AS\nSELECT c ERROR \nFROM bar\nWHERE b = 3";
   
   private MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
 
@@ -47,12 +48,13 @@ public class ParseDriverTest {
     node = mutantSwarmParseDriver.parse(command);
     assertThat(node.toStringTree(),is("(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))"));
   }
-  
-  @Test
-  public void lexParseError() throws ParseException {
-    mutantSwarmParseDriver.lex("eiwjhqfikjqebrfq");
-    }
 
+  
+  @Test(expected = ParseException.class)
+  public void checkParseError() throws ParseException {
+    node = mutantSwarmParseDriver.parse(command2);
+  }
+    
 // Ignore this for now, its just my attempt at testing the method processSetColsNode() and failing miserably :(
   
 //  @Test

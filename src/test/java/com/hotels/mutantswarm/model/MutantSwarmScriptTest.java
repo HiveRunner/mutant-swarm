@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,5 +102,11 @@ public class MutantSwarmScriptTest {
     String result = script.getFileName();
     assertThat(result, is("scriptToTest1.sql"));
   }
-
+  
+  @Test
+  public void checkGetPath() {
+    Path result = script.getPath();
+    assertThat(result, is(Paths.get("/some/path/to/scriptToTest1.sql")));
+  }
+  
 }
