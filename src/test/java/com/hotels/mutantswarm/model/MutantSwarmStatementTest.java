@@ -17,7 +17,6 @@ package com.hotels.mutantswarm.model;
 
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement.Factory;
 

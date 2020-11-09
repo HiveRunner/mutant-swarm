@@ -32,7 +32,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
-import com.sun.el.parser.Token;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReportStatementTest {
@@ -45,8 +44,7 @@ public class ReportStatementTest {
   private CommonToken token1, token2;
   @Mock
   private ASTNode tree;
-
-  
+ 
   private List<Line> lines;
   private ReportStatement reportStatement;
   private List<CommonToken> tokens;

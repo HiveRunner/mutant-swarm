@@ -32,8 +32,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters;
-import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Group;
-import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Group.Builder;
 import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Imposter;
 
 @RunWith(MockitoJUnitRunner.class)
