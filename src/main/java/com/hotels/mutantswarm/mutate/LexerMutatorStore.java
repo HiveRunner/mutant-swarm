@@ -175,7 +175,7 @@ public class LexerMutatorStore {
       private final int tokenId;
       private final String text;
 
-      Imposter(int tokenId, String text) {
+      private Imposter(int tokenId, String text) {
         this.tokenId = tokenId;
         this.text = text;
       }

@@ -142,28 +142,4 @@ public class LexerMutatorStoreTest {
     lexerStore.getMutatorsFor(position, null);
   }
 
-  @Test
-  public void equalSame() {
-    Imposter imposter4 = new Imposter(4,"hello");
-    Imposter imposter5 = new Imposter(4,"hello");
-    boolean result = imposter4.equals(imposter5);
-    assertThat(result, is(true));
-    assertThat(imposter4.hashCode(), is(imposter5.hashCode()));
-  }
-
-  @Test
-  public void checkToString() {
-    Imposter imposter4 = new Imposter(4,"hello");
-    String result = imposter4.toString();
-    assertThat(result, is("Imposter [tokenId=4, text=hello]"));
-  }
-  
-  @Test
-  public void checkAppliedTo() {
-    Imposter imposter = new Imposter(4,"hi");
-    CommonToken commonToken = new CommonToken(4,"hi");
-    CommonToken result = imposter.appliedTo(commonToken);
-    assertThat(result.toString(),is(commonToken.toString()));
-  }
-
 }
