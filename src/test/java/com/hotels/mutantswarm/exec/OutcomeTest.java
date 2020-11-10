@@ -38,9 +38,7 @@ public class OutcomeTest {
   @Mock
   private Mutant mutant;
   @Mock
-  private Mutation mutation;
-  @Mock
-  private Mutation mutation2;
+  private Mutation mutation, mutation2;
   @Mock
   private TestOutcome testOutcome1, testOutcome2, testOutcome3; 
   

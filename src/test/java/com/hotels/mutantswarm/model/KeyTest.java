@@ -38,7 +38,7 @@ public class KeyTest {
   
   //A key for each Key constructor
   private Key key1;
-  private Key key2 = new Key(2,3);
+  private Key key2 = new Key(4,5);
   
   @Before
   public void setUpMocks() {
@@ -52,7 +52,7 @@ public class KeyTest {
     int result1 = key1.getScriptIndex();
     int result2 = key2.getScriptIndex();
     assertThat(result1, is(2));
-    assertThat(result2, is(2));
+    assertThat(result2, is(4));
   }
   
   @Test
@@ -60,7 +60,7 @@ public class KeyTest {
     int result1 = key1.getStatementIndex();
     int result2 = key2.getStatementIndex();
     assertThat(result1, is(3));
-    assertThat(result2, is(3));
+    assertThat(result2, is(5));
   }
 
 }

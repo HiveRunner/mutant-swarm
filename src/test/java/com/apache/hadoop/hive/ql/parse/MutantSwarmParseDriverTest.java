@@ -27,20 +27,19 @@ public class MutantSwarmParseDriverTest {
 
   private ASTNode node;
 
-  private String command = "CREATE TABLE foobar AS\nSELECT c\nFROM bar\nWHERE b = 3";
-  private String command2 = "CREAGGGTE TABLE foobar AS\nSELECT c ERROR \nFROM bar\nWHERE b = 3";
-  
   private MutantSwarmParseDriver mutantSwarmParseDriver = new MutantSwarmParseDriver();
 
   @Test
   public void checkParseCommand() throws ParseException {
+    String command = "CREATE TABLE foobar AS\nSELECT c\nFROM bar\nWHERE b = 3";
     node = mutantSwarmParseDriver.parse(command);
     assertThat(node.toStringTree(),is("(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))"));
   }
   
   @Test(expected = ParseException.class)
   public void checkParseError() throws ParseException {
-    node = mutantSwarmParseDriver.parse(command2);
+    String invalidCommand = "CREAGGGTE TABLE foobar AS\nSELECT c ERROR \nFROM bar\nWHERE b = 3";
+    node = mutantSwarmParseDriver.parse(invalidCommand);
   }
 
 }
