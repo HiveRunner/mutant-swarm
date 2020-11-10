@@ -45,18 +45,16 @@ public class ReportStatementTest {
   @Mock
   private ASTNode tree;
  
-  private List<Line> lines;
+  private List<Line> lines = new ArrayList<Line>();
   private ReportStatement reportStatement;
-  private List<CommonToken> tokens;
+  private List<CommonToken> tokens = new ArrayList<CommonToken>();
   
   @Before
   public void setUpMocks() {
     
-    lines = new ArrayList<Line>();
     lines.add(line1);
     lines.add(line2);
     
-    tokens = new ArrayList<CommonToken>();
     tokens.add(token1);
     tokens.add(token2);
     

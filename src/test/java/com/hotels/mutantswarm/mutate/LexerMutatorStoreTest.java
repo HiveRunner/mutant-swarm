@@ -43,10 +43,6 @@ public class LexerMutatorStoreTest {
   private Imposter imposter1, imposter2, imposter3;
   @Mock
   private List<CommonToken> stream;
-  @Mock
-  private Imposters.Builder impostersBuilder;
-  @Mock
-  private Map<Integer, Imposter> imposters = new HashMap<>();
 
   @Test
   public void checkImpostersForAsc() {
