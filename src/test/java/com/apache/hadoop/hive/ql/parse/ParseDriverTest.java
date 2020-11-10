@@ -23,7 +23,7 @@ import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.apache.hadoop.hive.ql.parse.ParseException;
 import org.junit.Test;
 
-public class ParseDriverTest {
+public class MutantSwarmParseDriverTest {
 
   private ASTNode node;
 
