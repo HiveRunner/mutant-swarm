@@ -21,9 +21,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
 import org.junit.Test;
@@ -31,7 +29,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters;
 import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Imposter;
 
 @RunWith(MockitoJUnitRunner.class)
