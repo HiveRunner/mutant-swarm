@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -34,6 +33,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <hive.execution.engine>mr</hive.execution.engine>
+    <!-- overriding parent surefire version as versions >=2.22.0 detect no tests to run in some environments (e.g. GH actions) -->
+    <maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
   </properties>
 
   <dependencies>
@@ -111,7 +112,7 @@
         <version>${maven.surefire.plugin.version}</version>
         <configuration>
           <systemProperties>
-            <!-- Any hive conf property may be overridden here by suffixing 
+            <!-- Any hive conf property may be overridden here by suffixing
               it with 'hiveconf_' -->
             <hiveconf_hive.execution.engine>${hive.execution.engine}</hiveconf_hive.execution.engine>
             <hiveconf_hive.exec.counters.pull.interval>1000</hiveconf_hive.exec.counters.pull.interval>
