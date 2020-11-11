@@ -19,7 +19,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
-
 import org.junit.Test;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement.Factory;
