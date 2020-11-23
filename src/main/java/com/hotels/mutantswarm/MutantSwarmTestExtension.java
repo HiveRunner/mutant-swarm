@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,11 +38,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.InvocationInterceptor;
+import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
@@ -67,6 +72,7 @@ import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 import com.klarna.hiverunner.HiveRunnerExtension;
 import com.klarna.hiverunner.HiveShellContainer;
 import com.klarna.hiverunner.annotations.HiveRunnerSetup;
+import com.klarna.hiverunner.annotations.HiveSQL;
 import com.klarna.hiverunner.builder.Script;
 import com.klarna.hiverunner.builder.Statement;
 import com.klarna.hiverunner.config.HiveRunnerConfig;
@@ -74,50 +80,109 @@ import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.klarna.reflection.ReflectionUtils;
 
-public class MutantSwarmTestExtension implements TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
-  
+public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEachCallback, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
+
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmTestExtension.class);
   private final HiveRunnerConfig config = new HiveRunnerConfig();
   private static AtomicReference<ExecutionContext> contextRef = new AtomicReference<>();
-  
+
   public HiveShellContainer container;
   private CommandShellEmulator emulator;
-  private List<? extends Script> scriptsUnderTest;
+  private List<Script> scriptsUnderTest;
   private Path basedir;
   private MutantSwarmCore core = new MutantSwarmCore();
-  
+  private HiveRunnerConfig HiveRunnerConfig = new HiveRunnerConfig();
+
   public MutantSwarmTestExtension() {}
+
+  @Override
+  public void beforeEach(ExtensionContext context) throws Exception {
+    System.out.println("beforeEach");
+
+    try {
+      Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
+      
+      scriptsUnderTest.clear();
+
+      Preconditions.checkState(fields.size() == 1, "Exact one field should to be annotated with @HiveSQL");
+      String strfields = fields.toString();
+
+      Field field = fields.iterator().next();
+      List<Path> scriptPaths = new ArrayList<>();
+      HiveSQL annotation = field.getAnnotation(HiveSQL.class);
+
+      for (String scriptFilePath : annotation.files()) {
+        Path file = Paths.get(Resources.getResource(scriptFilePath).toURI());
+        assertFileExists(file);
+        scriptPaths.add(file);
+      }
+
+      Charset charset = annotation.encoding().equals("") ?
+          Charset.defaultCharset() : Charset.forName(annotation.encoding());
+
+          boolean isAutoStart = annotation.autoStart();
+
+          //hiveShellBuilder.setScriptsUnderTest(scriptPaths, charset);
+
+          int index = 0;
+          for (Path path : scriptPaths) {
+            Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
+            try {
+              String sqlText = new String(Files.readAllBytes(path), charset);
+              HiveRunnerScript s = new HiveRunnerScript(index++, path, sqlText);
+              Script a = s;
+              scriptsUnderTest.add(a);
+            } catch (IOException e) {
+              throw new IllegalArgumentException("Failed to load script file '" + path + "'");
+            }
+          }
+
+    }
+    catch (Throwable t) {
+      throw new IllegalArgumentException("Failed to init field annotated with @HiveSQL: " + t.getMessage(), t);
+    }
+    
+    if (contextRef.get() == null) {
+      Swarm swarm = generateSwarm();
+      System.out.println(swarm);
+    }
+
+//    for (int i = 0; i < scriptsUnderTest.size(); i++) {
+//      System.out.println("\n"+i);
+//      Script testScript = scriptsUnderTest.get(i);
+//      System.out.println(testScript);
+//    }
+
+  }
+
+  private void assertFileExists(Path file) {
+    Preconditions.checkState(Files.exists(file), "File " + file + " does not exist");
+  }
 
   @Override
   public boolean supportsTestTemplate(ExtensionContext context) {
     //This will need to be filled in in the future, for now it always returns true
     return true;
   }
-  
+
   //This is where the magic should happen and all the tests would be repeated, right now it is set to repeat 
   //3 times each test
   @Override
   public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
     Method templateMethod = context.getRequiredTestMethod();
-    
-//    if (contextRef.get() == null) {
-//      Swarm swarm = generateSwarm();
-//
-//    }
 
-    return IntStream.rangeClosed(1,3).mapToObj(repitition -> new MutantSwarmTestTemplate());
-  
+    System.out.println("provideTestTemplateInvocationContexts");
+   
+
+    return IntStream.rangeClosed(1,2).mapToObj(repitition -> new MutantSwarmTestTemplate());
+
   }
-  
-  
-  
-  
-  
-  
-  
+
   //Copy pasted from HiveRunner
   @Override
   public void postProcessTestInstance(Object target, ExtensionContext extensionContext) {
+    System.out.println("postProcessTestInstance");
+
     setupConfig(target);
     try {
       basedir = Files.createTempDirectory("hiverunner_test");
@@ -126,13 +191,14 @@ public class MutantSwarmTestExtension implements TestTemplateInvocationContextPr
       throw new UncheckedIOException(e);
     }
     scriptsUnderTest = container.getScriptsUnderTest();
+
   }
-  
+
   private HiveShellContainer createHiveServerContainer(List<? extends Script> scripts, Object testCase, Path basedir)
       throws IOException {
     return core.createHiveServerContainer(scripts, testCase, basedir, config);
   }
-  
+
   private void setupConfig(Object target) {
     Set<Field> fields = ReflectionUtils.getAllFields(target.getClass(),
         Predicates.and(
@@ -147,7 +213,7 @@ public class MutantSwarmTestExtension implements TestTemplateInvocationContextPr
           .getFieldValue(target, fields.iterator().next().getName(), HiveRunnerConfig.class));
     }
   }
-  
+
   private void tearDown(Object target) {
     if (container != null) {
       log.info("Tearing down {}", target.getClass());
@@ -163,30 +229,31 @@ public class MutantSwarmTestExtension implements TestTemplateInvocationContextPr
       log.debug("Temporary folder was not deleted successfully: " + directory);
     }
   }
-  
+
   @Override
   public void afterEach(ExtensionContext extensionContext) {
     tearDown(extensionContext.getRequiredTestInstance());
   }
 
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   //These are all the methods in the MSRule, in the future we should put them in a core class
   private MutantSwarmSource setUpScripts() {
     log.debug("Setting up scripts");
-    
     List<MutantSwarmScript> scripts = new ArrayList<>();
 
     MutantSwarmStatement.Factory statementFactory = new MutantSwarmStatement.Factory();
 
     for (int i = 0; i < scriptsUnderTest.size(); i++) {
       Script testScript = scriptsUnderTest.get(i);
-
+      emulator = HiveRunnerConfig.getCommandShellEmulator();
+   
       List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
+
       
       List<MutantSwarmStatement> statements = new ArrayList<>();
       for (int j = 0; j < scriptStatements.size(); j++) {
@@ -218,7 +285,7 @@ public class MutantSwarmTestExtension implements TestTemplateInvocationContextPr
     }
     return contextRef.get().swarmResultBuilder.build();
   }
-  
+
   static class ExecutionContext {
     private final Swarm swarm;
     private final SwarmResultsBuilder swarmResultBuilder;
@@ -235,7 +302,6 @@ public class MutantSwarmTestExtension implements TestTemplateInvocationContextPr
     private MutantSwarmSource getSource() {
       return swarm.getSource();
     }
-    
   }
-  
+
 }
