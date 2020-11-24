@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.io.UncheckedIOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
@@ -50,12 +51,14 @@ import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.junit.platform.commons.util.AnnotationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.io.Resources;
+import com.hotels.mutantswarm.MutantSwarmRule.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory;
 import com.hotels.mutantswarm.exec.SwarmResults;
@@ -88,25 +91,102 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
 
   public HiveShellContainer container;
   private CommandShellEmulator emulator;
-  private List<Script> scriptsUnderTest;
+  private List<Script> scriptsUnderTest = new ArrayList();
   private Path basedir;
   private MutantSwarmCore core = new MutantSwarmCore();
   private HiveRunnerConfig HiveRunnerConfig = new HiveRunnerConfig();
-
+  
   public MutantSwarmTestExtension() {}
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    System.out.println("beforeEach");
+//   System.out.println("beforeEach");
 
+//    try {
+//      Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
+//      
+//      scriptsUnderTest.clear();
+//
+//      Preconditions.checkState(fields.size() == 1, "Exact one field should to be annotated with @HiveSQL");
+//      String strfields = fields.toString();
+//
+//      Field field = fields.iterator().next();
+//      List<Path> scriptPaths = new ArrayList<>();
+//      HiveSQL annotation = field.getAnnotation(HiveSQL.class);
+//
+//      for (String scriptFilePath : annotation.files()) {
+//        Path file = Paths.get(Resources.getResource(scriptFilePath).toURI());
+//        assertFileExists(file);
+//        scriptPaths.add(file);
+//      }
+//
+//      Charset charset = annotation.encoding().equals("") ?
+//          Charset.defaultCharset() : Charset.forName(annotation.encoding());
+//
+//          boolean isAutoStart = annotation.autoStart();
+//
+//          //hiveShellBuilder.setScriptsUnderTest(scriptPaths, charset);
+//
+//          int index = 0;
+//          for (Path path : scriptPaths) {
+//            Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
+//            try {
+//              String sqlText = new String(Files.readAllBytes(path), charset);
+//              HiveRunnerScript s = new HiveRunnerScript(index++, path, sqlText);
+//              Script a = s;
+//              scriptsUnderTest.add(a);
+//            } catch (IOException e) {
+//              throw new IllegalArgumentException("Failed to load script file '" + path + "'");
+//            }
+//          }
+//
+//    }
+//    catch (Throwable t) {
+//      throw new IllegalArgumentException("Failed to init field annotated with @HiveSQL: " + t.getMessage(), t);
+//    }
+//    
+//    if (contextRef.get() == null) {
+//      Swarm swarm = generateSwarm();
+//      SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
+//      contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
+//    }
+//    
+//    List<Mutant> mutant = contextRef.get().swarm.getMutants();
+//    System.out.println(mutant.size());
+    
+
+//    for (int i = 0; i < scriptsUnderTest.size(); i++) {
+//      System.out.println("\n"+i);
+//      Script testScript = scriptsUnderTest.get(i);
+//      System.out.println(testScript);
+//    }
+
+  }
+
+  private void assertFileExists(Path file) {
+    Preconditions.checkState(Files.exists(file), "File " + file + " does not exist");
+  }
+
+  @Override
+  public boolean supportsTestTemplate(ExtensionContext context) {
+    if (!context.getTestMethod().isPresent()) {
+      return false;
+    }
+    return true;
+  }
+
+  //This is where the magic should happen and all the tests would be repeated, right now it is set to repeat 
+  //3 times each test
+  @Override
+  public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
+    System.out.println("provideTestTemplateInvocationContexts");
+    Method templateMethod = context.getRequiredTestMethod();
     try {
       Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
       
       scriptsUnderTest.clear();
 
       Preconditions.checkState(fields.size() == 1, "Exact one field should to be annotated with @HiveSQL");
-      String strfields = fields.toString();
-
       Field field = fields.iterator().next();
       List<Path> scriptPaths = new ArrayList<>();
       HiveSQL annotation = field.getAnnotation(HiveSQL.class);
@@ -126,6 +206,7 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
 
           int index = 0;
           for (Path path : scriptPaths) {
+            System.out.println("this prints out for every path"+path.toString());
             Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
             try {
               String sqlText = new String(Files.readAllBytes(path), charset);
@@ -143,37 +224,16 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
     }
     
     if (contextRef.get() == null) {
+      System.out.println("contextRef.get() == null");
       Swarm swarm = generateSwarm();
+      SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
+      contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
       System.out.println(swarm);
     }
-
-//    for (int i = 0; i < scriptsUnderTest.size(); i++) {
-//      System.out.println("\n"+i);
-//      Script testScript = scriptsUnderTest.get(i);
-//      System.out.println(testScript);
-//    }
-
-  }
-
-  private void assertFileExists(Path file) {
-    Preconditions.checkState(Files.exists(file), "File " + file + " does not exist");
-  }
-
-  @Override
-  public boolean supportsTestTemplate(ExtensionContext context) {
-    //This will need to be filled in in the future, for now it always returns true
-    return true;
-  }
-
-  //This is where the magic should happen and all the tests would be repeated, right now it is set to repeat 
-  //3 times each test
-  @Override
-  public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-    Method templateMethod = context.getRequiredTestMethod();
-
-    System.out.println("provideTestTemplateInvocationContexts");
-   
-
+    
+    List<Mutant> mutant = contextRef.get().swarm.getMutants();
+    System.out.println(mutant.size());
+    
     return IntStream.rangeClosed(1,2).mapToObj(repitition -> new MutantSwarmTestTemplate());
 
   }
@@ -191,6 +251,7 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
       throw new UncheckedIOException(e);
     }
     scriptsUnderTest = container.getScriptsUnderTest();
+
 
   }
 

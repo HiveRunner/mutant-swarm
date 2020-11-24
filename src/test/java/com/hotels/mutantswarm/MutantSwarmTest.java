@@ -30,6 +30,7 @@ import com.klarna.hiverunner.HiveShell;
 import com.klarna.hiverunner.annotations.HiveSQL;
 import com.klarna.hiverunner.annotations.HiveSetupScript;
 
+//@RunWith(MutantSwarmRunner.class)
 @ExtendWith(MutantSwarmTestExtension.class)
 public class MutantSwarmTest {
 
@@ -42,6 +43,7 @@ public class MutantSwarmTest {
   public HiveShell hiveShell;
   
   @TestTemplate
+  //@Test
   public void test() {
     List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
     List<String> expected = Arrays.asList("1\ttrue", "3\ttrue", "3\tfalse", "5\tfalse");
@@ -49,6 +51,7 @@ public class MutantSwarmTest {
   }
 
   @TestTemplate
+  //@Test
   public void test2() {
     List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
     List<String> expected = Arrays.asList("true", "false");

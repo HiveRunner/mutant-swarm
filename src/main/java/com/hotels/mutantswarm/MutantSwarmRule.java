@@ -86,9 +86,12 @@ class MutantSwarmRule implements TestRule {
         Swarm swarm = generateSwarm();
         SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, suiteName);
         contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
+        System.out.println(swarm.toString());
       }
       
       ExecutionContext context = contextRef.get();
+      List<Mutant> mutantss = contextRef.get().swarm.getMutants();
+      System.out.println(mutantss.size());
       for (Mutant mutant : contextRef.get().swarm.getMutants()) {
         MutatedSource mutatedSource = mutateSource(context.getSource(), mutant);
         hiveRunnerRule.setScriptsUnderTest(mutatedSource.getScripts());
@@ -113,20 +116,12 @@ class MutantSwarmRule implements TestRule {
 
     for (int i = 0; i < scriptsUnderTest.size(); i++) {
       Script testScript = scriptsUnderTest.get(i);
-      System.out.println(testScript.getSql());
 
       List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
             
       List<MutantSwarmStatement> statements = new ArrayList<>();
       for (int j = 0; j < scriptStatements.size(); j++) {
-        System.out.println("i: "+i);
-        System.out.println("j: "+j);
-        //System.out.println(testScript.getSql());
-        //System.out.println(testScript.getSql());
-        //System.out.println(testScript.getSql());
-        //System.out.println(testScript.getSql());
-        
-        
+
         String statementText = scriptStatements.get(j).getSql();
         MutantSwarmStatement statement = statementFactory.newInstance(i, j, statementText);
         statements.add(statement);
