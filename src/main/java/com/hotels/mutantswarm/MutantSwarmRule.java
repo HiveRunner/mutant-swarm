@@ -90,16 +90,16 @@ class MutantSwarmRule implements TestRule {
       }
       
       ExecutionContext context = contextRef.get();
-      List<Mutant> mutantss = contextRef.get().swarm.getMutants();
-      System.out.println(mutantss.size());
       for (Mutant mutant : contextRef.get().swarm.getMutants()) {
         MutatedSource mutatedSource = mutateSource(context.getSource(), mutant);
         hiveRunnerRule.setScriptsUnderTest(mutatedSource.getScripts());
         try {
           base.evaluate();
           log.debug("Mutant survived - bad");
+          System.out.println("Mutant survived, test passed");
           context.addTestOutcome(testName, mutant, mutatedSource.getMutation(), MutantState.SURVIVED);
         } catch (AssertionError e) {
+          System.out.println("Mutant killed, test did not pass");
           log.debug("Mutant killed - good. " + e);
           context.addTestOutcome(testName, mutant, mutatedSource.getMutation(), MutantState.KILLED);
         }

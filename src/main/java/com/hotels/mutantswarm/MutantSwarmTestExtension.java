@@ -51,6 +51,7 @@ import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.junit.jupiter.api.extension.TestWatcher;
 import org.junit.platform.commons.util.AnnotationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +84,7 @@ import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.klarna.reflection.ReflectionUtils;
 
-public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEachCallback, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
+public class MutantSwarmTestExtension implements TestWatcher,InvocationInterceptor, BeforeEachCallback, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
 
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmTestExtension.class);
   private final HiveRunnerConfig config = new HiveRunnerConfig();
@@ -95,72 +96,27 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
   private Path basedir;
   private MutantSwarmCore core = new MutantSwarmCore();
   private HiveRunnerConfig HiveRunnerConfig = new HiveRunnerConfig();
+  private int testNumber = -1;
+  private List<Mutant> mutants = new ArrayList();
+  private List<MutatedSource> mutatedSources = new ArrayList();
   
   public MutantSwarmTestExtension() {}
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-//   System.out.println("beforeEach");
 
-//    try {
-//      Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
-//      
-//      scriptsUnderTest.clear();
-//
-//      Preconditions.checkState(fields.size() == 1, "Exact one field should to be annotated with @HiveSQL");
-//      String strfields = fields.toString();
-//
-//      Field field = fields.iterator().next();
-//      List<Path> scriptPaths = new ArrayList<>();
-//      HiveSQL annotation = field.getAnnotation(HiveSQL.class);
-//
-//      for (String scriptFilePath : annotation.files()) {
-//        Path file = Paths.get(Resources.getResource(scriptFilePath).toURI());
-//        assertFileExists(file);
-//        scriptPaths.add(file);
-//      }
-//
-//      Charset charset = annotation.encoding().equals("") ?
-//          Charset.defaultCharset() : Charset.forName(annotation.encoding());
-//
-//          boolean isAutoStart = annotation.autoStart();
-//
-//          //hiveShellBuilder.setScriptsUnderTest(scriptPaths, charset);
-//
-//          int index = 0;
-//          for (Path path : scriptPaths) {
-//            Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
-//            try {
-//              String sqlText = new String(Files.readAllBytes(path), charset);
-//              HiveRunnerScript s = new HiveRunnerScript(index++, path, sqlText);
-//              Script a = s;
-//              scriptsUnderTest.add(a);
-//            } catch (IOException e) {
-//              throw new IllegalArgumentException("Failed to load script file '" + path + "'");
-//            }
-//          }
-//
-//    }
-//    catch (Throwable t) {
-//      throw new IllegalArgumentException("Failed to init field annotated with @HiveSQL: " + t.getMessage(), t);
-//    }
-//    
-//    if (contextRef.get() == null) {
-//      Swarm swarm = generateSwarm();
-//      SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
-//      contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
-//    }
-//    
-//    List<Mutant> mutant = contextRef.get().swarm.getMutants();
-//    System.out.println(mutant.size());
-    
-
-//    for (int i = 0; i < scriptsUnderTest.size(); i++) {
-//      System.out.println("\n"+i);
-//      Script testScript = scriptsUnderTest.get(i);
-//      System.out.println(testScript);
-//    }
-
+  }
+  
+  @Override
+  public void testSuccessful(ExtensionContext context) {
+      log.info("Mutant survived - bad");
+      System.out.println("Test was succesfull");
+  }  
+  
+  @Override
+  public void testFailed(ExtensionContext context, Throwable cause) {
+      log.info("Mutant killed - good. "+cause.toString());
+      System.out.println("Test failed");
   }
 
   private void assertFileExists(Path file) {
@@ -179,6 +135,9 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
   //3 times each test
   @Override
   public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
+    
+    testNumber = -1;
+
     System.out.println("provideTestTemplateInvocationContexts");
     Method templateMethod = context.getRequiredTestMethod();
     try {
@@ -206,7 +165,6 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
 
           int index = 0;
           for (Path path : scriptPaths) {
-            System.out.println("this prints out for every path"+path.toString());
             Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
             try {
               String sqlText = new String(Files.readAllBytes(path), charset);
@@ -224,24 +182,46 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
     }
     
     if (contextRef.get() == null) {
-      System.out.println("contextRef.get() == null");
       Swarm swarm = generateSwarm();
       SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
       contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
-      System.out.println(swarm);
+      //System.out.println(swarm);
     }
     
-    List<Mutant> mutant = contextRef.get().swarm.getMutants();
-    System.out.println(mutant.size());
+    mutants = contextRef.get().swarm.getMutants();
+    //System.out.println(mutant.size());
+    ExecutionContext executionContext = contextRef.get();
+    for (Mutant mutant : contextRef.get().swarm.getMutants()) {
+      MutatedSource mutatedSource = mutateSource(executionContext.getSource(), mutant);
+      mutatedSources.add(mutatedSource);
+      //System.out.println(mutatedSource.getScripts().toString());
+    }
+
+    //System.out.println(scriptsUnderTest);
     
-    return IntStream.rangeClosed(1,2).mapToObj(repitition -> new MutantSwarmTestTemplate());
+    return IntStream.rangeClosed(1,mutants.size()).mapToObj(repitition -> new MutantSwarmTestTemplate());
+    
 
   }
 
+  
   //Copy pasted from HiveRunner
   @Override
   public void postProcessTestInstance(Object target, ExtensionContext extensionContext) {
-    System.out.println("postProcessTestInstance");
+    //System.out.println("postProcessTestInstance, SCRIPTS BEFORE: "+scriptsUnderTest);
+    testNumber++;
+
+    System.out.println("test number: "+testNumber);
+    scriptsUnderTest.clear();
+    MutatedSource mutatedSource = mutatedSources.get(testNumber);
+    List<MutantSwarmScript> MScripts = mutatedSource.getScripts();
+   for (Script s : MScripts) {
+     System.out.println("each mutated scripts: "+s);
+     scriptsUnderTest.add(s);
+   }
+    
+
+    //System.out.println("mutated scripts: "+mutatedSource.getScripts().toString());
 
     setupConfig(target);
     try {
@@ -252,7 +232,7 @@ public class MutantSwarmTestExtension implements InvocationInterceptor, BeforeEa
     }
     scriptsUnderTest = container.getScriptsUnderTest();
 
-
+    //System.out.println("postProcessTestInstance, SCRIPTS AFTER: "+scriptsUnderTest);
   }
 
   private HiveShellContainer createHiveServerContainer(List<? extends Script> scripts, Object testCase, Path basedir)
