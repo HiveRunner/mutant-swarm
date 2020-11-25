@@ -41,7 +41,7 @@ public class MutantSwarmTest {
 
   @HiveSQL(files = { "mutantSwarmTest/scriptToTest1.sql", "mutantSwarmTest/scriptToTest2.sql" })
   public HiveShell hiveShell;
-  
+
   @TestTemplate
   //@Test
   public void test() {
@@ -57,5 +57,5 @@ public class MutantSwarmTest {
     List<String> expected = Arrays.asList("true", "false");
     assertEquals(expected, result);
   }
-
+  
 }

@@ -138,6 +138,7 @@ class MutantSwarmRule implements TestRule {
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
   }
+  
 
   private MutatedSource mutateSource(MutantSwarmSource source, Mutant mutant) {
     MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();

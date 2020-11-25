@@ -18,50 +18,35 @@ package com.hotels.mutantswarm;
 import static org.reflections.ReflectionUtils.withAnnotation;
 import static org.reflections.ReflectionUtils.withType;
 
-import java.io.File;
 import java.io.IOException;
 
 import java.io.UncheckedIOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import javax.swing.SwingUtilities;
-
 import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.InvocationInterceptor;
-import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.junit.jupiter.api.extension.TestWatcher;
-import org.junit.platform.commons.util.AnnotationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.io.Resources;
-import com.hotels.mutantswarm.MutantSwarmRule.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory;
 import com.hotels.mutantswarm.exec.SwarmResults;
@@ -76,7 +61,6 @@ import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
 import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 import com.hotels.mutantswarm.report.ReportGenerator;
-import com.klarna.hiverunner.HiveRunnerExtension;
 import com.klarna.hiverunner.HiveShellContainer;
 import com.klarna.hiverunner.annotations.HiveRunnerSetup;
 import com.klarna.hiverunner.annotations.HiveSQL;
@@ -87,7 +71,7 @@ import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.klarna.reflection.ReflectionUtils;
 
-public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,InvocationInterceptor, BeforeEachCallback, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
+public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
 
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmTestExtension.class);
   private final HiveRunnerConfig config = new HiveRunnerConfig();
@@ -95,52 +79,46 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,In
 
   public HiveShellContainer container;
   private CommandShellEmulator emulator;
-  private List<Script> scriptsUnderTest = new ArrayList();
+  private List<Script> scriptsUnderTest = new ArrayList<Script>();
   private Path basedir;
   private MutantSwarmCore core = new MutantSwarmCore();
   private HiveRunnerConfig HiveRunnerConfig = new HiveRunnerConfig();
   private int testNumber = -1;
-  private List<Mutant> mutants = new ArrayList();
-  private List<MutatedSource> mutatedSources = new ArrayList();
+  private List<Mutant> mutants = new ArrayList<Mutant>();
+  private List<MutatedSource> mutatedSources = new ArrayList<MutatedSource>();
   private ExecutionContext results = contextRef.get();
+  private boolean firstTestPassed = true;
 
   public MutantSwarmTestExtension() {}
-  
+
   @Override
   public void afterAll(ExtensionContext context) throws Exception {
-    System.out.println("After All method called");
     SwarmResults swarmResults = getSwarmResults();
-    System.out.println(swarmResults.toString());
-    if (swarmResults != null) {
-      log.debug("Finished testing. Generating report.");
-      new ReportGenerator(swarmResults).generate();
-    } else {
-      log.debug("Cannot generate report");
-    }
-  }
-
-
-  @Override
-  public void beforeEach(ExtensionContext context) throws Exception {
-    System.out.println(results.toString());
+    log.debug("Finished testing. Generating report.");
+    new ReportGenerator(swarmResults).generate();
   }
 
   @Override
   public void testSuccessful(ExtensionContext context) {
-    log.info("Mutant survived - bad");
-    results.addTestOutcome(context.getDisplayName(), mutants.get(testNumber), mutatedSources.get(testNumber).getMutation(), MutantState.SURVIVED);
-    System.out.println("Test was succesfull");
-  }  
+    if(testNumber!=0) {
+      log.info("Mutant survived - bad");
+      results.addTestOutcome(context.getDisplayName(), mutants.get(testNumber-1), mutatedSources.get(testNumber-1).getMutation(), MutantState.SURVIVED);
+    } 
+    else {
+      firstTestPassed = true;
+    }
+  }
 
   @Override
   public void testFailed(ExtensionContext context, Throwable cause) {
-    log.info("Mutant killed - good. "+cause.toString());
-    results.addTestOutcome(context.getRequiredTestMethod().toString(), mutants.get(testNumber), mutatedSources.get(testNumber).getMutation(), MutantState.KILLED  );
-    System.out.println("Test failed");
-  }
-
-  private void assertFileExists(Path file) {
-    Preconditions.checkState(Files.exists(file), "File " + file + " does not exist");
+    if(testNumber!=0) {
+      log.info("Mutant killed - good. "+cause.toString());
+      results.addTestOutcome(context.getRequiredTestMethod().toString(), mutants.get(testNumber-1), mutatedSources.get(testNumber-1).getMutation(), MutantState.KILLED  );
+    }
+    else {
+      firstTestPassed = false;
+      //TODO: if the first test does not pass, then we should not run it again with the mutations because it's useless
+    }
   }
 
   @Override
@@ -151,15 +129,62 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,In
     return true;
   }
 
-  //This is where the magic should happen and all the tests would be repeated, right now it is set to repeat 
-  //3 times each test
   @Override
   public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-
     testNumber = -1;
+    firstTestPassed = true;
 
-    //System.out.println("provideTestTemplateInvocationContexts");
-    Method templateMethod = context.getRequiredTestMethod();
+    setFirstScripts(context);
+
+    if (contextRef.get() == null) {
+      Swarm swarm = generateSwarm();
+      SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
+      contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
+    }
+
+    mutants = contextRef.get().swarm.getMutants();
+    ExecutionContext executionContext = contextRef.get();
+    for (Mutant mutant : contextRef.get().swarm.getMutants()) {
+      MutatedSource mutatedSource = mutateSource(executionContext.getSource(), mutant);
+      mutatedSources.add(mutatedSource);
+    }
+
+    results = contextRef.get();
+
+    // Here we specify the number of times a test should be repeated, but the scripts will be mutated accordingly for each
+    // individual test in the postProcessTestInstance method
+    return IntStream.rangeClosed(1,mutants.size()+1).mapToObj(repitition -> new MutantSwarmTestTemplate());
+  }
+
+
+  @Override
+  public void postProcessTestInstance(Object target, ExtensionContext extensionContext) throws Exception {
+    testNumber++;
+
+    //The first test per swarm should run normally and without mutations
+    if(testNumber!=0) {
+      scriptsUnderTest.clear();
+      MutatedSource mutatedSource = mutatedSources.get(testNumber-1);
+      List<MutantSwarmScript> MScripts = mutatedSource.getScripts();
+
+      for (Script s : MScripts) {
+        scriptsUnderTest.add(s);
+      }
+    }
+
+    setupConfig(target);
+    try {
+      basedir = Files.createTempDirectory("hiverunner_test");
+      container = createHiveServerContainer(scriptsUnderTest, target, basedir);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+    scriptsUnderTest = container.getScriptsUnderTest();
+
+  }
+
+  //This method is to set the scripts for the first time
+  public void setFirstScripts(ExtensionContext context) {
     try {
       Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
 
@@ -179,18 +204,13 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,In
       Charset charset = annotation.encoding().equals("") ?
           Charset.defaultCharset() : Charset.forName(annotation.encoding());
 
-          boolean isAutoStart = annotation.autoStart();
-
-          //hiveShellBuilder.setScriptsUnderTest(scriptPaths, charset);
-
           int index = 0;
           for (Path path : scriptPaths) {
             Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
             try {
               String sqlText = new String(Files.readAllBytes(path), charset);
               HiveRunnerScript s = new HiveRunnerScript(index++, path, sqlText);
-              Script a = s;
-              scriptsUnderTest.add(a);
+              scriptsUnderTest.add(s);
             } catch (IOException e) {
               throw new IllegalArgumentException("Failed to load script file '" + path + "'");
             }
@@ -199,63 +219,15 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,In
     }
     catch (Throwable t) {
       throw new IllegalArgumentException("Failed to init field annotated with @HiveSQL: " + t.getMessage(), t);
-    }
-
-    if (contextRef.get() == null) {
-      Swarm swarm = generateSwarm();
-      SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
-      contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
-      //System.out.println(swarm);
-    }
-
-    mutants = contextRef.get().swarm.getMutants();
-    //System.out.println(mutant.size());
-    ExecutionContext executionContext = contextRef.get();
-    for (Mutant mutant : contextRef.get().swarm.getMutants()) {
-      MutatedSource mutatedSource = mutateSource(executionContext.getSource(), mutant);
-      mutatedSources.add(mutatedSource);
-      //System.out.println(mutatedSource.getScripts().toString());
-    }
-
-    //System.out.println(scriptsUnderTest);
-    results = contextRef.get();
-
-    return IntStream.rangeClosed(1,mutants.size()).mapToObj(repitition -> new MutantSwarmTestTemplate());
-
-
+    } 
   }
 
-
-  //Copy pasted from HiveRunner
-  @Override
-  public void postProcessTestInstance(Object target, ExtensionContext extensionContext) {
-    //System.out.println("postProcessTestInstance, SCRIPTS BEFORE: "+scriptsUnderTest);
-    testNumber++;
-
-    System.out.println("test number: "+testNumber);
-    scriptsUnderTest.clear();
-    MutatedSource mutatedSource = mutatedSources.get(testNumber);
-    List<MutantSwarmScript> MScripts = mutatedSource.getScripts();
-    for (Script s : MScripts) {
-      //System.out.println("each mutated scripts: "+s);
-      scriptsUnderTest.add(s);
-    }
-
-
-    //System.out.println("mutated scripts: "+mutatedSource.getScripts().toString());
-
-    setupConfig(target);
-    try {
-      basedir = Files.createTempDirectory("hiverunner_test");
-      container = createHiveServerContainer(scriptsUnderTest, target, basedir);
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-    scriptsUnderTest = container.getScriptsUnderTest();
-
-    //System.out.println("postProcessTestInstance, SCRIPTS AFTER: "+scriptsUnderTest);
+  private void assertFileExists(Path file) {
+    Preconditions.checkState(Files.exists(file), "File " + file + " does not exist");
   }
 
+  //These methods are the ones to set up the tests, they are copy pasted from HiveRunner
+  //TODO: find a way to access these methods from HiveRunner instead of copying everything
   private HiveShellContainer createHiveServerContainer(List<? extends Script> scripts, Object testCase, Path basedir)
       throws IOException {
     return core.createHiveServerContainer(scripts, testCase, basedir, config);
@@ -297,13 +269,8 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,In
     tearDown(extensionContext.getRequiredTestInstance());
   }
 
-
-
-
-
-
-
-  //These are all the methods in the MSRule, in the future we should put them in a core class
+  //These are all the methods used to generate a swarm
+  //TODO: Add this in to a core class and avoid repeating code here and in the MutantSwarmRule
   private MutantSwarmSource setUpScripts() {
     log.debug("Setting up scripts");
     List<MutantSwarmScript> scripts = new ArrayList<>();
@@ -315,7 +282,6 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,In
       emulator = HiveRunnerConfig.getCommandShellEmulator();
 
       List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
-
 
       List<MutantSwarmStatement> statements = new ArrayList<>();
       for (int j = 0; j < scriptStatements.size(); j++) {
@@ -365,6 +331,5 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,In
       return swarm.getSource();
     }
   }
-
 
 }

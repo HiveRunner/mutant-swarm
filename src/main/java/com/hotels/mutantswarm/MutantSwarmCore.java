@@ -19,6 +19,7 @@ import java.util.Set;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.io.Resources;
+import com.hotels.mutantswarm.exec.SwarmResults;
 import com.klarna.hiverunner.HiveServerContainer;
 import com.klarna.hiverunner.HiveServerContext;
 import com.klarna.hiverunner.HiveShell;
@@ -36,6 +37,7 @@ import com.klarna.reflection.ReflectionUtils;
 
 public class MutantSwarmCore {
   
+  //All the following methods are part of HiveRunner
   public HiveShellContainer createHiveServerContainer (
       List<? extends Script> scripts,
       Object testCase,
