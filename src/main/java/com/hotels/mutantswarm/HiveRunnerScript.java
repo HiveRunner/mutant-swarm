@@ -8,7 +8,7 @@ public class HiveRunnerScript implements Script{
   private String sqlText;
   private int index;
 
-  public HiveRunnerScript(int index, Path path, String sqlText) {
+  HiveRunnerScript(int index, Path path, String sqlText) {
     this.index = index;
     this.path = path;
     this.sqlText = sqlText;

@@ -217,13 +217,13 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
             Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
             try {
               String sqlText = new String(Files.readAllBytes(path), charset);
-              HiveRunnerScript s = new HiveRunnerScript(index++, path, sqlText);
+              //TODO: either make the HiveRunnerScript constructor public, or make our own MutantSwarmScript that could work here
+              Script s = new HiveRunnerScript(index++, path, sqlText);
               scriptsUnderTest.add(s);
             } catch (IOException e) {
               throw new IllegalArgumentException("Failed to load script file '" + path + "'");
             }
           }
-
     }
     catch (Throwable t) {
       throw new IllegalArgumentException("Failed to init field annotated with @HiveSQL: " + t.getMessage(), t);
