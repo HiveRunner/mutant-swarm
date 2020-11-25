@@ -42,7 +42,9 @@ import java.util.stream.Stream;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -73,6 +75,7 @@ import com.hotels.mutantswarm.plan.CompositeMutantFactory;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
 import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
+import com.hotels.mutantswarm.report.ReportGenerator;
 import com.klarna.hiverunner.HiveRunnerExtension;
 import com.klarna.hiverunner.HiveShellContainer;
 import com.klarna.hiverunner.annotations.HiveRunnerSetup;
@@ -84,7 +87,7 @@ import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.klarna.reflection.ReflectionUtils;
 
-public class MutantSwarmTestExtension implements TestWatcher,InvocationInterceptor, BeforeEachCallback, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
+public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher,InvocationInterceptor, BeforeEachCallback, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
 
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmTestExtension.class);
   private final HiveRunnerConfig config = new HiveRunnerConfig();
@@ -99,24 +102,41 @@ public class MutantSwarmTestExtension implements TestWatcher,InvocationIntercept
   private int testNumber = -1;
   private List<Mutant> mutants = new ArrayList();
   private List<MutatedSource> mutatedSources = new ArrayList();
-  
+  private ExecutionContext results = contextRef.get();
+
   public MutantSwarmTestExtension() {}
+  
+  @Override
+  public void afterAll(ExtensionContext context) throws Exception {
+    System.out.println("After All method called");
+    SwarmResults swarmResults = getSwarmResults();
+    System.out.println(swarmResults.toString());
+    if (swarmResults != null) {
+      log.debug("Finished testing. Generating report.");
+      new ReportGenerator(swarmResults).generate();
+    } else {
+      log.debug("Cannot generate report");
+    }
+  }
+
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-
+    System.out.println(results.toString());
   }
-  
+
   @Override
   public void testSuccessful(ExtensionContext context) {
-      log.info("Mutant survived - bad");
-      System.out.println("Test was succesfull");
+    log.info("Mutant survived - bad");
+    results.addTestOutcome(context.getDisplayName(), mutants.get(testNumber), mutatedSources.get(testNumber).getMutation(), MutantState.SURVIVED);
+    System.out.println("Test was succesfull");
   }  
-  
+
   @Override
   public void testFailed(ExtensionContext context, Throwable cause) {
-      log.info("Mutant killed - good. "+cause.toString());
-      System.out.println("Test failed");
+    log.info("Mutant killed - good. "+cause.toString());
+    results.addTestOutcome(context.getRequiredTestMethod().toString(), mutants.get(testNumber), mutatedSources.get(testNumber).getMutation(), MutantState.KILLED  );
+    System.out.println("Test failed");
   }
 
   private void assertFileExists(Path file) {
@@ -135,14 +155,14 @@ public class MutantSwarmTestExtension implements TestWatcher,InvocationIntercept
   //3 times each test
   @Override
   public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-    
+
     testNumber = -1;
 
-    System.out.println("provideTestTemplateInvocationContexts");
+    //System.out.println("provideTestTemplateInvocationContexts");
     Method templateMethod = context.getRequiredTestMethod();
     try {
       Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
-      
+
       scriptsUnderTest.clear();
 
       Preconditions.checkState(fields.size() == 1, "Exact one field should to be annotated with @HiveSQL");
@@ -180,14 +200,14 @@ public class MutantSwarmTestExtension implements TestWatcher,InvocationIntercept
     catch (Throwable t) {
       throw new IllegalArgumentException("Failed to init field annotated with @HiveSQL: " + t.getMessage(), t);
     }
-    
+
     if (contextRef.get() == null) {
       Swarm swarm = generateSwarm();
       SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
       contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
       //System.out.println(swarm);
     }
-    
+
     mutants = contextRef.get().swarm.getMutants();
     //System.out.println(mutant.size());
     ExecutionContext executionContext = contextRef.get();
@@ -198,13 +218,14 @@ public class MutantSwarmTestExtension implements TestWatcher,InvocationIntercept
     }
 
     //System.out.println(scriptsUnderTest);
-    
+    results = contextRef.get();
+
     return IntStream.rangeClosed(1,mutants.size()).mapToObj(repitition -> new MutantSwarmTestTemplate());
-    
+
 
   }
 
-  
+
   //Copy pasted from HiveRunner
   @Override
   public void postProcessTestInstance(Object target, ExtensionContext extensionContext) {
@@ -215,11 +236,11 @@ public class MutantSwarmTestExtension implements TestWatcher,InvocationIntercept
     scriptsUnderTest.clear();
     MutatedSource mutatedSource = mutatedSources.get(testNumber);
     List<MutantSwarmScript> MScripts = mutatedSource.getScripts();
-   for (Script s : MScripts) {
-     System.out.println("each mutated scripts: "+s);
-     scriptsUnderTest.add(s);
-   }
-    
+    for (Script s : MScripts) {
+      //System.out.println("each mutated scripts: "+s);
+      scriptsUnderTest.add(s);
+    }
+
 
     //System.out.println("mutated scripts: "+mutatedSource.getScripts().toString());
 
@@ -292,10 +313,10 @@ public class MutantSwarmTestExtension implements TestWatcher,InvocationIntercept
     for (int i = 0; i < scriptsUnderTest.size(); i++) {
       Script testScript = scriptsUnderTest.get(i);
       emulator = HiveRunnerConfig.getCommandShellEmulator();
-   
+
       List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
 
-      
+
       List<MutantSwarmStatement> statements = new ArrayList<>();
       for (int j = 0; j < scriptStatements.size(); j++) {
         String statementText = scriptStatements.get(j).getSql();
@@ -344,5 +365,6 @@ public class MutantSwarmTestExtension implements TestWatcher,InvocationIntercept
       return swarm.getSource();
     }
   }
+
 
 }
