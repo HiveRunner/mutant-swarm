@@ -101,9 +101,11 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
   @Override
   public void testSuccessful(ExtensionContext context) {
     if(testNumber!=0) {
-      log.info("Mutant survived - bad");
-      results.addTestOutcome(context.getDisplayName(), mutants.get(testNumber-1), mutatedSources.get(testNumber-1).getMutation(), MutantState.SURVIVED);
-    } 
+      if(firstTestPassed==true) {
+        log.info("Mutant survived - bad");
+        results.addTestOutcome(context.getDisplayName(), mutants.get(testNumber-1), mutatedSources.get(testNumber-1).getMutation(), MutantState.SURVIVED);
+      } 
+    }
     else {
       firstTestPassed = true;
     }
@@ -112,8 +114,10 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
   @Override
   public void testFailed(ExtensionContext context, Throwable cause) {
     if(testNumber!=0) {
-      log.info("Mutant killed - good. "+cause.toString());
-      results.addTestOutcome(context.getRequiredTestMethod().toString(), mutants.get(testNumber-1), mutatedSources.get(testNumber-1).getMutation(), MutantState.KILLED  );
+      if(firstTestPassed==true) {
+        log.info("Mutant killed - good. "+cause.toString());
+        results.addTestOutcome(context.getRequiredTestMethod().toString(), mutants.get(testNumber-1), mutatedSources.get(testNumber-1).getMutation(), MutantState.KILLED  );
+      }
     }
     else {
       firstTestPassed = false;
@@ -183,7 +187,7 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
 
   }
 
-  //This method is to set the scripts for the first time
+  //This method sets the scripts for the first time to generate the swarm
   public void setFirstScripts(ExtensionContext context) {
     try {
       Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));

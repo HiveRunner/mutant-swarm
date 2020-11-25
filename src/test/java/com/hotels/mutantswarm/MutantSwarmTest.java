@@ -57,5 +57,5 @@ public class MutantSwarmTest {
     List<String> expected = Arrays.asList("true", "false");
     assertEquals(expected, result);
   }
-  
+    
 }
