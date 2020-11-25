@@ -115,7 +115,7 @@ class MutantSwarmRule implements TestRule {
       Script testScript = scriptsUnderTest.get(i);
 
       List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
-
+      
       List<MutantSwarmStatement> statements = new ArrayList<>();
       for (int j = 0; j < scriptStatements.size(); j++) {
         String statementText = scriptStatements.get(j).getSql();

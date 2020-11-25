@@ -30,6 +30,8 @@ import com.klarna.hiverunner.HiveShell;
 import com.klarna.hiverunner.annotations.HiveSQL;
 import com.klarna.hiverunner.annotations.HiveSetupScript;
 
+//To run with Junit4, replace '@ExtendWith(MutantSwarmTestExtension.class)' with '@RunWith(MutantSwarmRunner.class)' and '@TestTemplate' with '@Test'
+
 //@RunWith(MutantSwarmRunner.class)
 @ExtendWith(MutantSwarmTestExtension.class)
 public class MutantSwarmTest {

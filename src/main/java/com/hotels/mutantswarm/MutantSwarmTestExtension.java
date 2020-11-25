@@ -124,8 +124,7 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
 
     results = contextRef.get();
 
-    // Here we specify the number of times a test should be repeated, but the scripts will be mutated accordingly for each
-    // individual test in the postProcessTestInstance method
+    // Here we specify the number of times a test should be repeated, but the scripts will be mutated accordingly for each individual test in the postProcessTestInstance method
     return IntStream.rangeClosed(1,mutants.size()+1).mapToObj(repitition -> new MutantSwarmTestTemplate());
   }
   
