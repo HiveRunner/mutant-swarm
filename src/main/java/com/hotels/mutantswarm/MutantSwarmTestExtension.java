@@ -90,12 +90,69 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
   private boolean firstTestPassed = true;
 
   public MutantSwarmTestExtension() {}
-
+  
+  
+  
+  
   @Override
-  public void afterAll(ExtensionContext context) throws Exception {
-    SwarmResults swarmResults = getSwarmResults();
-    log.debug("Finished testing. Generating report.");
-    new ReportGenerator(swarmResults).generate();
+  public boolean supportsTestTemplate(ExtensionContext context) {
+    if (!context.getTestMethod().isPresent()) {
+      return false;
+    }
+    return true;
+  }
+  
+  @Override
+  public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
+    testNumber = -1;
+    firstTestPassed = true;
+
+    setFirstScripts(context);
+
+    if (contextRef.get() == null) {
+      Swarm swarm = generateSwarm();
+      SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
+      contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
+    }
+
+    mutants = contextRef.get().swarm.getMutants();
+    ExecutionContext executionContext = contextRef.get();
+    for (Mutant mutant : contextRef.get().swarm.getMutants()) {
+      MutatedSource mutatedSource = mutateSource(executionContext.getSource(), mutant);
+      mutatedSources.add(mutatedSource);
+    }
+
+    results = contextRef.get();
+
+    // Here we specify the number of times a test should be repeated, but the scripts will be mutated accordingly for each
+    // individual test in the postProcessTestInstance method
+    return IntStream.rangeClosed(1,mutants.size()+1).mapToObj(repitition -> new MutantSwarmTestTemplate());
+  }
+  
+  @Override
+  public void postProcessTestInstance(Object target, ExtensionContext extensionContext) throws Exception {
+    testNumber++;
+
+    //The first test per swarm should run normally and without mutations
+    if(testNumber!=0) {
+      scriptsUnderTest.clear();
+      MutatedSource mutatedSource = mutatedSources.get(testNumber-1);
+      List<MutantSwarmScript> MScripts = mutatedSource.getScripts();
+
+      for (Script s : MScripts) {
+        scriptsUnderTest.add(s);
+      }
+    }
+
+    setupConfig(target);
+    try {
+      basedir = Files.createTempDirectory("hiverunner_test");
+      container = createHiveServerContainer(scriptsUnderTest, target, basedir);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+    scriptsUnderTest = container.getScriptsUnderTest();
+
   }
 
   @Override
@@ -124,68 +181,16 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
       //TODO: if the first test does not pass, then we should not run it again with the mutations because it's useless
     }
   }
-
+  
   @Override
-  public boolean supportsTestTemplate(ExtensionContext context) {
-    if (!context.getTestMethod().isPresent()) {
-      return false;
-    }
-    return true;
+  public void afterAll(ExtensionContext context) throws Exception {
+    SwarmResults swarmResults = getSwarmResults();
+    log.debug("Finished testing. Generating report.");
+    new ReportGenerator(swarmResults).generate();
   }
-
-  @Override
-  public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-    testNumber = -1;
-    firstTestPassed = true;
-
-    setFirstScripts(context);
-
-    if (contextRef.get() == null) {
-      Swarm swarm = generateSwarm();
-      SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, context.getRequiredTestClass().toString());
-      contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
-    }
-
-    mutants = contextRef.get().swarm.getMutants();
-    ExecutionContext executionContext = contextRef.get();
-    for (Mutant mutant : contextRef.get().swarm.getMutants()) {
-      MutatedSource mutatedSource = mutateSource(executionContext.getSource(), mutant);
-      mutatedSources.add(mutatedSource);
-    }
-
-    results = contextRef.get();
-
-    // Here we specify the number of times a test should be repeated, but the scripts will be mutated accordingly for each
-    // individual test in the postProcessTestInstance method
-    return IntStream.rangeClosed(1,mutants.size()+1).mapToObj(repitition -> new MutantSwarmTestTemplate());
-  }
-
-
-  @Override
-  public void postProcessTestInstance(Object target, ExtensionContext extensionContext) throws Exception {
-    testNumber++;
-
-    //The first test per swarm should run normally and without mutations
-    if(testNumber!=0) {
-      scriptsUnderTest.clear();
-      MutatedSource mutatedSource = mutatedSources.get(testNumber-1);
-      List<MutantSwarmScript> MScripts = mutatedSource.getScripts();
-
-      for (Script s : MScripts) {
-        scriptsUnderTest.add(s);
-      }
-    }
-
-    setupConfig(target);
-    try {
-      basedir = Files.createTempDirectory("hiverunner_test");
-      container = createHiveServerContainer(scriptsUnderTest, target, basedir);
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-    scriptsUnderTest = container.getScriptsUnderTest();
-
-  }
+  
+  
+  
 
   //This method sets the scripts for the first time to generate the swarm
   public void setFirstScripts(ExtensionContext context) {

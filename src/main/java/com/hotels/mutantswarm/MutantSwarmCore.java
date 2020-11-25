@@ -17,9 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicates;
 import com.google.common.io.Resources;
-import com.hotels.mutantswarm.exec.SwarmResults;
 import com.klarna.hiverunner.HiveServerContainer;
 import com.klarna.hiverunner.HiveServerContext;
 import com.klarna.hiverunner.HiveShell;
@@ -27,7 +25,6 @@ import com.klarna.hiverunner.HiveShellContainer;
 import com.klarna.hiverunner.StandaloneHiveServerContext;
 import com.klarna.hiverunner.annotations.HiveProperties;
 import com.klarna.hiverunner.annotations.HiveResource;
-import com.klarna.hiverunner.annotations.HiveRunnerSetup;
 import com.klarna.hiverunner.annotations.HiveSQL;
 import com.klarna.hiverunner.annotations.HiveSetupScript;
 import com.klarna.hiverunner.builder.HiveShellBuilder;
@@ -203,6 +200,5 @@ public class MutantSwarmCore {
 
     boolean isAutoStart();
   }
-
   
 }

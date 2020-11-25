@@ -86,7 +86,6 @@ class MutantSwarmRule implements TestRule {
         Swarm swarm = generateSwarm();
         SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, suiteName);
         contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
-        System.out.println(swarm.toString());
       }
       
       ExecutionContext context = contextRef.get();
@@ -96,10 +95,8 @@ class MutantSwarmRule implements TestRule {
         try {
           base.evaluate();
           log.debug("Mutant survived - bad");
-          System.out.println("Mutant survived, test passed");
           context.addTestOutcome(testName, mutant, mutatedSource.getMutation(), MutantState.SURVIVED);
         } catch (AssertionError e) {
-          System.out.println("Mutant killed, test did not pass");
           log.debug("Mutant killed - good. " + e);
           context.addTestOutcome(testName, mutant, mutatedSource.getMutation(), MutantState.KILLED);
         }
@@ -118,10 +115,9 @@ class MutantSwarmRule implements TestRule {
       Script testScript = scriptsUnderTest.get(i);
 
       List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
-            
+
       List<MutantSwarmStatement> statements = new ArrayList<>();
       for (int j = 0; j < scriptStatements.size(); j++) {
-
         String statementText = scriptStatements.get(j).getSql();
         MutantSwarmStatement statement = statementFactory.newInstance(i, j, statementText);
         statements.add(statement);
@@ -138,7 +134,6 @@ class MutantSwarmRule implements TestRule {
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
   }
-  
 
   private MutatedSource mutateSource(MutantSwarmSource source, Mutant mutant) {
     MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();
