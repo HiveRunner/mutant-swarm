@@ -91,9 +91,6 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
 
   public MutantSwarmTestExtension() {}
   
-  
-  
-  
   @Override
   public boolean supportsTestTemplate(ExtensionContext context) {
     if (!context.getTestMethod().isPresent()) {
@@ -188,9 +185,6 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
     new ReportGenerator(swarmResults).generate();
   }
   
-  
-  
-
   //This method sets the scripts for the first time to generate the swarm
   public void setFirstScripts(ExtensionContext context) {
     try {
