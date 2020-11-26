@@ -50,6 +50,7 @@ import com.klarna.reflection.ReflectionUtils;
 public class MutantSwarmCore {
   
   //All the methods in this class are from HiveRunner
+  //https://github.com/klarna/HiveRunner/blob/v5.2.2/src/main/java/com/klarna/hiverunner/HiveRunnerCore.java
   public HiveShellContainer createHiveServerContainer (
       List<? extends Script> scripts,
       Object testCase,
