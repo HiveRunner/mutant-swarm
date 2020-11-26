@@ -44,7 +44,7 @@ public class MutantSwarmTest {
   @HiveSQL(files = { "mutantSwarmTest/scriptToTest1.sql", "mutantSwarmTest/scriptToTest2.sql" })
   public HiveShell hiveShell;
 
-  @TestTemplate
+  //@TestTemplate
   //@Test
   public void test() {
     List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
@@ -52,7 +52,7 @@ public class MutantSwarmTest {
     assertEquals(expected, result);
   }
 
-  @TestTemplate
+  //@TestTemplate
   //@Test
   public void test2() {
     List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
