@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -172,4 +172,41 @@ public class SwarmResultsTest {
     assertThat(outcomes, is(Collections.EMPTY_LIST));
   }
 
+  @Test
+  public void equalsNull() {
+    String suiteName = "testSuite";
+    SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
+    SwarmResults swarmResults = builder.build();
+    assertThat(swarmResults.equals(null), is(false));
+  }
+  
+  @Test
+  public void equalsSame() {
+    String suiteName = "testSuite";
+    SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
+    SwarmResults swarmResults = builder.build();
+    SwarmResults swarmResults2 = builder.build();
+    assertThat(swarmResults.equals(swarmResults2), is(true));
+    assertThat(swarmResults.hashCode(), is(swarmResults2.hashCode()));
+  }
+  
+  @Test
+  public void checkToString(){
+    String suiteName = "testSuite";
+    MutantState state = MutantState.KILLED;
+
+    when(mutant1.getGene()).thenReturn(gene1);
+    when(gene1.getScriptIndex()).thenReturn(0);
+    when(gene1.getStatementIndex()).thenReturn(0);
+
+    when(script1.getIndex()).thenReturn(0);
+    when(statement1.getIndex()).thenReturn(0);
+
+    SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
+    builder.addTestOutcome(suiteName, mutant1, mutation1, state);
+    
+    SwarmResults swarmResults = builder.build();
+    assertThat(swarmResults.toString(),is("SwarmResults [swarm=swarm, suiteName=testSuite, outcomesByScriptIndex={Key [scriptIndex=0, statementIndex=0]=[Outcome [mutant=mutant1, mutation=mutation1, state=KILLED, testOutcomes=[TestOutcome [testName=testSuite, mutant=mutant1, mutation=mutation1, state=KILLED]]]]}]"));
+  }
+  
 }
