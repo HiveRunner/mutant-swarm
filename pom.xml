@@ -32,6 +32,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <hive.execution.engine>mr</hive.execution.engine>
+    <junit.jupiter.version>5.7.0</junit.jupiter.version>
   </properties>
 
   <dependencies>
@@ -88,15 +89,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.0</version>
+      <version>${junit.jupiter.version}</version>
     </dependency>
     <dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter-api</artifactId>
-    <version>5.7.0</version>
-    
-</dependency>
-
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.jupiter.version}</version>
+     </dependency>
   </dependencies>
 
   <build>
