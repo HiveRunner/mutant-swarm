@@ -71,9 +71,9 @@ import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.klarna.reflection.ReflectionUtils;
 
-public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
+public class MutantSwarmExtension implements AfterAllCallback,TestWatcher, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
 
-  private static final Logger log = LoggerFactory.getLogger(MutantSwarmTestExtension.class);
+  private static final Logger log = LoggerFactory.getLogger(MutantSwarmExtension.class);
   private final HiveRunnerConfig config = new HiveRunnerConfig();
   private static AtomicReference<ExecutionContext> contextRef = new AtomicReference<>();
 
@@ -89,7 +89,7 @@ public class MutantSwarmTestExtension implements AfterAllCallback,TestWatcher, T
   private ExecutionContext results = contextRef.get();
   private boolean firstTestPassed = true;
 
-  public MutantSwarmTestExtension() {}
+  public MutantSwarmExtension() {}
   
   @Override
   public boolean supportsTestTemplate(ExtensionContext context) {
