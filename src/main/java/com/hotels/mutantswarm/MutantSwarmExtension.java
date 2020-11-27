@@ -186,13 +186,13 @@ public class MutantSwarmExtension implements AfterAllCallback,TestWatcher, TestT
   }
   
   //This method sets the scripts for the first time to generate the swarm
-  public void setFirstScripts(ExtensionContext context) {
+  private void setFirstScripts(ExtensionContext context) {
     try {
       Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
 
       scriptsUnderTest.clear();
 
-      Preconditions.checkState(fields.size() == 1, "Exact one field should to be annotated with @HiveSQL");
+      Preconditions.checkState(fields.size() == 1, "Exactly one field should be annotated with @HiveSQL");
       Field field = fields.iterator().next();
       List<Path> scriptPaths = new ArrayList<>();
       HiveSQL annotation = field.getAnnotation(HiveSQL.class);
