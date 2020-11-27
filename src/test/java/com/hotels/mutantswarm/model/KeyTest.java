@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.mutantswarm.mutate;
+package com.hotels.mutantswarm.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-import org.antlr.runtime.CommonToken;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,46 +29,38 @@ import com.hotels.mutantswarm.plan.gene.Gene;
 import com.hotels.mutantswarm.plan.gene.Locus;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TextReplaceMutatorTest {
+public class KeyTest {
 
-	@Mock
-	private Gene gene;
-	@Mock
-	private Locus locus;
-	@Mock
-	private Splice.Factory spliceFactory;
-	@Mock
-	private Splice splice;
-	@Mock
-	private CommonToken token;
+  @Mock
+  private Locus locus;
+  @Mock
+  private Gene gene;
+  
+  //A key for each Key constructor
+  private Key key1;
+  private Key key2 = new Key(4,5);
+  
+  @Before
+  public void setUpMocks() {
+    when(gene.getScriptIndex()).thenReturn(2);
+    when(gene.getStatementIndex()).thenReturn(3);
+    key1 = new Key(gene);
+  }
+  
+  @Test
+  public void checkGetScriptIndex() {
+    int result1 = key1.getScriptIndex();
+    int result2 = key2.getScriptIndex();
+    assertThat(result1, is(2));
+    assertThat(result2, is(4));
+  }
+  
+  @Test
+  public void checkGetStatementIndex() {
+    int result1 = key1.getStatementIndex();
+    int result2 = key2.getStatementIndex();
+    assertThat(result1, is(3));
+    assertThat(result2, is(5));
+  }
 
-	private Mutator mutator;
-
-	@Before
-	public void setupMocks() {
-	  mutator = new TextReplaceMutator(spliceFactory, "test", "=", "<>");
-	}
-	
-	@Test
-	public void description() {
-		assertThat(mutator.getDescription(), is("test"));
-	}
-
-	@Test
-	public void name() {
-		assertThat(mutator.getName(), is("= -> <>"));
-	}
-
-	@Test
-	public void apply() {
-	  when(spliceFactory.newInstance(gene)).thenReturn(splice);
-		when(gene.getLocus()).thenReturn(locus);
-		when(token.getStartIndex()).thenReturn(2);
-		when(token.getStopIndex()).thenReturn(2);
-
-		Mutation mutation = mutator.apply(gene);
-
-		assertThat(mutation.getSplice(), is(splice));
-		assertThat(mutation.getReplacementText(), is("<>"));
-	}
 }
