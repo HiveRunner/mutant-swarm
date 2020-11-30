@@ -76,13 +76,10 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
   
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmExtension.class);
-  private final HiveRunnerConfig config = new HiveRunnerConfig();
   private static AtomicReference<ExecutionContext> contextRef = new AtomicReference<>();
 
   public HiveShellContainer container;
   private CommandShellEmulator emulator;
-  private Path basedir;
-  private MutantSwarmCore core = new MutantSwarmCore();
   private HiveRunnerConfig HiveRunnerConfig = new HiveRunnerConfig();
   private int testNumber = -1;
   private List<Mutant> mutants = new ArrayList<Mutant>();
