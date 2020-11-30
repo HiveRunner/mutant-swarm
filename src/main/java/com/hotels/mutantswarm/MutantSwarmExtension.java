@@ -106,7 +106,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     setFirstScripts(context);
 
     if (contextRef.get() == null) {
-      Swarm swarm = generateSwarm();
+      Swarm swarm = core.generateSwarm(scriptsUnderTest, log, HiveRunnerConfig.getCommandShellEmulator());
       SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm,
           context.getRequiredTestClass().toString());
       contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));

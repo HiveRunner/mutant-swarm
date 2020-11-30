@@ -29,8 +29,10 @@ import com.hotels.mutantswarm.model.MutantSwarmScript;
 import com.hotels.mutantswarm.model.MutantSwarmSource;
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 import com.hotels.mutantswarm.mutate.Mutation;
+import com.hotels.mutantswarm.plan.CompositeMutantFactory;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
+import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 import com.klarna.hiverunner.builder.Script;
 import com.klarna.hiverunner.builder.Statement;
 import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
@@ -71,6 +73,13 @@ public class MutantSwarmCore {
   MutatedSource mutateSource(MutantSwarmSource source, Mutant mutant) {
     MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();
     return mutatedSourceFactory.newMutatedSource(source, mutant);
+  }
+  
+  Swarm generateSwarm(List<? extends Script> scriptsUnderTest, Logger log, CommandShellEmulator emulator) {
+    log.debug("Setting up mutants");
+    MutantSwarmSource source = setUpScripts(scriptsUnderTest, log, emulator);
+    SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
+    return swarmFactory.newInstance(source);
   }
   
   public static class ExecutionContext {
