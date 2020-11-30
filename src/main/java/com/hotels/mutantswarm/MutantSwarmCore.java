@@ -18,9 +18,14 @@ package com.hotels.mutantswarm;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hotels.mutantswarm.exec.MutantState;
+import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
 import com.hotels.mutantswarm.model.MutantSwarmScript;
 import com.hotels.mutantswarm.model.MutantSwarmSource;
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
+import com.hotels.mutantswarm.mutate.Mutation;
+import com.hotels.mutantswarm.plan.Mutant;
+import com.hotels.mutantswarm.plan.Swarm;
 import com.klarna.hiverunner.builder.Script;
 import com.klarna.hiverunner.builder.Statement;
 import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
@@ -49,5 +54,23 @@ public class MutantSwarmCore {
       scripts.add(script);
     }
     return new MutantSwarmSource.Impl(scripts);
+  }
+  
+  public static class ExecutionContext {
+    final Swarm swarm;
+    final SwarmResultsBuilder swarmResultBuilder;
+
+    ExecutionContext(Swarm swarm, SwarmResultsBuilder swarmResultBuilder) {
+      this.swarm = swarm;
+      this.swarmResultBuilder = swarmResultBuilder;
+    }
+
+    void addTestOutcome(String testName, Mutant mutant, Mutation mutation, MutantState state) {
+      swarmResultBuilder.addTestOutcome(testName, mutant, mutation, state);
+    }
+
+    MutantSwarmSource getSource() {
+      return swarm.getSource();
+    }
   }
 }

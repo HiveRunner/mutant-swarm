@@ -104,30 +104,6 @@ class MutantSwarmRule implements TestRule {
       }
     }
   }
-  
-  private MutantSwarmSource setUpScripts() {
-    log.debug("Setting up scripts");
-    List<? extends Script> scriptsUnderTest = hiveRunnerRule.getScriptsUnderTest();
-    List<MutantSwarmScript> scripts = new ArrayList<>();
-
-    MutantSwarmStatement.Factory statementFactory = new MutantSwarmStatement.Factory();
-
-    for (int i = 0; i < scriptsUnderTest.size(); i++) {
-      Script testScript = scriptsUnderTest.get(i);
-
-      List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
-      
-      List<MutantSwarmStatement> statements = new ArrayList<>();
-      for (int j = 0; j < scriptStatements.size(); j++) {
-        String statementText = scriptStatements.get(j).getSql();
-        MutantSwarmStatement statement = statementFactory.newInstance(i, j, statementText);
-        statements.add(statement);
-      }
-      MutantSwarmScript script = new MutantSwarmScript.Impl(i, testScript.getPath(), statements);
-      scripts.add(script);
-    }
-    return new MutantSwarmSource.Impl(scripts);
-  }
 
   private Swarm generateSwarm() {
     log.debug("Setting up mutants");

@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.io.Resources;
+import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory;
 import com.hotels.mutantswarm.exec.SwarmResults;
@@ -79,7 +80,6 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   private static AtomicReference<ExecutionContext> contextRef = new AtomicReference<>();
 
   public HiveShellContainer container;
-  private CommandShellEmulator emulator;
   private HiveRunnerConfig HiveRunnerConfig = new HiveRunnerConfig();
   private int testNumber = -1;
   private List<Mutant> mutants = new ArrayList<Mutant>();
@@ -242,22 +242,22 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     return contextRef.get().swarmResultBuilder.build();
   }
 
-  static class ExecutionContext {
-    private final Swarm swarm;
-    private final SwarmResultsBuilder swarmResultBuilder;
-
-    private ExecutionContext(Swarm swarm, SwarmResultsBuilder swarmResultBuilder) {
-      this.swarm = swarm;
-      this.swarmResultBuilder = swarmResultBuilder;
-    }
-
-    private void addTestOutcome(String testName, Mutant mutant, Mutation mutation, MutantState state) {
-      swarmResultBuilder.addTestOutcome(testName, mutant, mutation, state);
-    }
-
-    private MutantSwarmSource getSource() {
-      return swarm.getSource();
-    }
-  }
+//  static class ExecutionContext {
+//    private final Swarm swarm;
+//    private final SwarmResultsBuilder swarmResultBuilder;
+//
+//    private ExecutionContext(Swarm swarm, SwarmResultsBuilder swarmResultBuilder) {
+//      this.swarm = swarm;
+//      this.swarmResultBuilder = swarmResultBuilder;
+//    }
+//
+//    private void addTestOutcome(String testName, Mutant mutant, Mutation mutation, MutantState state) {
+//      swarmResultBuilder.addTestOutcome(testName, mutant, mutation, state);
+//    }
+//
+//    private MutantSwarmSource getSource() {
+//      return swarm.getSource();
+//    }
+//  }
 
 }
