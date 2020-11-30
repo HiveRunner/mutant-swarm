@@ -52,6 +52,7 @@ class MutantSwarmRule implements TestRule {
 
   private final HiveRunnerRule hiveRunnerRule;
   private CommandShellEmulator emulator;
+  private MutantSwarmCore core = new MutantSwarmCore();
 
   MutantSwarmRule(HiveRunnerRule hiveRunnerRule, CommandShellEmulator emulator) {
     this.hiveRunnerRule = hiveRunnerRule;
@@ -130,7 +131,7 @@ class MutantSwarmRule implements TestRule {
 
   private Swarm generateSwarm() {
     log.debug("Setting up mutants");
-    MutantSwarmSource source = setUpScripts();
+    MutantSwarmSource source = core.setUpScripts(hiveRunnerRule.getScriptsUnderTest(), log, emulator);
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
   }
