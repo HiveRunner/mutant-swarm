@@ -15,7 +15,39 @@
  */
 package com.hotels.mutantswarm;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.hotels.mutantswarm.model.MutantSwarmScript;
+import com.hotels.mutantswarm.model.MutantSwarmSource;
+import com.hotels.mutantswarm.model.MutantSwarmStatement;
+import com.klarna.hiverunner.builder.Script;
+import com.klarna.hiverunner.builder.Statement;
+import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
+import com.klarna.hiverunner.sql.split.StatementSplitter;
+import org.slf4j.Logger;
+
 public class MutantSwarmCore {
   
-  
+  public MutantSwarmSource setUpScripts(List<? extends Script> scriptsUnderTest, Logger log, CommandShellEmulator emulator ) {
+    log.debug("Setting up scripts");
+    List<MutantSwarmScript> scripts = new ArrayList<>();
+
+    MutantSwarmStatement.Factory statementFactory = new MutantSwarmStatement.Factory();
+
+    for (int i = 0; i < scriptsUnderTest.size(); i++) {
+      Script testScript = scriptsUnderTest.get(i);
+      List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
+
+      List<MutantSwarmStatement> statements = new ArrayList<>();
+      for (int j = 0; j < scriptStatements.size(); j++) {
+        String statementText = scriptStatements.get(j).getSql();
+        MutantSwarmStatement statement = statementFactory.newInstance(i, j, statementText);
+        statements.add(statement);
+      }
+      MutantSwarmScript script = new MutantSwarmScript.Impl(i, testScript.getPath(), statements);
+      scripts.add(script);
+    }
+    return new MutantSwarmSource.Impl(scripts);
+  }
 }

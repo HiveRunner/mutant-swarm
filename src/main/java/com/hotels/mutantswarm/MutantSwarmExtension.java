@@ -86,6 +86,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   private List<MutatedSource> mutatedSources = new ArrayList<MutatedSource>();
   private ExecutionContext results = contextRef.get();
   private boolean firstTestPassed = true;
+  private MutantSwarmCore core = new MutantSwarmCore();
 
   public MutantSwarmExtension() {}
   
@@ -221,33 +222,10 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
   //These are all the methods used to generate a swarm
   //TODO: Add this in to a core class and avoid repeating code here and in the MutantSwarmRule
-  private MutantSwarmSource setUpScripts() {
-    log.debug("Setting up scripts");
-    List<MutantSwarmScript> scripts = new ArrayList<>();
-
-    MutantSwarmStatement.Factory statementFactory = new MutantSwarmStatement.Factory();
-
-    for (int i = 0; i < scriptsUnderTest.size(); i++) {
-      Script testScript = scriptsUnderTest.get(i);
-      emulator = HiveRunnerConfig.getCommandShellEmulator();
-
-      List<Statement> scriptStatements = new StatementSplitter(emulator).split(testScript.getSql());
-
-      List<MutantSwarmStatement> statements = new ArrayList<>();
-      for (int j = 0; j < scriptStatements.size(); j++) {
-        String statementText = scriptStatements.get(j).getSql();
-        MutantSwarmStatement statement = statementFactory.newInstance(i, j, statementText);
-        statements.add(statement);
-      }
-      MutantSwarmScript script = new MutantSwarmScript.Impl(i, testScript.getPath(), statements);
-      scripts.add(script);
-    }
-    return new MutantSwarmSource.Impl(scripts);
-  }
 
   private Swarm generateSwarm() {
     log.debug("Setting up mutants");
-    MutantSwarmSource source = setUpScripts();
+    MutantSwarmSource source = core.setUpScripts(scriptsUnderTest, log, HiveRunnerConfig.getCommandShellEmulator());
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
   }
