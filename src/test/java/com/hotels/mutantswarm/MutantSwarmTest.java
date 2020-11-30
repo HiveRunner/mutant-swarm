@@ -32,8 +32,8 @@ import com.klarna.hiverunner.annotations.HiveSetupScript;
 
 //To run with Junit4, replace '@ExtendWith(MutantSwarmTestExtension.class)' with '@RunWith(MutantSwarmRunner.class)' and '@TestTemplate' with '@Test'
 
-@RunWith(MutantSwarmRunner.class)
-//@ExtendWith(MutantSwarmExtension.class)
+//@RunWith(MutantSwarmRunner.class)
+@ExtendWith(MutantSwarmExtension.class)
 public class MutantSwarmTest {
 
   @HiveSetupScript
@@ -44,20 +44,20 @@ public class MutantSwarmTest {
   @HiveSQL(files = { "mutantSwarmTest/scriptToTest1.sql", "mutantSwarmTest/scriptToTest2.sql" })
   public HiveShell hiveShell;
 
-  //@TestTemplate
-  @Test
+  @TestTemplate
+  //@Test
   public void test() {
     List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
     List<String> expected = Arrays.asList("1\ttrue", "3\ttrue", "3\tfalse", "5\tfalse");
     assertEquals(expected, result);
   }
 
-  //@TestTemplate
-  @Test
+  @TestTemplate
+  // @Test
   public void test2() {
     List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
     List<String> expected = Arrays.asList("true", "false");
     assertEquals(expected, result);
   }
-    
+
 }

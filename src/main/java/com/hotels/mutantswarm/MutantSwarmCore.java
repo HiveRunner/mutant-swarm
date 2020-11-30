@@ -17,8 +17,11 @@ package com.hotels.mutantswarm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
+import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
+import com.hotels.mutantswarm.exec.SwarmResults;
 import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
 import com.hotels.mutantswarm.model.MutantSwarmScript;
 import com.hotels.mutantswarm.model.MutantSwarmSource;
@@ -54,6 +57,13 @@ public class MutantSwarmCore {
       scripts.add(script);
     }
     return new MutantSwarmSource.Impl(scripts);
+  }
+  
+  SwarmResults getSwarmResults(ExecutionContext context) {
+    if (context == null){
+      return null;
+    }
+    return context.swarmResultBuilder.build();
   }
   
   public static class ExecutionContext {

@@ -53,6 +53,10 @@ class MutantSwarmRule implements TestRule {
   private final HiveRunnerRule hiveRunnerRule;
   private CommandShellEmulator emulator;
   private MutantSwarmCore core = new MutantSwarmCore();
+  
+  static AtomicReference<ExecutionContext> getContextRef() {
+    return contextRef;
+  }
 
   MutantSwarmRule(HiveRunnerRule hiveRunnerRule, CommandShellEmulator emulator) {
     this.hiveRunnerRule = hiveRunnerRule;
@@ -116,12 +120,5 @@ class MutantSwarmRule implements TestRule {
     MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();
     return mutatedSourceFactory.newMutatedSource(source, mutant);
   }
-
-  static SwarmResults getSwarmResults() {
-    if (contextRef.get() == null){
-      return null;
-    }
-    return contextRef.get().swarmResultBuilder.build();
-  }
-
+  
 }
