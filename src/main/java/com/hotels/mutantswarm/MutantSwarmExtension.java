@@ -61,6 +61,7 @@ import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
 import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 import com.hotels.mutantswarm.report.ReportGenerator;
+import com.klarna.hiverunner.HiveRunnerExtension;
 import com.klarna.hiverunner.HiveShellContainer;
 import com.klarna.hiverunner.annotations.HiveRunnerSetup;
 import com.klarna.hiverunner.annotations.HiveSQL;
@@ -71,15 +72,15 @@ import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.klarna.reflection.ReflectionUtils;
 
-public class MutantSwarmExtension implements AfterAllCallback,TestWatcher, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
+public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAllCallback,TestWatcher, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
 
+  
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmExtension.class);
   private final HiveRunnerConfig config = new HiveRunnerConfig();
   private static AtomicReference<ExecutionContext> contextRef = new AtomicReference<>();
 
   public HiveShellContainer container;
   private CommandShellEmulator emulator;
-  private List<Script> scriptsUnderTest = new ArrayList<Script>();
   private Path basedir;
   private MutantSwarmCore core = new MutantSwarmCore();
   private HiveRunnerConfig HiveRunnerConfig = new HiveRunnerConfig();
@@ -126,7 +127,7 @@ public class MutantSwarmExtension implements AfterAllCallback,TestWatcher, TestT
   }
   
   @Override
-  public void postProcessTestInstance(Object target, ExtensionContext extensionContext) throws Exception {
+  public void postProcessTestInstance(Object target, ExtensionContext extensionContext) {
     testNumber++;
 
     //The first test per swarm should run normally and without mutations
@@ -140,14 +141,7 @@ public class MutantSwarmExtension implements AfterAllCallback,TestWatcher, TestT
       }
     }
 
-    setupConfig(target);
-    try {
-      basedir = Files.createTempDirectory("hiverunner_test");
-      container = createHiveServerContainer(scriptsUnderTest, target, basedir);
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-    scriptsUnderTest = container.getScriptsUnderTest();
+    super.postProcessTestInstance(target, extensionContext);
 
   }
 
@@ -226,49 +220,6 @@ public class MutantSwarmExtension implements AfterAllCallback,TestWatcher, TestT
 
   private void assertFileExists(Path file) {
     Preconditions.checkState(Files.exists(file), "File " + file + " does not exist");
-  }
-
-  //These methods are the ones to set up the tests, they are copy pasted from HiveRunner
-  //TODO: find a way to access these methods from HiveRunner instead of copying everything
-  private HiveShellContainer createHiveServerContainer(List<? extends Script> scripts, Object testCase, Path basedir)
-      throws IOException {
-    return core.createHiveServerContainer(scripts, testCase, basedir, config);
-  }
-
-  private void setupConfig(Object target) {
-    Set<Field> fields = ReflectionUtils.getAllFields(target.getClass(),
-        Predicates.and(
-            withAnnotation(HiveRunnerSetup.class),
-            withType(HiveRunnerConfig.class)));
-
-    Preconditions.checkState(fields.size() <= 1,
-        "Only one field of type HiveRunnerConfig should be annotated with @HiveRunnerSetup");
-
-    if (!fields.isEmpty()) {
-      config.override(ReflectionUtils
-          .getFieldValue(target, fields.iterator().next().getName(), HiveRunnerConfig.class));
-    }
-  }
-
-  private void tearDown(Object target) {
-    if (container != null) {
-      log.info("Tearing down {}", target.getClass());
-      container.tearDown();
-    }
-    deleteTempFolder(basedir);
-  }
-
-  private void deleteTempFolder(Path directory) {
-    try {
-      FileUtils.deleteDirectory(directory.toFile());
-    } catch (IOException e) {
-      log.debug("Temporary folder was not deleted successfully: " + directory);
-    }
-  }
-
-  @Override
-  public void afterEach(ExtensionContext extensionContext) {
-    tearDown(extensionContext.getRequiredTestInstance());
   }
 
   //These are all the methods used to generate a swarm
