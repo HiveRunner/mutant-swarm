@@ -5,7 +5,7 @@
 - Added explicit dependency on `junit:junit:4.13.1`.
 - Excluded `org.pentaho.pentaho-aggdesigner-algorithm` dependency as it's not available in Maven Central.
 - Excluded `javax.jms.jms` dependency as it's not available in Maven Central.
-- Exlcuded various hbase dependencies which aren't used and depend on `tools.jar` which isn't available in Java 11.
+- Excluded various hbase dependencies which aren't used and depend on `tools.jar` which isn't available in Java 11.
 - HTML is now using logo.png from the resources folder instead of the unexistent one.
 - Updated the `HiveRunner` version from 4.1.0 to 5.2.3.
 
