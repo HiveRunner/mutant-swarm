@@ -29,7 +29,7 @@ import com.klarna.hiverunner.builder.Script;
 import com.klarna.hiverunner.builder.Statement;
 import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
-
+import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory.MutatedSource;
@@ -122,25 +122,6 @@ class MutantSwarmRule implements TestRule {
       return null;
     }
     return contextRef.get().swarmResultBuilder.build();
-  }
-  
-  static class ExecutionContext {
-    private final Swarm swarm;
-    private final SwarmResultsBuilder swarmResultBuilder;
-
-    private ExecutionContext(Swarm swarm, SwarmResultsBuilder swarmResultBuilder) {
-      this.swarm = swarm;
-      this.swarmResultBuilder = swarmResultBuilder;
-    }
-
-    private void addTestOutcome(String testName, Mutant mutant, Mutation mutation, MutantState state) {
-      swarmResultBuilder.addTestOutcome(testName, mutant, mutation, state);
-    }
-
-    private MutantSwarmSource getSource() {
-      return swarm.getSource();
-    }
-    
   }
 
 }

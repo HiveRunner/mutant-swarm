@@ -242,22 +242,4 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     return contextRef.get().swarmResultBuilder.build();
   }
 
-//  static class ExecutionContext {
-//    private final Swarm swarm;
-//    private final SwarmResultsBuilder swarmResultBuilder;
-//
-//    private ExecutionContext(Swarm swarm, SwarmResultsBuilder swarmResultBuilder) {
-//      this.swarm = swarm;
-//      this.swarmResultBuilder = swarmResultBuilder;
-//    }
-//
-//    private void addTestOutcome(String testName, Mutant mutant, Mutation mutation, MutantState state) {
-//      swarmResultBuilder.addTestOutcome(testName, mutant, mutation, state);
-//    }
-//
-//    private MutantSwarmSource getSource() {
-//      return swarm.getSource();
-//    }
-//  }
-
 }
