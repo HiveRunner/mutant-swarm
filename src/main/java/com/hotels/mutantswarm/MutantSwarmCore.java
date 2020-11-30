@@ -21,7 +21,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
+import com.hotels.mutantswarm.exec.MutatedSourceFactory;
 import com.hotels.mutantswarm.exec.SwarmResults;
+import com.hotels.mutantswarm.exec.MutatedSourceFactory.MutatedSource;
 import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
 import com.hotels.mutantswarm.model.MutantSwarmScript;
 import com.hotels.mutantswarm.model.MutantSwarmSource;
@@ -64,6 +66,11 @@ public class MutantSwarmCore {
       return null;
     }
     return context.swarmResultBuilder.build();
+  }
+  
+  MutatedSource mutateSource(MutantSwarmSource source, Mutant mutant) {
+    MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();
+    return mutatedSourceFactory.newMutatedSource(source, mutant);
   }
   
   public static class ExecutionContext {

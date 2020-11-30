@@ -95,7 +95,7 @@ class MutantSwarmRule implements TestRule {
       
       ExecutionContext context = contextRef.get();
       for (Mutant mutant : contextRef.get().swarm.getMutants()) {
-        MutatedSource mutatedSource = mutateSource(context.getSource(), mutant);
+        MutatedSource mutatedSource = core.mutateSource(context.getSource(), mutant);
         hiveRunnerRule.setScriptsUnderTest(mutatedSource.getScripts());
         try {
           base.evaluate();
@@ -114,11 +114,6 @@ class MutantSwarmRule implements TestRule {
     MutantSwarmSource source = core.setUpScripts(hiveRunnerRule.getScriptsUnderTest(), log, emulator);
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
-  }
-
-  private MutatedSource mutateSource(MutantSwarmSource source, Mutant mutant) {
-    MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();
-    return mutatedSourceFactory.newMutatedSource(source, mutant);
   }
   
 }

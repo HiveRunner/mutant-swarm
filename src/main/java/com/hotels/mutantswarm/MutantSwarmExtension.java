@@ -115,7 +115,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     mutants = contextRef.get().swarm.getMutants();
     ExecutionContext executionContext = contextRef.get();
     for (Mutant mutant : contextRef.get().swarm.getMutants()) {
-      MutatedSource mutatedSource = mutateSource(executionContext.getSource(), mutant);
+      MutatedSource mutatedSource = core.mutateSource(executionContext.getSource(), mutant);
       mutatedSources.add(mutatedSource);
     }
 
@@ -232,11 +232,6 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     MutantSwarmSource source = core.setUpScripts(scriptsUnderTest, log, HiveRunnerConfig.getCommandShellEmulator());
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
-  }
-
-  private MutatedSource mutateSource(MutantSwarmSource source, Mutant mutant) {
-    MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();
-    return mutatedSourceFactory.newMutatedSource(source, mutant);
   }
 
 }
