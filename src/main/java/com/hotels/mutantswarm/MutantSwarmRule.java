@@ -15,8 +15,6 @@
  */
 package com.hotels.mutantswarm;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.rules.TestRule;
@@ -25,24 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.klarna.hiverunner.HiveRunnerRule;
-import com.klarna.hiverunner.builder.Script;
-import com.klarna.hiverunner.builder.Statement;
 import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
-import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
-import com.hotels.mutantswarm.exec.MutatedSourceFactory;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory.MutatedSource;
-import com.hotels.mutantswarm.exec.SwarmResults;
 import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
-import com.hotels.mutantswarm.model.MutantSwarmScript;
-import com.hotels.mutantswarm.model.MutantSwarmSource;
-import com.hotels.mutantswarm.model.MutantSwarmStatement;
-import com.hotels.mutantswarm.mutate.Mutation;
-import com.hotels.mutantswarm.plan.CompositeMutantFactory;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
-import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 
 /** A rule to run a standard HR test, and then once again for each mutant. */
 class MutantSwarmRule implements TestRule {
@@ -53,7 +40,7 @@ class MutantSwarmRule implements TestRule {
   private final HiveRunnerRule hiveRunnerRule;
   private CommandShellEmulator emulator;
   private MutantSwarmCore core = new MutantSwarmCore();
-  
+
   static AtomicReference<ExecutionContext> getContextRef() {
     return contextRef;
   }
@@ -92,7 +79,7 @@ class MutantSwarmRule implements TestRule {
         SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, suiteName);
         contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
       }
-      
+
       ExecutionContext context = contextRef.get();
       for (Mutant mutant : contextRef.get().swarm.getMutants()) {
         MutatedSource mutatedSource = core.mutateSource(context.getSource(), mutant);

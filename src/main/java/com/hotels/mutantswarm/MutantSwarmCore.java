@@ -17,9 +17,6 @@ package com.hotels.mutantswarm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-
-import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory;
 import com.hotels.mutantswarm.exec.SwarmResults;
@@ -40,8 +37,11 @@ import com.klarna.hiverunner.sql.split.StatementSplitter;
 import org.slf4j.Logger;
 
 public class MutantSwarmCore {
-  
-  public MutantSwarmSource setUpScripts(List<? extends Script> scriptsUnderTest, Logger log, CommandShellEmulator emulator ) {
+
+  public MutantSwarmSource setUpScripts(
+      List<? extends Script> scriptsUnderTest,
+      Logger log,
+      CommandShellEmulator emulator) {
     log.debug("Setting up scripts");
     List<MutantSwarmScript> scripts = new ArrayList<>();
 
@@ -62,26 +62,26 @@ public class MutantSwarmCore {
     }
     return new MutantSwarmSource.Impl(scripts);
   }
-  
+
   SwarmResults getSwarmResults(ExecutionContext context) {
-    if (context == null){
+    if (context == null) {
       return null;
     }
     return context.swarmResultBuilder.build();
   }
-  
+
   MutatedSource mutateSource(MutantSwarmSource source, Mutant mutant) {
     MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();
     return mutatedSourceFactory.newMutatedSource(source, mutant);
   }
-  
+
   Swarm generateSwarm(List<? extends Script> scriptsUnderTest, Logger log, CommandShellEmulator emulator) {
     log.debug("Setting up mutants");
     MutantSwarmSource source = setUpScripts(scriptsUnderTest, log, emulator);
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
   }
-  
+
   public static class ExecutionContext {
     final Swarm swarm;
     final SwarmResultsBuilder swarmResultBuilder;

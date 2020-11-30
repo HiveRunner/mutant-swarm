@@ -16,11 +16,9 @@
 package com.hotels.mutantswarm;
 
 import static org.reflections.ReflectionUtils.withAnnotation;
-import static org.reflections.ReflectionUtils.withType;
 
 import java.io.IOException;
 
-import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -33,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -45,31 +42,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicates;
 import com.google.common.io.Resources;
 import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
-import com.hotels.mutantswarm.exec.MutatedSourceFactory;
 import com.hotels.mutantswarm.exec.SwarmResults;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory.MutatedSource;
 import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
 import com.hotels.mutantswarm.model.MutantSwarmScript;
-import com.hotels.mutantswarm.model.MutantSwarmSource;
-import com.hotels.mutantswarm.model.MutantSwarmStatement;
-import com.hotels.mutantswarm.mutate.Mutation;
-import com.hotels.mutantswarm.plan.CompositeMutantFactory;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
-import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 import com.hotels.mutantswarm.report.ReportGenerator;
 import com.klarna.hiverunner.HiveRunnerExtension;
 import com.klarna.hiverunner.HiveShellContainer;
 import com.klarna.hiverunner.annotations.HiveSQL;
 import com.klarna.hiverunner.builder.Script;
-import com.klarna.hiverunner.builder.Statement;
 import com.klarna.hiverunner.config.HiveRunnerConfig;
-import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
-import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.klarna.reflection.ReflectionUtils;
 import com.klarna.hiverunner.builder.HiveRunnerScript;
 
