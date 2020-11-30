@@ -224,14 +224,4 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     Preconditions.checkState(Files.exists(file), "File " + file + " does not exist");
   }
 
-  // These are all the methods used to generate a swarm
-  // TODO: Add this in to a core class and avoid repeating code here and in the MutantSwarmRule
-
-  private Swarm generateSwarm() {
-    log.debug("Setting up mutants");
-    MutantSwarmSource source = core.setUpScripts(scriptsUnderTest, log, HiveRunnerConfig.getCommandShellEmulator());
-    SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
-    return swarmFactory.newInstance(source);
-  }
-
 }

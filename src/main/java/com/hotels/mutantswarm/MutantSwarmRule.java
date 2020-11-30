@@ -88,7 +88,7 @@ class MutantSwarmRule implements TestRule {
       base.evaluate();
 
       if (contextRef.get() == null) {
-        Swarm swarm = generateSwarm();
+        Swarm swarm = core.generateSwarm(hiveRunnerRule.getScriptsUnderTest(), log, emulator);
         SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, suiteName);
         contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
       }
@@ -109,11 +109,4 @@ class MutantSwarmRule implements TestRule {
     }
   }
 
-  private Swarm generateSwarm() {
-    log.debug("Setting up mutants");
-    MutantSwarmSource source = core.setUpScripts(hiveRunnerRule.getScriptsUnderTest(), log, emulator);
-    SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
-    return swarmFactory.newInstance(source);
-  }
-  
 }
