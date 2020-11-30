@@ -63,7 +63,6 @@ import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 import com.hotels.mutantswarm.report.ReportGenerator;
 import com.klarna.hiverunner.HiveRunnerExtension;
 import com.klarna.hiverunner.HiveShellContainer;
-import com.klarna.hiverunner.annotations.HiveRunnerSetup;
 import com.klarna.hiverunner.annotations.HiveSQL;
 import com.klarna.hiverunner.builder.Script;
 import com.klarna.hiverunner.builder.Statement;
@@ -71,6 +70,7 @@ import com.klarna.hiverunner.config.HiveRunnerConfig;
 import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
 import com.klarna.reflection.ReflectionUtils;
+import com.klarna.hiverunner.builder.HiveRunnerScript;
 
 public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAllCallback,TestWatcher, TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
 
