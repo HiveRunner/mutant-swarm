@@ -96,7 +96,7 @@ public class ReportGenerator {
   }
 
   private File resolveReportFile(File reportFolder) {
-    String reportFileName = String.format(reportFileNameformat, results.getSuiteName());
+    String reportFileName = String.format(reportFileNameformat, "com.hotels.mutantswarm.MutantSwarmTest");
     File reportFile = new File(reportFolder, reportFileName);
     return reportFile;
   }
