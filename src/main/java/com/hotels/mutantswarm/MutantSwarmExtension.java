@@ -121,10 +121,10 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     if (testNumber != 0) {
       scriptsUnderTest.clear();
       MutatedSource mutatedSource = mutatedSources.get(testNumber - 1);
-      List<MutantSwarmScript> MScripts = mutatedSource.getScripts();
+      List<MutantSwarmScript> mutatedScripts = mutatedSource.getScripts();
 
-      for (Script s : MScripts) {
-        scriptsUnderTest.add(s);
+      for (Script script : mutatedScripts) {
+        scriptsUnderTest.add(script);
       }
     }
 
@@ -194,8 +194,8 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
         Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
         try {
           String sqlText = new String(Files.readAllBytes(path), charset);
-          Script s = new HiveRunnerScript(index++, path, sqlText);
-          scriptsUnderTest.add(s);
+          Script script = new HiveRunnerScript(index++, path, sqlText);
+          scriptsUnderTest.add(script);
         } catch (IOException e) {
           throw new IllegalArgumentException("Failed to load script file '" + path + "'");
         }
