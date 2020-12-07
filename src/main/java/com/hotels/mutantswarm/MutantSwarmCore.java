@@ -35,12 +35,14 @@ import com.klarna.hiverunner.builder.Statement;
 import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.klarna.hiverunner.sql.split.StatementSplitter;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MutantSwarmCore {
+  
+  protected static final Logger log = LoggerFactory.getLogger(MutantSwarmCore.class);
 
   public MutantSwarmSource setUpScripts(
       List<? extends Script> scriptsUnderTest,
-      Logger log,
       CommandShellEmulator emulator) {
     log.debug("Setting up scripts");
     List<MutantSwarmScript> scripts = new ArrayList<>();
@@ -75,9 +77,9 @@ public class MutantSwarmCore {
     return mutatedSourceFactory.newMutatedSource(source, mutant);
   }
 
-  Swarm generateSwarm(List<? extends Script> scriptsUnderTest, Logger log, CommandShellEmulator emulator) {
+  Swarm generateSwarm(List<? extends Script> scriptsUnderTest, CommandShellEmulator emulator) {
     log.debug("Setting up mutants");
-    MutantSwarmSource source = setUpScripts(scriptsUnderTest, log, emulator);
+    MutantSwarmSource source = setUpScripts(scriptsUnderTest, emulator);
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
   }

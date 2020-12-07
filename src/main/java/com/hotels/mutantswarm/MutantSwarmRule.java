@@ -75,7 +75,7 @@ class MutantSwarmRule implements TestRule {
       base.evaluate();
 
       if (contextRef.get() == null) {
-        Swarm swarm = core.generateSwarm(hiveRunnerRule.getScriptsUnderTest(), log, emulator);
+        Swarm swarm = core.generateSwarm(hiveRunnerRule.getScriptsUnderTest(), emulator);
         SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm, suiteName);
         contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
       }
