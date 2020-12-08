@@ -24,9 +24,11 @@ import org.slf4j.LoggerFactory;
 
 import com.klarna.hiverunner.HiveRunnerRule;
 import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
+
 import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory.MutatedSource;
+import com.hotels.mutantswarm.exec.SwarmResults;
 import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
@@ -41,13 +43,13 @@ class MutantSwarmRule implements TestRule {
   private CommandShellEmulator emulator;
   private MutantSwarmCore core = new MutantSwarmCore();
 
-  static AtomicReference<ExecutionContext> getContextRef() {
-    return contextRef;
-  }
-
   MutantSwarmRule(HiveRunnerRule hiveRunnerRule, CommandShellEmulator emulator) {
     this.hiveRunnerRule = hiveRunnerRule;
     this.emulator = emulator;
+  }
+  
+  SwarmResults getSwarmResults() {
+    return core.getSwarmResults(contextRef.get());
   }
 
   @Override

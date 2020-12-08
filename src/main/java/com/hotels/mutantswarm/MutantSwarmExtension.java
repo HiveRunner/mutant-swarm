@@ -18,7 +18,6 @@ package com.hotels.mutantswarm;
 import static org.reflections.ReflectionUtils.withAnnotation;
 
 import java.io.IOException;
-
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -43,22 +42,23 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.Resources;
+import com.klarna.hiverunner.HiveRunnerExtension;
+import com.klarna.hiverunner.HiveShellContainer;
+import com.klarna.hiverunner.annotations.HiveSQL;
+import com.klarna.hiverunner.builder.HiveRunnerScript;
+import com.klarna.hiverunner.builder.Script;
+import com.klarna.hiverunner.config.HiveRunnerConfig;
+import com.klarna.reflection.ReflectionUtils;
+
 import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
-import com.hotels.mutantswarm.exec.SwarmResults;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory.MutatedSource;
+import com.hotels.mutantswarm.exec.SwarmResults;
 import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
 import com.hotels.mutantswarm.model.MutantSwarmScript;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
 import com.hotels.mutantswarm.report.ReportGenerator;
-import com.klarna.hiverunner.HiveRunnerExtension;
-import com.klarna.hiverunner.HiveShellContainer;
-import com.klarna.hiverunner.annotations.HiveSQL;
-import com.klarna.hiverunner.builder.Script;
-import com.klarna.hiverunner.config.HiveRunnerConfig;
-import com.klarna.reflection.ReflectionUtils;
-import com.klarna.hiverunner.builder.HiveRunnerScript;
 
 public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAllCallback, TestWatcher,
     TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
@@ -71,7 +71,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   private int testNumber = -1;
   private List<Mutant> mutants = new ArrayList<Mutant>();
   private List<MutatedSource> mutatedSources = new ArrayList<MutatedSource>();
-  private ExecutionContext results = contextRef.get();
+  private ExecutionContext resultContext = contextRef.get();
   private boolean firstTestPassed = true;
   private MutantSwarmCore core = new MutantSwarmCore();
 
@@ -99,14 +99,14 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
       contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
     }
 
-    mutants = contextRef.get().swarm.getMutants();
     ExecutionContext executionContext = contextRef.get();
-    for (Mutant mutant : contextRef.get().swarm.getMutants()) {
+    mutants = executionContext.swarm.getMutants();
+    for (Mutant mutant : executionContext.swarm.getMutants()) {
       MutatedSource mutatedSource = core.mutateSource(executionContext.getSource(), mutant);
       mutatedSources.add(mutatedSource);
     }
 
-    results = contextRef.get();
+    resultContext = executionContext;
 
     // Here we specify the number of times a test should be repeated, but the scripts will be mutated accordingly for
     // each individual test in the postProcessTestInstance method
@@ -129,7 +129,6 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     }
 
     super.postProcessTestInstance(target, extensionContext);
-
   }
 
   @Override
@@ -137,7 +136,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     if (testNumber != 0) {
       if (firstTestPassed == true) {
         log.info("Mutant survived - bad");
-        results
+        resultContext
             .addTestOutcome(context.getDisplayName(), mutants.get(testNumber - 1),
                 mutatedSources.get(testNumber - 1).getMutation(), MutantState.SURVIVED);
       }
@@ -151,7 +150,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     if (testNumber != 0) {
       if (firstTestPassed == true) {
         log.info("Mutant killed - good. " + cause.toString());
-        results
+        resultContext
             .addTestOutcome(context.getRequiredTestMethod().toString(), mutants.get(testNumber - 1),
                 mutatedSources.get(testNumber - 1).getMutation(), MutantState.KILLED);
       }
@@ -163,7 +162,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
   @Override
   public void afterAll(ExtensionContext context) throws Exception {
-    SwarmResults swarmResults = core.getSwarmResults(results);
+    SwarmResults swarmResults = core.getSwarmResults(resultContext);
     log.debug("Finished testing. Generating report.");
     new ReportGenerator(swarmResults).generate();
   }
