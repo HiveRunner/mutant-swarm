@@ -28,6 +28,7 @@ import com.klarna.hiverunner.sql.cli.CommandShellEmulator;
 import com.hotels.mutantswarm.MutantSwarmCore.ExecutionContext;
 import com.hotels.mutantswarm.exec.MutantState;
 import com.hotels.mutantswarm.exec.MutatedSourceFactory.MutatedSource;
+import com.hotels.mutantswarm.exec.SwarmResults;
 import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
@@ -47,8 +48,8 @@ class MutantSwarmRule implements TestRule {
     this.emulator = emulator;
   }
   
-  ExecutionContext getExecutionContext() {
-    return contextRef.get();
+  SwarmResults getSwarmResults() {
+    return core.getSwarmResults(contextRef.get());
   }
 
   @Override

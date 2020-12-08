@@ -99,14 +99,14 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
       contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
     }
 
-    mutants = contextRef.get().swarm.getMutants();
     ExecutionContext executionContext = contextRef.get();
-    for (Mutant mutant : contextRef.get().swarm.getMutants()) {
+    mutants = executionContext.swarm.getMutants();
+    for (Mutant mutant : executionContext.swarm.getMutants()) {
       MutatedSource mutatedSource = core.mutateSource(executionContext.getSource(), mutant);
       mutatedSources.add(mutatedSource);
     }
 
-    resultContext = contextRef.get();
+    resultContext = executionContext;
 
     // Here we specify the number of times a test should be repeated, but the scripts will be mutated accordingly for
     // each individual test in the postProcessTestInstance method
@@ -129,7 +129,6 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
     }
 
     super.postProcessTestInstance(target, extensionContext);
-
   }
 
   @Override

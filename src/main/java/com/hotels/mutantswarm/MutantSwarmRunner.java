@@ -38,7 +38,6 @@ import com.hotels.mutantswarm.report.ReportGenerator;
 public class MutantSwarmRunner extends StandaloneHiveRunner {
 
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmRunner.class);
-  private MutantSwarmCore core = new MutantSwarmCore();
   private MutantSwarmRule mutantSwarmRule;
 
   public MutantSwarmRunner(Class<?> clazz) throws InitializationError {
@@ -61,7 +60,7 @@ public class MutantSwarmRunner extends StandaloneHiveRunner {
       testNotifier.addFailure(t);
     } finally {
       try {
-        SwarmResults swarmResults = core.getSwarmResults(mutantSwarmRule.getExecutionContext());
+        SwarmResults swarmResults = mutantSwarmRule.getSwarmResults();
         if (swarmResults != null) {
           log.debug("Finished testing. Generating report.");
           new ReportGenerator(swarmResults).generate();
