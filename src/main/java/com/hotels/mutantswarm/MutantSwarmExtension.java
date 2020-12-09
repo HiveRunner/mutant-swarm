@@ -79,10 +79,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
   @Override
   public boolean supportsTestTemplate(ExtensionContext context) {
-    if (!context.getTestMethod().isPresent()) {
-      return false;
-    }
-    return true;
+    return context.getTestMethod().isPresent();
   }
 
   @Override
@@ -101,7 +98,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
     ExecutionContext executionContext = contextRef.get();
     mutants = executionContext.swarm.getMutants();
-    for (Mutant mutant : executionContext.swarm.getMutants()) {
+    for (Mutant mutant : mutants) {
       MutatedSource mutatedSource = core.mutateSource(executionContext.getSource(), mutant);
       mutatedSources.add(mutatedSource);
     }
@@ -110,7 +107,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
     // Here we specify the number of times a test should be repeated, but the scripts will be mutated accordingly for
     // each individual test in the postProcessTestInstance method
-    return IntStream.rangeClosed(1, mutants.size() + 1).mapToObj(repitition -> new MutantSwarmTestTemplate());
+    return IntStream.rangeClosed(1, mutants.size() + 1).mapToObj(repetition -> new MutantSwarmTestTemplate());
   }
 
   @Override
