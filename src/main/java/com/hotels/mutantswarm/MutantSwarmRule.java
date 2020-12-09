@@ -47,7 +47,7 @@ class MutantSwarmRule implements TestRule {
     this.hiveRunnerRule = hiveRunnerRule;
     this.emulator = emulator;
   }
-  
+
   SwarmResults getSwarmResults() {
     return core.getSwarmResults(contextRef.get());
   }

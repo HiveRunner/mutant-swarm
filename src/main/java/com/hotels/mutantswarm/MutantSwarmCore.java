@@ -41,12 +41,10 @@ import com.hotels.mutantswarm.plan.Swarm;
 import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 
 public class MutantSwarmCore {
-  
+
   protected static final Logger log = LoggerFactory.getLogger(MutantSwarmCore.class);
 
-  public MutantSwarmSource setUpScripts(
-      List<? extends Script> scriptsUnderTest,
-      CommandShellEmulator emulator) {
+  public MutantSwarmSource setUpScripts(List<? extends Script> scriptsUnderTest, CommandShellEmulator emulator) {
     log.debug("Setting up scripts");
     List<MutantSwarmScript> scripts = new ArrayList<>();
 
