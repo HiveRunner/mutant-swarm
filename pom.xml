@@ -35,7 +35,7 @@
     <hive.execution.engine>mr</hive.execution.engine>
     <junit.jupiter.version>5.7.0</junit.jupiter.version>
     <!-- overriding parent surefire version as versions >=2.22.0 detect no tests to run in some environments (e.g. GH actions) -->
-    <maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
   </properties>
 
   <dependencies>
