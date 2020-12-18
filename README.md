@@ -82,4 +82,4 @@ If you would like to ask any questions about or discuss MutantSwarm please do so
 Conceived and designed by [Elliot West](https://github.com/teabot), developed by [Jay Green-Stevens](https://github.com/JayGreeeen).
 
 # Legal
-Copyright 2018-2019 Expedia, Inc.
+Copyright 2018-2020 Expedia, Inc.
