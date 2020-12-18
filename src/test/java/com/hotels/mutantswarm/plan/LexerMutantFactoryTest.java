@@ -79,8 +79,6 @@ public class LexerMutantFactoryTest {
 
   @Test
   public void noMutatorsForAStatement() {
-    List<CommonToken> tokens = singletonList(token1);
-
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
     assertThat(mutants.size(), is(0));
   }

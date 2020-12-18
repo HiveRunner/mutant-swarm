@@ -16,7 +16,8 @@
 package com.hotels.mutantswarm;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.File;
 import java.util.Arrays;
@@ -44,14 +45,14 @@ public class MutantSwarmExtensionTest {
   public void test() {
     List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
     List<String> expected = Arrays.asList("1\ttrue", "3\ttrue", "3\tfalse", "5\tfalse");
-    assertEquals(expected, result);
+    assertThat(expected, is(result));
   }
 
   @TestTemplate
   public void test2() {
     List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
     List<String> expected = Arrays.asList("true", "false");
-    assertEquals(expected, result);
+    assertThat(expected, is(result));
   }
 
 }

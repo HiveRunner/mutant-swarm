@@ -16,7 +16,6 @@
 package com.hotels.mutantswarm.mutate;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +52,7 @@ public class LexerMutatorStoreTest {
     List<Mutator> mutators = lexerStore.getMutatorsFor(position, stream);
 
     assertThat(mutators.size(), is(1));
-    assertEquals(mutators.get(0).getDescription(), description);
+    assertThat(mutators.get(0).getDescription(), is(description));
   }
 
   @Test

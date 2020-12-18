@@ -16,6 +16,7 @@
 package com.hotels.mutantswarm.report;
 
 import static java.util.Arrays.asList;
+
 import static org.mockito.Mockito.when;
 
 import static com.hotels.mutantswarm.report.AssetUtil.readResourceAsString;
