@@ -199,9 +199,6 @@ public class SwarmResultsTest {
     when(gene1.getScriptIndex()).thenReturn(0);
     when(gene1.getStatementIndex()).thenReturn(0);
 
-    when(script1.getIndex()).thenReturn(0);
-    when(statement1.getIndex()).thenReturn(0);
-
     SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
     builder.addTestOutcome(suiteName, mutant1, mutation1, state);
     

@@ -63,9 +63,6 @@ public class TextReplaceMutatorTest {
 	@Test
 	public void apply() {
 	  when(spliceFactory.newInstance(gene)).thenReturn(splice);
-		when(gene.getLocus()).thenReturn(locus);
-		when(token.getStartIndex()).thenReturn(2);
-		when(token.getStopIndex()).thenReturn(2);
 
 		Mutation mutation = mutator.apply(gene);
 

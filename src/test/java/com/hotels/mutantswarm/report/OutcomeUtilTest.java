@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,20 +48,12 @@ public class OutcomeUtilTest {
 
   @Test
   public void outcomesByStartPosition() {
-    when(outcome1.getMutation()).thenReturn(mutation1);
-    when(mutation1.getSplice()).thenReturn(splice1);
     when(outcome1.getMutationStartIndex()).thenReturn(50);
 
-    when(outcome2.getMutation()).thenReturn(mutation2);
-    when(mutation2.getSplice()).thenReturn(splice2);
     when(outcome2.getMutationStartIndex()).thenReturn(1);
 
-    when(outcome3.getMutation()).thenReturn(mutation3);
-    when(mutation3.getSplice()).thenReturn(splice3);
     when(outcome3.getMutationStartIndex()).thenReturn(100);
 
-    when(outcome4.getMutation()).thenReturn(mutation4);
-    when(mutation4.getSplice()).thenReturn(splice4);
     when(outcome4.getMutationStartIndex()).thenReturn(50);
 
     SortedMap<Integer, List<Outcome>> actual = OutcomeUtil
