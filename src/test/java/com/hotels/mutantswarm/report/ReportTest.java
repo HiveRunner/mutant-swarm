@@ -16,7 +16,6 @@
 package com.hotels.mutantswarm.report;
 
 import static java.util.Arrays.asList;
-
 import static org.mockito.Mockito.when;
 
 import static com.hotels.mutantswarm.report.AssetUtil.readResourceAsString;
@@ -33,7 +32,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.stringtemplate.v4.ST;
 
 import com.google.common.base.Charsets;
