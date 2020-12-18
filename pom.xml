@@ -35,7 +35,7 @@
     <hive.execution.engine>mr</hive.execution.engine>
     <junit.jupiter.version>5.7.0</junit.jupiter.version>
     <!-- overriding parent surefire version as versions >=2.22.0 detect no tests to run in some environments (e.g. GH actions) -->
-    <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
   </properties>
 
   <dependencies>
@@ -60,17 +60,42 @@
           <groupId>org.apache.hbase</groupId>
           <artifactId>hbase-annotations</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-matchers</artifactId>
       <version>1.4</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.jupiter.version}</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
@@ -80,45 +105,28 @@
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-all</artifactId>
-      <version>1.3</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>	
-      <artifactId>mockito-all</artifactId>	
-      <version>1.9.5</version>
-      <scope>test</scope>
-      </dependency>	      
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
-      <version>1.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <version>1.3</version>
+      <artifactId>hamcrest</artifactId>
+      <version>2.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
       <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-    <groupId>org.junit.vintage</groupId>
-    <artifactId>junit-vintage-engine</artifactId>
-    <version>${junit.jupiter.version}</version>
-    <scope>test</scope>
-</dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.6.28</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
