@@ -40,7 +40,7 @@ import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
 import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 
-public class MutantSwarmCore {
+class MutantSwarmCore {
 
   protected static final Logger log = LoggerFactory.getLogger(MutantSwarmCore.class);
 

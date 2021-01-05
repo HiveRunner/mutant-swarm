@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2020 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,9 @@ package com.hotels.mutantswarm;
 
 import static org.reflections.ReflectionUtils.withAnnotation;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -41,11 +38,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
-import com.google.common.io.Resources;
 import com.klarna.hiverunner.HiveRunnerExtension;
 import com.klarna.hiverunner.HiveShellContainer;
 import com.klarna.hiverunner.annotations.HiveSQL;
-import com.klarna.hiverunner.builder.HiveRunnerScript;
+import com.klarna.hiverunner.builder.HiveShellBuilder;
 import com.klarna.hiverunner.builder.Script;
 import com.klarna.hiverunner.config.HiveRunnerConfig;
 import com.klarna.reflection.ReflectionUtils;
@@ -86,7 +82,6 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
     testNumber = -1;
     firstTestPassed = true;
-
     setFirstScripts(context);
 
     if (contextRef.get() == null) {
@@ -166,43 +161,19 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
   // This method sets the scripts for the first time to generate the swarm
   private void setFirstScripts(ExtensionContext context) {
+    HiveShellBuilder hiveShellBuilder = new HiveShellBuilder();
     try {
-      Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
-
       scriptsUnderTest.clear();
-
+      Set<Field> fields = ReflectionUtils.getAllFields(context.getRequiredTestClass(), withAnnotation(HiveSQL.class));
       Preconditions.checkState(fields.size() == 1, "Exactly one field should be annotated with @HiveSQL");
       Field field = fields.iterator().next();
-      List<Path> scriptPaths = new ArrayList<>();
       HiveSQL annotation = field.getAnnotation(HiveSQL.class);
-
-      for (String scriptFilePath : annotation.files()) {
-        Path file = Paths.get(Resources.getResource(scriptFilePath).toURI());
-        assertFileExists(file);
-        scriptPaths.add(file);
-      }
-
-      Charset charset = annotation.encoding().equals("") ? Charset.defaultCharset()
-          : Charset.forName(annotation.encoding());
-
-      int index = 0;
-      for (Path path : scriptPaths) {
-        Preconditions.checkState(Files.exists(path), "File %s does not exist", path);
-        try {
-          String sqlText = new String(Files.readAllBytes(path), charset);
-          Script script = new HiveRunnerScript(index++, path, sqlText);
-          scriptsUnderTest.add(script);
-        } catch (IOException e) {
-          throw new IllegalArgumentException("Failed to load script file '" + path + "'");
-        }
-      }
+      List<Path> scriptPaths = getScriptPaths(annotation);
+      Charset charset = annotation.encoding().equals("") ? Charset.defaultCharset() : Charset.forName(annotation.encoding());
+      scriptsUnderTest = hiveShellBuilder.fromScriptPaths(scriptPaths, charset);
     } catch (Throwable t) {
       throw new IllegalArgumentException("Failed to init field annotated with @HiveSQL: " + t.getMessage(), t);
     }
-  }
-
-  private void assertFileExists(Path file) {
-    Preconditions.checkState(Files.exists(file), "File " + file + " does not exist");
   }
 
 }
