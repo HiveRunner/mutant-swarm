@@ -71,8 +71,6 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   private boolean firstTestPassed = true;
   private MutantSwarmCore core = new MutantSwarmCore();
 
-  public MutantSwarmExtension() {}
-
   @Override
   public boolean supportsTestTemplate(ExtensionContext context) {
     return context.getTestMethod().isPresent();

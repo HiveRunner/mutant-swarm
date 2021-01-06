@@ -44,7 +44,7 @@ class MutantSwarmCore {
 
   protected static final Logger log = LoggerFactory.getLogger(MutantSwarmCore.class);
 
-  public MutantSwarmSource setUpScripts(List<? extends Script> scriptsUnderTest, CommandShellEmulator emulator) {
+  public MutantSwarmSource setupScripts(List<? extends Script> scriptsUnderTest, CommandShellEmulator emulator) {
     log.debug("Setting up scripts");
     List<MutantSwarmScript> scripts = new ArrayList<>();
 
@@ -80,7 +80,7 @@ class MutantSwarmCore {
 
   Swarm generateSwarm(List<? extends Script> scriptsUnderTest, CommandShellEmulator emulator) {
     log.debug("Setting up mutants");
-    MutantSwarmSource source = setUpScripts(scriptsUnderTest, emulator);
+    MutantSwarmSource source = setupScripts(scriptsUnderTest, emulator);
     SwarmFactory swarmFactory = new SwarmFactory(new CompositeMutantFactory());
     return swarmFactory.newInstance(source);
   }
