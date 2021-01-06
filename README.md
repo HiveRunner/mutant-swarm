@@ -10,7 +10,7 @@ of operational risk.
 # Usage
 You can enable Mutant Swarm on your HiveRunner test suites like so:
 1. Add `mutant-swarm` dependency
-2. Replace JUnit runner implementation
+2. Replace JUnit runner or extension implementation
 3. Execute test suite
 4. Locate and view report
 
@@ -22,13 +22,29 @@ You can enable Mutant Swarm on your HiveRunner test suites like so:
       <scope>test</scope>
     </dependency>
 
-## JUnit runner
-HiveRunner tests suites use the `com.klarna.hiverunner.StandaloneHiveRunner` JUnit runner implementation. To enable
-Mutant Swarm you simply need to replace this with the `com.hotels.mutantswarm.MutantSwarmRunner` implementation:
+##JUnit4
+HiveRunner JUnit4 tests suites use the `com.klarna.hiverunner.StandaloneHiveRunner` JUnit4 runner implementation. To enable the
+Mutant Swarm runner you simply need to replace this with the `com.hotels.mutantswarm.MutantSwarmRunner` implementation:
 
     @RunWith(MutantSwarmRunner.class)
     public class HiveSqlEtlTest {
       ...
+    @Test
+      ...
+    }
+
+## JUnit5
+HiveRunner JUnit5 tests classes use the `com.klarna.hiverunner.HiveRunnerExtension` JUnit5 extension implementation. To enable the
+Mutant Swarm extension you simply need to replace this with the `com.hotels.mutantswarm.MutantSwarmExtension` implementation:
+
+    @ExtendWith(MutantSwarmExtension.class)
+    public class HiveSqlEtlTest {
+      ...
+    @MutantSwarmTest
+      ...
+    }
+
+You also need to annotate the tests that you want run with Mutant Swarm with @MutantSwarmTest instead of @Test.
 
 ## Locate and view report
 Mutant Swarm currently writes out an HTML report to the `target/mutant-swarm-reports` folder of your project.
