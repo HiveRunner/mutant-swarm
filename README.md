@@ -34,7 +34,7 @@ Mutant Swarm runner you simply need to replace this with the `com.hotels.mutants
     }
 
 ## JUnit5
-To use JUnit5 and the extension model, you will need to have at least the version 1.0.1 of Mutant Swarm.
+To use JUnit5 and the extension model, you will need to have at least the version 1.1.0 of Mutant Swarm.
 
 HiveRunner JUnit5 tests classes use the `com.klarna.hiverunner.HiveRunnerExtension` JUnit5 extension implementation. To enable the
 Mutant Swarm extension you simply need to replace this with the `com.hotels.mutantswarm.MutantSwarmExtension` implementation:
