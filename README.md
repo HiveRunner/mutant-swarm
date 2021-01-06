@@ -22,7 +22,7 @@ You can enable Mutant Swarm on your HiveRunner test suites like so:
       <scope>test</scope>
     </dependency>
 
-##JUnit4
+## JUnit4
 HiveRunner JUnit4 tests suites use the `com.klarna.hiverunner.StandaloneHiveRunner` JUnit4 runner implementation. To enable the
 Mutant Swarm runner you simply need to replace this with the `com.hotels.mutantswarm.MutantSwarmRunner` implementation:
 
