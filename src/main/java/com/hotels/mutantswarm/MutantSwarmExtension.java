@@ -80,7 +80,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
     testNumber = -1;
     firstTestPassed = true;
-    setFirstScripts(context);
+    initialiseScripts(context);
 
     if (contextRef.get() == null) {
       Swarm swarm = core.generateSwarm(scriptsUnderTest, HiveRunnerConfig.getCommandShellEmulator());
@@ -158,7 +158,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   }
 
   // This method sets the scripts for the first time to generate the swarm
-  private void setFirstScripts(ExtensionContext context) {
+  private void initialiseScripts(ExtensionContext context) {
     HiveShellBuilder hiveShellBuilder = new HiveShellBuilder();
     try {
       scriptsUnderTest.clear();
