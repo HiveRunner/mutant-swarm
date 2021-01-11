@@ -39,7 +39,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.klarna.hiverunner.HiveRunnerExtension;
-import com.klarna.hiverunner.HiveShellContainer;
 import com.klarna.hiverunner.annotations.HiveSQL;
 import com.klarna.hiverunner.builder.HiveShellBuilder;
 import com.klarna.hiverunner.builder.Script;
