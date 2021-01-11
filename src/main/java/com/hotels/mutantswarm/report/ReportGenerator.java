@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2020 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,7 +96,11 @@ public class ReportGenerator {
   }
 
   private File resolveReportFile(File reportFolder) {
-    String reportFileName = String.format(reportFileNameformat, "mutation_report");
+    String className = results.getSuiteName();
+    if (className.contains("class ")) {
+      className = className.replace("class ", "");
+    }
+    String reportFileName = String.format(reportFileNameformat, className);
     File reportFile = new File(reportFolder, reportFileName);
     return reportFile;
   }
