@@ -9,7 +9,7 @@ of operational risk.
 
 # Usage
 You can enable Mutant Swarm on your HiveRunner test suites like so:
-1. Add `mutant-swarm` dependency 
+1. Add `mutant-swarm` dependency
 2. Replace JUnit runner implementation
 3. Execute test suite
 4. Locate and view report
@@ -52,7 +52,7 @@ test coverage. By understanding where these deficiencies lie one can begin to ev
 informed decisions on where best to focus test development effort.
 
 # How it works
-![Picture of the system diagram for how mutant swarm works](doc/system_diagram.png "System Diagram") 
+![Picture of the system diagram for how mutant swarm works](doc/system_diagram.png "System Diagram")
 1. Run tests and report
 2. Sequence SQL genes
 3. Generate mutant scripts
@@ -70,7 +70,7 @@ However, coverage insights are arguably even more pertinent for complex and mono
 * Execution time is effectively proportional to the product of the number test cases and the size of the SQL code base under test.
 * Project currently includes only a small set of gene matchers and possible mutations, this limits the scope of coverage measurement.
 * The responsibility for unit test execution and mutation testing is currently conflated.
- 
+
 # Contact
 
 ## Mailing List
@@ -82,4 +82,4 @@ If you would like to ask any questions about or discuss MutantSwarm please do so
 Conceived and designed by [Elliot West](https://github.com/teabot), developed by [Jay Green-Stevens](https://github.com/JayGreeeen).
 
 # Legal
-Copyright 2018-2020 Expedia, Inc.
+Copyright 2018-2021 Expedia, Inc.
