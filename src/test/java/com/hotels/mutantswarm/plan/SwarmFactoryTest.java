@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,16 @@ package com.hotels.mutantswarm.plan;
 import static java.util.Arrays.asList;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.model.MutantSwarmScript;
 import com.hotels.mutantswarm.model.MutantSwarmSource;
@@ -56,7 +55,6 @@ public class SwarmFactoryTest {
 		when(script2.getStatements()).thenReturn(asList(statement2_1));
 		when(mutantFactory.newMutants(0, statement1_1)).thenReturn(asList(mutant1_1_1_1));
 		when(mutantFactory.newMutants(0, statement1_2)).thenReturn(asList(mutant1_1_2_1, mutant1_1_2_2, mutant1_2_1_1));
-		when(mutantFactory.newMutants(1, statement2_1)).thenReturn(Collections.<Mutant> emptyList());
 	}
 
 	@Test

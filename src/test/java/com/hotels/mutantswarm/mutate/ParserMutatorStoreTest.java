@@ -16,7 +16,7 @@
 package com.hotels.mutantswarm.mutate;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -27,11 +27,10 @@ import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.tree.Tree;
 import org.apache.hadoop.hive.ql.lib.Node;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ParserMutatorStoreTest {
@@ -44,13 +43,6 @@ public class ParserMutatorStoreTest {
   private Tree tree1, tree2;
 
   private ParserMutatorStore database = new ParserMutatorStore();
-
-  @Before
-  public void setupMocks() {
-    when(node1.getToken()).thenReturn(token);
-    when(token.getStartIndex()).thenReturn(2);
-    when(token.getStopIndex()).thenReturn(2);
-  }
 
   @Test
   public void checkMutatorsForEqual() {
@@ -250,7 +242,6 @@ public class ParserMutatorStoreTest {
     when(node1.getChildren()).thenReturn(children);
     when(node1.getType()).thenReturn(Vocabulary.INSTANCE.getId("EQUAL"));
     when(node2.getType()).thenReturn(Vocabulary.INSTANCE.getId("KW_FALSE"));
-    when(node3.getType()).thenReturn(Vocabulary.INSTANCE.getId("KW_TRUE"));
     List<Mutator> mutators = database.getMutatorsFor(node1);
     assertThat(mutators.get(0).getDescription(), is("Relational op EQ → NEQ '<>'"));
   }

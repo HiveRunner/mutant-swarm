@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  */
 package com.hotels.mutantswarm.mutate;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Test;
 
@@ -25,14 +26,14 @@ public class VocabularyTest {
   public void nameToId() {
     int id = Vocabulary.INSTANCE.getId("TOK_JOIN");
     String name = Vocabulary.INSTANCE.getName(id);
-    assertEquals("TOK_JOIN", name);
+    assertThat("TOK_JOIN", is(name));
   }
   
   @Test
   public void idToName() {
     String name = Vocabulary.INSTANCE.getName(-1);
     int id = Vocabulary.INSTANCE.getId(name);
-    assertEquals(id, -1);
+    assertThat(id, is(-1));
   }
 
   @Test(expected = NullPointerException.class)
@@ -43,7 +44,7 @@ public class VocabularyTest {
   @Test
   public void nullId() {
     String name = Vocabulary.INSTANCE.getName(1000000);
-    assertEquals(null, name);
+    assertThat(null, is(name));
   }
 
 }

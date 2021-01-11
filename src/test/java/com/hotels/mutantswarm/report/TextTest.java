@@ -19,16 +19,13 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import com.hotels.mutantswarm.exec.MutantState;
 import com.hotels.mutantswarm.exec.Outcome;
 import com.hotels.mutantswarm.report.Text.Builder;
 
@@ -37,13 +34,6 @@ public class TextTest {
 
   @Mock
   private Outcome killed, survivor1, survivor2;
-
-  @Before
-  public void setupMocks() {
-    when(killed.getState()).thenReturn(MutantState.KILLED);
-    when(survivor1.getState()).thenReturn(MutantState.SURVIVED);
-    when(survivor2.getState()).thenReturn(MutantState.SURVIVED);
-  }
 
   @Test
   public void typical() {

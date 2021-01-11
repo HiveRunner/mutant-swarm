@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.stringtemplate.v4.ST;
 
 import com.google.common.base.Charsets;
@@ -48,7 +48,6 @@ import com.hotels.mutantswarm.model.MutantSwarmStatement;
 import com.hotels.mutantswarm.mutate.Mutator;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
-import com.hotels.mutantswarm.report.Text.Type;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReportTest {
@@ -102,7 +101,6 @@ public class ReportTest {
     when(line1.getMutationCount()).thenReturn(0);
     when(line1.getKilledCount()).thenReturn(0);
     when(line1.getNumber()).thenReturn(0);
-    when(line1.getSurvivorCount()).thenReturn(0);
     when(line1.isSurvivors()).thenReturn(false);
     when(line1.isKilled()).thenReturn(false);
 
@@ -124,35 +122,29 @@ public class ReportTest {
     // text 1
     when(text1.getSurvivors()).thenReturn(Collections.EMPTY_LIST);
     when(text1.getChars()).thenReturn("select a from b ");
-    when(text1.getType()).thenReturn(Type.NON_MUTANT);
     when(text1.getStartIndex()).thenReturn(0);
 
     // text 2
     when(text2.getSurvivors()).thenReturn(Collections.EMPTY_LIST);
     when(text2.getChars()).thenReturn("where x ");
-    when(text2.getType()).thenReturn(Type.NON_MUTANT);
     when(text2.getStartIndex()).thenReturn(0);
 
     // text3
     when(text3.getSurvivors()).thenReturn(Collections.EMPTY_LIST);
 
     when(text3.getChars()).thenReturn("=");
-    when(text3.getType()).thenReturn(Type.KILLED);
     when(text3.getStartIndex()).thenReturn(24);
     when(text3.getKilled()).thenReturn(Arrays.asList(outcome1));
 
     // text4
     when(text4.getSurvivors()).thenReturn(Collections.EMPTY_LIST);
     when(text4.getChars()).thenReturn(" 3");
-    when(text4.getType()).thenReturn(Type.NON_MUTANT);
     // select a from b where x = 3 and z = 4
 
     when(text4.getSurvivors()).thenReturn(Collections.EMPTY_LIST);
     when(text5.getChars()).thenReturn("and z ");
-    when(text5.getType()).thenReturn(Type.NON_MUTANT);
 
     when(text6.getChars()).thenReturn("=");
-    when(text6.getType()).thenReturn(Type.KILLED);
     when(text6.getStartIndex()).thenReturn(34);
     when(text6.getKilled()).thenReturn(Arrays.asList(outcome1));
     when(text6.getSurvivors()).thenReturn(Arrays.asList(outcome2));
@@ -160,9 +152,6 @@ public class ReportTest {
     when(outcome1.getMutant()).thenReturn(mutant1);
     when(mutant1.getMutator()).thenReturn(mutator1);
     when(mutator1.getDescription()).thenReturn("!=");
-
-    when(outcome1.getTestOutcomes()).thenReturn(Arrays.asList(testOutcome1));
-    when(testOutcome1.getTestName()).thenReturn("test 1");
 
     when(outcome2.getMutant()).thenReturn(mutant2);
     when(mutant2.getMutator()).thenReturn(mutator2);

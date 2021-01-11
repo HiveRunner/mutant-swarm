@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 import static com.hotels.mutantswarm.exec.MutantState.KILLED;
@@ -33,7 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.exec.Outcome;
 import com.hotels.mutantswarm.exec.SwarmResults;
@@ -78,41 +78,18 @@ public class LineFactoryTest {
     when(statement2.getIndex()).thenReturn(0);
 
     // 'a' -> 'null'
-    when(mutation1.getReplacementText()).thenReturn("null");
     when(outcome1.getMutation()).thenReturn(mutation1);
     when(mutation1.getSplice()).thenReturn(splice1);
     when(outcome1.getState()).thenReturn(KILLED);
 
     // '=' -> '<>'
-    when(mutation2.getReplacementText()).thenReturn("<>");
     when(outcome2.getMutation()).thenReturn(mutation2);
     when(mutation2.getSplice()).thenReturn(splice2);
     when(outcome2.getState()).thenReturn(SURVIVED);
 
     // '=' -> '>='
-    when(mutation3.getReplacementText()).thenReturn(">=");
-    when(outcome3.getMutation()).thenReturn(mutation3);
-    when(mutation3.getSplice()).thenReturn(splice3);
     when(outcome3.getState()).thenReturn(KILLED);
 
-    // statement 2
-    // 'x' -> 'a'
-    when(mutation4.getReplacementText()).thenReturn("a");
-    when(mutation4.getSplice()).thenReturn(splice4);
-    when(outcome4.getMutation()).thenReturn(mutation4);
-    when(outcome4.getState()).thenReturn(SURVIVED);
-
-    // '=' -> '>'
-    when(mutation5.getReplacementText()).thenReturn(">");
-    when(mutation5.getSplice()).thenReturn(splice5);
-    when(outcome5.getMutation()).thenReturn(mutation5);
-    when(outcome5.getState()).thenReturn(SURVIVED);
-
-    // '=' -> '>='
-    when(mutation6.getReplacementText()).thenReturn(">=");
-    when(mutation6.getSplice()).thenReturn(splice6);
-    when(outcome6.getMutation()).thenReturn(mutation6);
-    when(outcome6.getState()).thenReturn(KILLED);
   }
 
   @Test
@@ -121,16 +98,12 @@ public class LineFactoryTest {
     when(statement1.getSql()).thenReturn("SELECT a FROM b WHERE c = 3");
     // 0 SELECT a FROM b WHERE c = 3
     // --012345678901234567890123456
-    when(splice1.getStartIndex()).thenReturn(7);
     when(splice1.getStopIndex()).thenReturn(7);
     when(outcome1.getMutationStartIndex()).thenReturn(7);
 
-    when(splice2.getStartIndex()).thenReturn(24);
     when(splice2.getStopIndex()).thenReturn(24);
     when(outcome2.getMutationStartIndex()).thenReturn(24);
 
-    when(splice3.getStartIndex()).thenReturn(24);
-    when(splice3.getStopIndex()).thenReturn(24);
     when(outcome3.getMutationStartIndex()).thenReturn(24);
 
     LineFactory stl = new LineFactory(results);
@@ -200,7 +173,6 @@ public class LineFactoryTest {
   public void multiLine() {
     when(mutation1.getSplice()).thenReturn(splice1);
     when(mutation2.getSplice()).thenReturn(splice2);
-    when(mutation3.getSplice()).thenReturn(splice3);
 
     when(statement1.getSql()).thenReturn("SELECT\n" + " a\n" + "FROM b\n" + "WHERE c = 3\n");
     // 0 SELECT\ a\FROM b\WHERE c = 3\ <- '\' placeholder for '\n'
@@ -211,16 +183,12 @@ public class LineFactoryTest {
     // 2 FROM b
     // 3 WHERE c = 3
     // --01234567890
-    when(splice1.getStartIndex()).thenReturn(8);
     when(splice1.getStopIndex()).thenReturn(8);
     when(outcome1.getMutationStartIndex()).thenReturn(8);
 
-    when(splice2.getStartIndex()).thenReturn(25);
     when(splice2.getStopIndex()).thenReturn(25);
     when(outcome2.getMutationStartIndex()).thenReturn(25);
 
-    when(splice3.getStartIndex()).thenReturn(25);
-    when(splice3.getStopIndex()).thenReturn(25);
     when(outcome3.getMutationStartIndex()).thenReturn(25);
 
     LineFactory stl = new LineFactory(results);
@@ -361,30 +329,13 @@ public class LineFactoryTest {
     // --01234567890123456789012345678
 
     // statement 1
-    when(splice1.getStartIndex()).thenReturn(7);
     when(splice1.getStopIndex()).thenReturn(7);
     when(outcome1.getMutationStartIndex()).thenReturn(7);
 
-    when(splice2.getStartIndex()).thenReturn(24);
     when(splice2.getStopIndex()).thenReturn(24);
     when(outcome2.getMutationStartIndex()).thenReturn(24);
 
-    when(splice3.getStartIndex()).thenReturn(24);
-    when(splice3.getStopIndex()).thenReturn(24);
     when(outcome3.getMutationStartIndex()).thenReturn(24);
-
-    // statement 2
-    when(splice4.getStartIndex()).thenReturn(7);
-    when(splice4.getStopIndex()).thenReturn(7);
-    when(outcome4.getMutationStartIndex()).thenReturn(7);
-
-    when(splice5.getStartIndex()).thenReturn(24);
-    when(splice5.getStopIndex()).thenReturn(24);
-    when(outcome5.getMutationStartIndex()).thenReturn(24);
-
-    when(splice6.getStartIndex()).thenReturn(24);
-    when(splice6.getStopIndex()).thenReturn(24);
-    when(outcome6.getMutationStartIndex()).thenReturn(24);
 
     LineFactory stl = new LineFactory(results);
 

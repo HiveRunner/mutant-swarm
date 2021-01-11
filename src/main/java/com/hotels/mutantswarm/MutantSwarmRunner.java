@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ import com.hotels.mutantswarm.report.ReportGenerator;
 public class MutantSwarmRunner extends StandaloneHiveRunner {
 
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmRunner.class);
+  private MutantSwarmRule mutantSwarmRule;
 
   public MutantSwarmRunner(Class<?> clazz) throws InitializationError {
     super(clazz);
@@ -59,7 +60,7 @@ public class MutantSwarmRunner extends StandaloneHiveRunner {
       testNotifier.addFailure(t);
     } finally {
       try {
-        SwarmResults swarmResults = MutantSwarmRule.getSwarmResults();
+        SwarmResults swarmResults = mutantSwarmRule.getSwarmResults();
         if (swarmResults != null) {
           log.debug("Finished testing. Generating report.");
           new ReportGenerator(swarmResults).generate();
@@ -78,7 +79,7 @@ public class MutantSwarmRunner extends StandaloneHiveRunner {
     log.debug("Setting up test rules");
     List<TestRule> rules = new ArrayList<>(super.getTestRules(target));
     HiveRunnerRule hiveRunnerRule = getHiveRunnerRule(rules);
-    MutantSwarmRule mutantSwarmRule = new MutantSwarmRule(hiveRunnerRule, getHiveRunnerConfig().getCommandShellEmulator());
+    mutantSwarmRule = new MutantSwarmRule(hiveRunnerRule, getHiveRunnerConfig().getCommandShellEmulator());
 
     /*
      * The rules are executed in reverse order to how they are added. The first rule on the list to be executed is the

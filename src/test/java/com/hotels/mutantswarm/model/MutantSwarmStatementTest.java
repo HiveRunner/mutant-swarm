@@ -16,7 +16,7 @@
 package com.hotels.mutantswarm.model;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.junit.Test;

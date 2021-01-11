@@ -16,8 +16,8 @@
 package com.hotels.mutantswarm.exec;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +28,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.exec.SwarmResults.SwarmResultsBuilder;
 import com.hotels.mutantswarm.model.MutantSwarmScript;
@@ -198,9 +198,6 @@ public class SwarmResultsTest {
     when(mutant1.getGene()).thenReturn(gene1);
     when(gene1.getScriptIndex()).thenReturn(0);
     when(gene1.getStatementIndex()).thenReturn(0);
-
-    when(script1.getIndex()).thenReturn(0);
-    when(statement1.getIndex()).thenReturn(0);
 
     SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
     builder.addTestOutcome(suiteName, mutant1, mutation1, state);

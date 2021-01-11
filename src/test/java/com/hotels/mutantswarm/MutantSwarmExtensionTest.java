@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2020 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,23 @@
  */
 package com.hotels.mutantswarm;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.klarna.hiverunner.HiveShell;
 import com.klarna.hiverunner.annotations.HiveSQL;
 import com.klarna.hiverunner.annotations.HiveSetupScript;
 
-@RunWith(MutantSwarmRunner.class)
-public class MutantSwarmTest {
+import com.hotels.mutantswarm.annotation.MutantSwarmTest;
+
+@ExtendWith(MutantSwarmExtension.class)
+public class MutantSwarmExtensionTest {
 
   @HiveSetupScript
   private final File setup = new File("src/test/resources/mutantSwarmTest/setupInputTable.sql");
@@ -39,18 +41,18 @@ public class MutantSwarmTest {
   @HiveSQL(files = { "mutantSwarmTest/scriptToTest1.sql", "mutantSwarmTest/scriptToTest2.sql" })
   public HiveShell hiveShell;
 
-  @Test
+  @MutantSwarmTest
   public void test() {
     List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
     List<String> expected = Arrays.asList("1\ttrue", "3\ttrue", "3\tfalse", "5\tfalse");
-    assertEquals(expected, result);
+    assertThat(expected, is(result));
   }
 
-  @Test
+  @MutantSwarmTest
   public void test2() {
     List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
     List<String> expected = Arrays.asList("true", "false");
-    assertEquals(expected, result);
+    assertThat(expected, is(result));
   }
 
 }
