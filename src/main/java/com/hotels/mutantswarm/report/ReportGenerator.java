@@ -97,9 +97,7 @@ public class ReportGenerator {
 
   private File resolveReportFile(File reportFolder) {
     String className = results.getSuiteName();
-    if (className.contains("class ")) {
-      className = className.replace("class ", "");
-    }
+    className = className.replace("class ", "");
     String reportFileName = String.format(reportFileNameformat, className);
     File reportFile = new File(reportFolder, reportFileName);
     return reportFile;
