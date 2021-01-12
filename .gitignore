@@ -72,3 +72,6 @@ Thumbs.db
 .project
 .settings/
 
+# JEnv #
+########
+.java-version
