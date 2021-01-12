@@ -20,31 +20,24 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Test;
 
-public class VocabularyTest {
+import com.hotels.mutantswarm.mutate.Mutation.MutationImpl;
 
+public class MutationImplTest {
+
+  private Splice splice = new Splice(49,49);
+  private MutationImpl mutationImpl = new MutationImpl("<",splice);
+  
   @Test
-  public void nameToId() {
-    int id = Vocabulary.INSTANCE.getId("TOK_JOIN");
-    String name = Vocabulary.INSTANCE.getName(id);
-    assertThat("TOK_JOIN", is(name));
+  public void checktoString() {
+    String result = mutationImpl.toString();
+    assertThat(result,is("MutationImpl [splice=Splice [startIndex=49, endIndex=49], replacementText=<]"));
   }
   
   @Test
-  public void idToName() {
-    String name = Vocabulary.INSTANCE.getName(-1);
-    int id = Vocabulary.INSTANCE.getId(name);
-    assertThat(id, is(-1));
+  public void equalSame() {
+    MutationImpl mutationImpl2 = new MutationImpl(mutationImpl.getReplacementText(),mutationImpl.getSplice());
+    boolean result = mutationImpl.equals(mutationImpl2);
+    assertThat(result, is(true));
   }
-
-  @Test(expected = NullPointerException.class)
-  public void nullName() {
-    Vocabulary.INSTANCE.getId(null);
-  }
-
-  @Test
-  public void nullId() {
-    String name = Vocabulary.INSTANCE.getName(1000000);
-    assertThat(null, is(name));
-  }
-
+  
 }

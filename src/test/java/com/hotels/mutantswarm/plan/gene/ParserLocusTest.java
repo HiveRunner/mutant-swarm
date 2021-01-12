@@ -13,38 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.mutantswarm.mutate;
+package com.hotels.mutantswarm.plan.gene;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Test;
 
-public class VocabularyTest {
+public class ParserLocusTest {
+  
+  private ParserLocus parserLocus = new ParserLocus(0,2,4);
+  private ParserLocus parserLocus2= new ParserLocus(0,2,4);;
 
   @Test
-  public void nameToId() {
-    int id = Vocabulary.INSTANCE.getId("TOK_JOIN");
-    String name = Vocabulary.INSTANCE.getName(id);
-    assertThat("TOK_JOIN", is(name));
+  public void equalSame() {
+    boolean result = parserLocus.equals(parserLocus2);
+    assertThat(result, is(true));
   }
   
   @Test
-  public void idToName() {
-    String name = Vocabulary.INSTANCE.getName(-1);
-    int id = Vocabulary.INSTANCE.getId(name);
-    assertThat(id, is(-1));
+  public void checkGetNodeIndex() {
+    int result = parserLocus.getNodeIndex();
+    assertThat(result,is(4));
   }
-
-  @Test(expected = NullPointerException.class)
-  public void nullName() {
-    Vocabulary.INSTANCE.getId(null);
-  }
-
+  
   @Test
-  public void nullId() {
-    String name = Vocabulary.INSTANCE.getName(1000000);
-    assertThat(null, is(name));
+  public void checkToString() {
+    String result = parserLocus.toString();
+    assertThat(result,is("ParserLocus [scriptIndex=0, statementIndex=2, nodeIndex=4]"));
   }
-
 }
