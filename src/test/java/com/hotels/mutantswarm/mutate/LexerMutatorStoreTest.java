@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 package com.hotels.mutantswarm.mutate;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ import org.antlr.runtime.CommonToken;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Imposter;
 
@@ -53,7 +52,7 @@ public class LexerMutatorStoreTest {
     List<Mutator> mutators = lexerStore.getMutatorsFor(position, stream);
 
     assertThat(mutators.size(), is(1));
-    assertEquals(mutators.get(0).getDescription(), description);
+    assertThat(mutators.get(0).getDescription(), is(description));
   }
 
   @Test

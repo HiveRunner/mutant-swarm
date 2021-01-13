@@ -13,38 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.mutantswarm.mutate;
+package com.hotels.mutantswarm.plan.gene;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Before;
 import org.junit.Test;
 
-public class VocabularyTest {
+public class LexerLocusTest {
 
-  @Test
-  public void nameToId() {
-    int id = Vocabulary.INSTANCE.getId("TOK_JOIN");
-    String name = Vocabulary.INSTANCE.getName(id);
-    assertThat("TOK_JOIN", is(name));
-  }
-  
-  @Test
-  public void idToName() {
-    String name = Vocabulary.INSTANCE.getName(-1);
-    int id = Vocabulary.INSTANCE.getId(name);
-    assertThat(id, is(-1));
-  }
+  private LexerLocus lexerLocus;
+  private LexerLocus lexerLocus2;
 
-  @Test(expected = NullPointerException.class)
-  public void nullName() {
-    Vocabulary.INSTANCE.getId(null);
+  @Before
+  public void setUp() {
+    List<Integer> indexes = Arrays.asList(1,2);
+    lexerLocus = new LexerLocus(2,3,indexes);
+    lexerLocus2 = new LexerLocus(2,3,indexes);
   }
 
   @Test
-  public void nullId() {
-    String name = Vocabulary.INSTANCE.getName(1000000);
-    assertThat(null, is(name));
+  public void checkToString() {
+    String result = lexerLocus.toString();
+    assertThat(result,is("LexerLocus [scriptIndex=2, statementIndex=3, indexes=[1, 2]]"));
+  }
+
+  @Test
+  public void equalsSame() {
+    boolean result = lexerLocus.equals(lexerLocus2);
+    assertThat(result, is(true));
   }
 
 }

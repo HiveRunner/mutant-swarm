@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package com.hotels.mutantswarm.mutate;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.plan.gene.Gene;
 import com.hotels.mutantswarm.plan.gene.LexerGene;
@@ -81,6 +81,21 @@ public class SpliceTest {
   public void unknownGeneType(){
     Splice.Factory spliceFactory = new Splice.Factory();
     spliceFactory.newInstance(gene);
+  }
+  
+  @Test
+  public void equalSame() {
+    when(lexerGene.getTokens()).thenReturn(tokens);
+    when(tokens.get(0)).thenReturn(token);
+    
+    when(token.getStartIndex()).thenReturn(2);
+    when(token.getStopIndex()).thenReturn(5);
+    
+    Splice.Factory spliceFactory = new Splice.Factory();
+    Splice splice = spliceFactory.newInstance(lexerGene);
+    Splice splice2 = spliceFactory.newInstance(lexerGene);
+    assertThat((splice.equals(splice2)), is(true));
+    assertThat(splice.hashCode(), is(splice2.hashCode()));
   }
 
 }
