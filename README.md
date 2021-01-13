@@ -49,7 +49,7 @@ Mutant Swarm extension you simply need to replace this with the `com.hotels.muta
 You also need to annotate the tests that you want run with Mutant Swarm with `@MutantSwarmTest` instead of `@Test`.
 
 Due to the many changes from JUnit4 to JUnit5, some limitations appeared when migrating Mutant Swarm to the extension model.
-Although Mutant Swarm works with JUnit5, there are some flaws regarding with its compatibility with maven and the surefire plugin (see
+Although Mutant Swarm works with JUnit5, there are some flaws regarding its compatibility with maven and the surefire plugin (see
 `Limitations and future work` section).
 
 ## Locate and view report
