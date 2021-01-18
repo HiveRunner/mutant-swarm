@@ -100,7 +100,7 @@ However, coverage insights are arguably even more pertinent for complex and mono
   `@MutantSwarmTest` annotation at the top of the code and leave the `@Test` annotations unchanged. We have raised this issue [on Stack Overflow](https://stackoverflow.com/questions/64872557/annotate-a-full-class-with-an-extension-while-intercepting-all-the-tests-and-in).
 * If you run Maven with the JUnit5 extension, the build will fail. This is because some of the tests with the mutations shouldn't pass, and since
   maven recognises these as failed tests, the build also fails. It would be nice to be able to override the test results so the failed tests with the
-  mutations don't influence the maven build.
+  mutations don't influence the Maven build.
 
 # Contact
 
