@@ -71,4 +71,7 @@ Thumbs.db
 .classpath
 .project
 .settings/
+
+# jEnv #
+########
 .java-version
