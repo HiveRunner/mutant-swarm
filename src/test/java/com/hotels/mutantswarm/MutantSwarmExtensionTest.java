@@ -54,5 +54,12 @@ public class MutantSwarmExtensionTest {
     List<String> expected = Arrays.asList("true", "false");
     assertThat(expected, is(result));
   }
+  
+  @MutantSwarmTest
+  public void test3() {
+    List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
+    List<String> expected = Arrays.asList("false", "false");
+    assertThat(expected, is(result));
+  }
 
 }
