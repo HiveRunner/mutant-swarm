@@ -29,22 +29,16 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
-import org.junit.jupiter.api.extension.InvocationInterceptor.Invocation;
-import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
-import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
-import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import com.google.common.base.Preconditions;
 import com.klarna.hiverunner.HiveRunnerExtension;
@@ -64,8 +58,9 @@ import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
 import com.hotels.mutantswarm.report.ReportGenerator;
 
-public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAllCallback, TestWatcher,
-    TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback, TestExecutionExceptionHandler, InvocationInterceptor {
+public class MutantSwarmExtension extends HiveRunnerExtension
+    implements AfterAllCallback, TestWatcher, TestTemplateInvocationContextProvider, TestInstancePostProcessor,
+    AfterEachCallback, TestExecutionExceptionHandler, InvocationInterceptor {
 
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmExtension.class);
   private static AtomicReference<ExecutionContext> contextRef = new AtomicReference<>();
@@ -79,31 +74,12 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   private MutantSwarmCore core = new MutantSwarmCore();
 
   @Override
-  public void handleTestExecutionException(ExtensionContext context, Throwable cause) throws Throwable {
-    if (testNumber != 0) {
-      if (firstTestPassed == true) {
-        log.info("Mutant killed - good. " + cause.toString());
-        resultContext
-            .addTestOutcome(context.getRequiredTestMethod().toString(), mutants.get(testNumber - 1),
-                mutatedSources.get(testNumber - 1).getMutation(), MutantState.KILLED);
-      }
-    } else {
-      firstTestPassed = false;
-      throw new Exception("Test failed");
-      // TODO: if the first test does not pass, then we should not run it again with the mutations because it's useless
-    }
-    
-  }
-
-  @Override
   public boolean supportsTestTemplate(ExtensionContext context) {
     return context.getTestMethod().isPresent();
   }
 
   @Override
   public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-    
-    System.out.println("provideTestTemplateInvocationContexts");
     testNumber = -1;
     firstTestPassed = true;
     initialiseScripts(context);
@@ -132,8 +108,6 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   @Override
   public void postProcessTestInstance(Object target, ExtensionContext extensionContext) {
     testNumber++;
-    
-    System.out.println("postProcessTestInstance");
 
     // The first test per swarm should run normally and without mutations
     if (testNumber != 0) {
@@ -151,7 +125,6 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
   @Override
   public void testSuccessful(ExtensionContext context) {
-    System.out.println("testSuccesful");
     if (testNumber != 0) {
       if (firstTestPassed == true) {
         log.info("Mutant survived - bad");
@@ -165,8 +138,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   }
 
   @Override
-  public void testFailed(ExtensionContext context, Throwable cause) {
-    System.out.println("testFailed");
+  public void handleTestExecutionException(ExtensionContext context, Throwable cause) throws Throwable {
     if (testNumber != 0) {
       if (firstTestPassed == true) {
         log.info("Mutant killed - good. " + cause.toString());
@@ -176,6 +148,9 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
       }
     } else {
       firstTestPassed = false;
+      // If the first test without mutations fails, then we DO throw an exception because it should be successful for MS
+      // to work
+      throw new Exception("Test failed");
       // TODO: if the first test does not pass, then we should not run it again with the mutations because it's useless
     }
   }
