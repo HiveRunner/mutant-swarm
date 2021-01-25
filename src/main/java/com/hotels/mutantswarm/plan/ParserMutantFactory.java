@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import com.hotels.mutantswarm.plan.gene.ParserGene;
 import com.hotels.mutantswarm.plan.gene.ParserLocus;
 
 /** Generates mutants from parser abstract syntax tree */
-class ParserMutantFactory implements MutantFactory {
+public class ParserMutantFactory implements MutantFactory {
 
   private final ParserMutatorStore parserMutatorStore;
 

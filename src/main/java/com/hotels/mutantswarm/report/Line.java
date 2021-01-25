@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Represents a formatted line of a statement, containing all info needed to appropriately render and format the line
  */
-class Line {
+public class Line {
 
   /**
    * Incrementally builds Lines. Looks up mutant outcomes and uses this to incrementally build text elements and lines

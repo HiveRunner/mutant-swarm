@@ -45,7 +45,6 @@ public class LineTest {
     when(survivors.size()).thenReturn(2);
     when(text1.getKilled()).thenReturn(killed);
     when(killed.size()).thenReturn(0);
-    when(text1.getType()).thenReturn(Text.Type.SURVIVOR);
 
     LineBuilder lineBuilder = new LineBuilder(0);
     lineBuilder.addText(text1);

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import com.hotels.mutantswarm.plan.gene.LexerGene;
 import com.hotels.mutantswarm.plan.gene.LexerLocus;
 
 /** Generates mutants from lexer token stream */
-class LexerMutantFactory implements MutantFactory {
+public class LexerMutantFactory implements MutantFactory {
 
   private final LexerMutatorStore lexerMutatorStore;
 
