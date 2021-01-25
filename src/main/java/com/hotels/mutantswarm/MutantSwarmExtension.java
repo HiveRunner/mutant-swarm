@@ -147,8 +147,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension
       }
     } else {
       firstTestPassed = false;
-      // If the first test without mutations fails, then we DO throw an exception because it should be successful for MS
-      // to work
+      // If the first test without mutations fails, then we DO throw an exception because it should be successful
       throw new Exception("Test failed");
       // TODO: if the first test does not pass, then we should not run it again with the mutations because it's useless
     }
@@ -171,8 +170,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension
       Field field = fields.iterator().next();
       HiveSQL annotation = field.getAnnotation(HiveSQL.class);
       List<Path> scriptPaths = getScriptPaths(annotation);
-      Charset charset = annotation.encoding().equals("") ? Charset.defaultCharset()
-          : Charset.forName(annotation.encoding());
+      Charset charset = annotation.encoding().equals("") ? Charset.defaultCharset() : Charset.forName(annotation.encoding());
       scriptsUnderTest = hiveShellBuilder.fromScriptPaths(scriptPaths, charset);
     } catch (Throwable t) {
       throw new IllegalArgumentException("Failed to init field annotated with @HiveSQL: " + t.getMessage(), t);
