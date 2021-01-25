@@ -28,15 +28,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.hotels.mutantswarm.mutate.LexerMutatorStore.Imposters.Imposter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LexerMutatorStoreTest {
 
   @Mock
   private CommonToken token1, token2;
-  @Mock
-  private Imposter imposter1, imposter2, imposter3;
   @Mock
   private List<CommonToken> stream;
 
