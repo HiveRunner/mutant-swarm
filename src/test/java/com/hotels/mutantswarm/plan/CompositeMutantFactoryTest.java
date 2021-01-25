@@ -25,7 +25,6 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
@@ -44,7 +43,6 @@ public class CompositeMutantFactoryTest {
 
   @Test
   public void testNewMutants() {
-    Mockito.reset(parserMutantFactory);
     int scriptIndex = 0;
     List<Mutant> lexerList = Arrays.asList(mutant1, mutant2);
     List<Mutant> parserList = Arrays.asList(mutant3);
