@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Represents a formatted line of a statement, containing all info needed to appropriately render and format the line
  */
-public class Line {
+class Line {
 
   /**
    * Incrementally builds Lines. Looks up mutant outcomes and uses this to incrementally build text elements and lines
