@@ -145,6 +145,10 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.plugin.version}</version>
         <configuration>
+          <!-- If we don't set forkMode to 'always', a Mockito error will appear in Maven saying that it can't mock certain 
+            classes.
+            This error only appears in Maven (not Eclipse)
+            TODO: find a way to run all the tests successfully in Maven -->
           <forkMode>always</forkMode>
           <systemProperties>
             <!-- Any hive conf property may be overridden here by suffixing
