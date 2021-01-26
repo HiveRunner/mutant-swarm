@@ -34,6 +34,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <hive.execution.engine>mr</hive.execution.engine>
     <junit.jupiter.version>5.7.0</junit.jupiter.version>
+    <mockito.version>3.7.7</mockito.version>
     <!-- overriding parent surefire version as versions >=2.22.0 detect no tests to run in some environments (e.g. GH actions) -->
     <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
   </properties>
@@ -124,7 +125,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.7.7</version>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
