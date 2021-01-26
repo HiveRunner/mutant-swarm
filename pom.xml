@@ -134,6 +134,7 @@
       <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <build>
@@ -144,6 +145,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.plugin.version}</version>
         <configuration>
+          <forkMode>always</forkMode>
           <systemProperties>
             <!-- Any hive conf property may be overridden here by suffixing
               it with 'hiveconf_' -->

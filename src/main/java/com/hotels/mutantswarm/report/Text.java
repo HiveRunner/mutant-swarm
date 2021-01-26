@@ -24,7 +24,7 @@ import com.hotels.mutantswarm.exec.Outcome;
  * Represents a formatted block of text, which might optionally contain info about experiement survivors and killed
  * mutations.
  */
-public class Text {
+class Text {
 
   /**
    * Incrementally builds Text blocks.

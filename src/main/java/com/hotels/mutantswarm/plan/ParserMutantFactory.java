@@ -28,7 +28,7 @@ import com.hotels.mutantswarm.plan.gene.ParserGene;
 import com.hotels.mutantswarm.plan.gene.ParserLocus;
 
 /** Generates mutants from parser abstract syntax tree */
-public class ParserMutantFactory implements MutantFactory {
+class ParserMutantFactory implements MutantFactory {
 
   private final ParserMutatorStore parserMutatorStore;
 

@@ -29,7 +29,7 @@ import com.hotels.mutantswarm.plan.gene.LexerGene;
 import com.hotels.mutantswarm.plan.gene.LexerLocus;
 
 /** Generates mutants from lexer token stream */
-public class LexerMutantFactory implements MutantFactory {
+class LexerMutantFactory implements MutantFactory {
 
   private final LexerMutatorStore lexerMutatorStore;
 
