@@ -85,8 +85,10 @@ public class MutantSwarmExtension extends HiveRunnerExtension
 
     if (contextRef.get() == null) {
       Swarm swarm = core.generateSwarm(scriptsUnderTest, HiveRunnerConfig.getCommandShellEmulator());
+      String className = context.getRequiredTestClass().toString();
+      className = className.replace("class ", "");
       SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm,
-          context.getRequiredTestClass().toString());
+          className);
       contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
     }
 
