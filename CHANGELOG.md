@@ -7,8 +7,9 @@
 - Excluded `javax.jms.jms` dependency as it's not available in Maven Central.
 - Excluded various hbase dependencies which aren't used and depend on `tools.jar` which isn't available in Java 11.
 - HTML is now using logo.png from the resources folder instead of the unexistent one.
-- Changed from version `1.9.5` of `mockito-all` to version `3.6.28` of mockito-core.
+- Changed from version `1.9.5` of `mockito-all` version `3.7.7` of `mockito-junit-jupiter`.
 - Combined `hamcrest-all`, `hamcrest-library` and `hamcrest-core` in to version `2.2` of `hamcrest`.
+- Updated `maven-surefire-plugin` from version `2.21.0` to `3.0.0-M5`.
 
 ### Added
 - JUnit5 extension class equivalent for the MutantSwarm Rule.
