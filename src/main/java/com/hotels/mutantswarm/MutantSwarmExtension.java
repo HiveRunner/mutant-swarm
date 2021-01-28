@@ -150,7 +150,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension
     } else {
       firstTestPassed = false;
       // If the first test without mutations fails, then we DO throw an exception because it should be successful
-      throw new Exception("Test failed");
+      throw new Exception("Test failed", cause);
       // TODO: if the first test does not pass, then we should not run it again with the mutations because it's useless
     }
   }
