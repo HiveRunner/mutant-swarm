@@ -33,47 +33,47 @@ import com.hotels.mutantswarm.plan.gene.ParserGene;
 @RunWith(MockitoJUnitRunner.class)
 public class TextReplaceMutatorTest {
 
-	@Mock
-	private ParserGene gene;
-	@Mock
-	private Locus locus;
-	@Mock
-	private Splice splice;
-	@Mock
-	private CommonToken token;
-	@Mock
-	private ASTNode tree;
+  @Mock
+  private ParserGene gene;
+  @Mock
+  private Locus locus;
+  @Mock
+  private Splice splice;
+  @Mock
+  private CommonToken token;
+  @Mock
+  private ASTNode tree;
 
-	private Mutator mutator;
-	private Splice.Factory spliceFactory;
+  private Mutator mutator;
+  private Splice.Factory spliceFactory;
 
-	@Before
-	public void setupMocks() {
+  @Before
+  public void setupMocks() {
     when(gene.getTree()).thenReturn(tree);
     when(tree.getToken()).thenReturn(token);
     when(token.getStartIndex()).thenReturn(1);
     when(token.getStopIndex()).thenReturn(10);
-    
+
     spliceFactory = new Splice.Factory();
     splice = spliceFactory.newInstance(gene);
-	  mutator = new TextReplaceMutator(spliceFactory, "test", "=", "<>");
-	}
-	
-	@Test
-	public void description() {
-		assertThat(mutator.getDescription(), is("test"));
-	}
+    mutator = new TextReplaceMutator(spliceFactory, "test", "=", "<>");
+  }
 
-	@Test
-	public void name() {
-		assertThat(mutator.getName(), is("= -> <>"));
-	}
+  @Test
+  public void description() {
+    assertThat(mutator.getDescription(), is("test"));
+  }
 
-	@Test
-	public void apply() {
-		Mutation mutation = mutator.apply(gene);
+  @Test
+  public void name() {
+    assertThat(mutator.getName(), is("= -> <>"));
+  }
 
-		assertThat(mutation.getSplice(), is(splice));
-		assertThat(mutation.getReplacementText(), is("<>"));
-	}
+  @Test
+  public void apply() {
+    Mutation mutation = mutator.apply(gene);
+
+    assertThat(mutation.getSplice(), is(splice));
+    assertThat(mutation.getReplacementText(), is("<>"));
+  }
 }
