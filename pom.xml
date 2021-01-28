@@ -34,8 +34,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <hive.execution.engine>mr</hive.execution.engine>
     <junit.jupiter.version>5.7.0</junit.jupiter.version>
+    <mockito.version>3.7.7</mockito.version>
     <!-- overriding parent surefire version as versions >=2.22.0 detect no tests to run in some environments (e.g. GH actions) -->
-    <maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
   </properties>
 
   <dependencies>
@@ -124,9 +125,16 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.6.28</version>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -137,6 +145,11 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.plugin.version}</version>
         <configuration>
+          <!-- If we don't set forkMode to 'always', a Mockito error will appear in Maven saying that it can't mock certain 
+            classes.
+            This error only appears in Maven (not Eclipse)
+            TODO: find a way to run all the tests successfully in Maven -->
+          <forkMode>always</forkMode>
           <systemProperties>
             <!-- Any hive conf property may be overridden here by suffixing
               it with 'hiveconf_' -->

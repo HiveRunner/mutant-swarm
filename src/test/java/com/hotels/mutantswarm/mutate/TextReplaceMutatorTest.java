@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2020 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,53 +20,60 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 import org.antlr.runtime.CommonToken;
+import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.hotels.mutantswarm.plan.gene.Gene;
 import com.hotels.mutantswarm.plan.gene.Locus;
+import com.hotels.mutantswarm.plan.gene.ParserGene;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TextReplaceMutatorTest {
 
-	@Mock
-	private Gene gene;
-	@Mock
-	private Locus locus;
-	@Mock
-	private Splice.Factory spliceFactory;
-	@Mock
-	private Splice splice;
-	@Mock
-	private CommonToken token;
+  @Mock
+  private ParserGene gene;
+  @Mock
+  private Locus locus;
+  @Mock
+  private Splice splice;
+  @Mock
+  private CommonToken token;
+  @Mock
+  private ASTNode tree;
 
-	private Mutator mutator;
+  private Mutator mutator;
+  private Splice.Factory spliceFactory;
 
-	@Before
-	public void setupMocks() {
-	  mutator = new TextReplaceMutator(spliceFactory, "test", "=", "<>");
-	}
-	
-	@Test
-	public void description() {
-		assertThat(mutator.getDescription(), is("test"));
-	}
+  @Before
+  public void setupMocks() {
+    when(gene.getTree()).thenReturn(tree);
+    when(tree.getToken()).thenReturn(token);
+    when(token.getStartIndex()).thenReturn(1);
+    when(token.getStopIndex()).thenReturn(10);
 
-	@Test
-	public void name() {
-		assertThat(mutator.getName(), is("= -> <>"));
-	}
+    spliceFactory = new Splice.Factory();
+    splice = spliceFactory.newInstance(gene);
+    mutator = new TextReplaceMutator(spliceFactory, "test", "=", "<>");
+  }
 
-	@Test
-	public void apply() {
-	  when(spliceFactory.newInstance(gene)).thenReturn(splice);
+  @Test
+  public void description() {
+    assertThat(mutator.getDescription(), is("test"));
+  }
 
-		Mutation mutation = mutator.apply(gene);
+  @Test
+  public void name() {
+    assertThat(mutator.getName(), is("= -> <>"));
+  }
 
-		assertThat(mutation.getSplice(), is(splice));
-		assertThat(mutation.getReplacementText(), is("<>"));
-	}
+  @Test
+  public void apply() {
+    Mutation mutation = mutator.apply(gene);
+
+    assertThat(mutation.getSplice(), is(splice));
+    assertThat(mutation.getReplacementText(), is("<>"));
+  }
 }

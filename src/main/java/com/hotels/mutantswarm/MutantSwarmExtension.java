@@ -30,6 +30,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.InvocationInterceptor;
+import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
@@ -55,8 +57,9 @@ import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
 import com.hotels.mutantswarm.report.ReportGenerator;
 
-public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAllCallback, TestWatcher,
-    TestTemplateInvocationContextProvider, TestInstancePostProcessor, AfterEachCallback {
+public class MutantSwarmExtension extends HiveRunnerExtension
+    implements AfterAllCallback, TestWatcher, TestTemplateInvocationContextProvider, TestInstancePostProcessor,
+    AfterEachCallback, TestExecutionExceptionHandler, InvocationInterceptor {
 
   private static final Logger log = LoggerFactory.getLogger(MutantSwarmExtension.class);
   private static AtomicReference<ExecutionContext> contextRef = new AtomicReference<>();
@@ -82,8 +85,10 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
 
     if (contextRef.get() == null) {
       Swarm swarm = core.generateSwarm(scriptsUnderTest, HiveRunnerConfig.getCommandShellEmulator());
+      String className = context.getRequiredTestClass().toString();
+      className = className.replace("class ", "");
       SwarmResultsBuilder swarmResultBuilder = new SwarmResultsBuilder(swarm,
-          context.getRequiredTestClass().toString());
+          className);
       contextRef.compareAndSet(null, new ExecutionContext(swarm, swarmResultBuilder));
     }
 
@@ -134,7 +139,7 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
   }
 
   @Override
-  public void testFailed(ExtensionContext context, Throwable cause) {
+  public void handleTestExecutionException(ExtensionContext context, Throwable cause) throws Throwable {
     if (testNumber != 0) {
       if (firstTestPassed == true) {
         log.info("Mutant killed - good. " + cause.toString());
@@ -144,6 +149,8 @@ public class MutantSwarmExtension extends HiveRunnerExtension implements AfterAl
       }
     } else {
       firstTestPassed = false;
+      // If the first test without mutations fails, then we DO throw an exception because it should be successful
+      throw new Exception("Test failed", cause);
       // TODO: if the first test does not pass, then we should not run it again with the mutations because it's useless
     }
   }

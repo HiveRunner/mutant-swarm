@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2020 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,6 @@ public class LineTest {
     when(survivors.size()).thenReturn(2);
     when(text1.getKilled()).thenReturn(killed);
     when(killed.size()).thenReturn(0);
-    when(text1.getType()).thenReturn(Text.Type.SURVIVOR);
 
     LineBuilder lineBuilder = new LineBuilder(0);
     lineBuilder.addText(text1);

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2020 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,15 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CompositeMutantFactoryTest {
 
   @Mock
@@ -58,7 +59,7 @@ public class CompositeMutantFactoryTest {
     assertThat(newMutants.get(2), is(mutant3));
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testUnmodifiableList() {
     int scriptIndex = 0;
     List<Mutant> lexerList = Arrays.asList(mutant1, mutant2);
@@ -67,7 +68,7 @@ public class CompositeMutantFactoryTest {
     when(lexerMutantFactory.newMutants(scriptIndex, statement)).thenReturn(lexerList);
 
     List<Mutant> newMutants = mutantFactory.newMutants(scriptIndex, statement);
-    newMutants.clear();
+    Assertions.assertThrows(UnsupportedOperationException.class, () -> newMutants.clear());
   }
 
 }
