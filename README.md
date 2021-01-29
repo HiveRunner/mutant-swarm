@@ -48,10 +48,6 @@ Mutant Swarm extension you simply need to replace this with the `com.hotels.muta
 
 You also need to annotate the tests that you want run with Mutant Swarm with `@MutantSwarmTest` instead of `@Test`.
 
-Due to the many changes from JUnit4 to JUnit5, some limitations appeared when migrating Mutant Swarm to the extension model.
-Although Mutant Swarm works with JUnit5, there are some flaws that we could not solve with the current tools that JUnit offers (see
-`Limitations and future work` section).
-
 ## Locate and view report
 Mutant Swarm currently writes out an HTML report to the `target/mutant-swarm-reports` folder of your project. The name of the file
 will be the test class name and its package. So, for example, if we are testing the class `MutantSwarmRunnerTest`
@@ -98,9 +94,6 @@ However, coverage insights are arguably even more pertinent for complex and mono
 * The responsibility for unit test execution and mutation testing is currently conflated.
 * If we want to use JUnit5, we have to change every `@Test` annotation in the test class with `@MutantSwarmTest`. Ideally, we would like to simply place the
   `@MutantSwarmTest` annotation at the top of the code and leave the `@Test` annotations unchanged. We have raised this issue [on Stack Overflow](https://stackoverflow.com/questions/64872557/annotate-a-full-class-with-an-extension-while-intercepting-all-the-tests-and-in).
-* If you run Maven with the JUnit5 extension, the build will fail. This is because some of the tests with the mutations shouldn't pass, and since
-  Maven recognises these as failed tests, the build also fails. It would be nice to be able to override the test results so the failed tests with the
-  mutations don't influence the Maven build.
 
 # Contact
 
