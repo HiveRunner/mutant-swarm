@@ -21,16 +21,16 @@ import static org.mockito.Mockito.when;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.plan.gene.Locus;
 import com.hotels.mutantswarm.plan.gene.ParserGene;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TextReplaceMutatorTest {
 
   @Mock
@@ -47,7 +47,7 @@ public class TextReplaceMutatorTest {
   private Mutator mutator;
   private Splice.Factory spliceFactory;
 
-  @Before
+  @BeforeEach
   public void setupMocks() {
     when(gene.getTree()).thenReturn(tree);
     when(tree.getToken()).thenReturn(token);

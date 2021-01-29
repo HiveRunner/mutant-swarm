@@ -23,18 +23,18 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.model.MutantSwarmScript;
 import com.hotels.mutantswarm.model.MutantSwarmSource;
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 import com.hotels.mutantswarm.plan.Swarm.SwarmFactory;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SwarmFactoryTest {
 
 	@Mock
@@ -48,7 +48,7 @@ public class SwarmFactoryTest {
 	@Mock
 	private Mutant mutant1_1_1_1, mutant1_1_2_1, mutant1_1_2_2, mutant1_2_1_1;
 
-	@Before
+	@BeforeEach
 	public void initialiseMocks() {
 		when(source.getScripts()).thenReturn(asList(script1, script2));
 		when(script1.getStatements()).thenReturn(asList(statement1_1, statement1_2));

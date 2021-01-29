@@ -25,11 +25,11 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 import com.hotels.mutantswarm.mutate.LexerMutatorStore;
@@ -37,7 +37,7 @@ import com.hotels.mutantswarm.mutate.Mutator;
 import com.hotels.mutantswarm.plan.gene.LexerGene;
 import com.hotels.mutantswarm.plan.gene.LexerLocus;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LexerMutantFactoryTest {
 
   @Mock
@@ -51,7 +51,7 @@ public class LexerMutantFactoryTest {
 
   private LexerMutantFactory mutantFactory;
 
-  @Before
+  @BeforeEach
   public void initialiseMocks() {
     mutantFactory = new LexerMutantFactory(store);
   }
