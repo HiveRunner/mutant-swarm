@@ -19,7 +19,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement.Factory;
 
@@ -35,9 +36,9 @@ public class MutantSwarmStatementTest {
     assertThat(mutantSwarmStatement.toString(), is("MutantSwarmStatement.Impl [index=3, sql=CREATE TABLE foobar AS SELECT c FROM bar WHERE b = 3, tokens=[[@0,0:5='CREATE',<70>,1:0], [@2,7:11='TABLE',<280>,1:7], [@4,13:18='foobar',<24>,1:13], [@6,20:21='AS',<36>,1:20], [@8,23:28='SELECT',<256>,1:23], [@10,30:30='c',<24>,1:30], [@12,32:35='FROM',<130>,1:32], [@14,37:39='bar',<24>,1:37], [@16,41:45='WHERE',<323>,1:41], [@18,47:47='b',<24>,1:47], [@20,49:49='=',<18>,1:49], [@22,51:51='3',<340>,1:51]], tree=TOK_CREATETABLE]"));
   }
   
-  @Test(expected = RuntimeException.class)
+  @Test
   public void checkIncorrectNewInstance() {
-    MutantSwarmStatement mutantSwarmStatement = factory.newInstance(2, 3, "incorrectqueryCREATE TABLE foobar AS SELECT c FROM bar WHERE b = 3");
+    Assertions.assertThrows(RuntimeException.class, () -> factory.newInstance(2, 3, "incorrectqueryCREATE TABLE foobar AS SELECT c FROM bar WHERE b = 3"));
   }
 
 }

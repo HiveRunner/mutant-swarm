@@ -17,14 +17,14 @@ package com.hotels.mutantswarm.exec;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -80,7 +80,7 @@ public class SwarmResultsTest {
     builder.addTestOutcome(suiteName, mutant1, mutation1, state);
     SwarmResults swarmResults = builder.build();
 
-    assertTrue(swarmResults.hasOutcomesFor(script1, statement1));
+    Assertions.assertTrue(swarmResults.hasOutcomesFor(script1, statement1));
 
     List<Outcome> outcomes = swarmResults.outcomesFor(script1, statement1);
 
@@ -110,7 +110,7 @@ public class SwarmResultsTest {
     builder.addTestOutcome(suiteName, mutant2, mutation2, state2);
 
     SwarmResults swarmResults = builder.build();
-    assertTrue(swarmResults.hasOutcomesFor(script1, statement1));
+    Assertions.assertTrue(swarmResults.hasOutcomesFor(script1, statement1));
 
     List<Outcome> outcomes = swarmResults.outcomesFor(script1, statement1);
     Collections.sort(outcomes, new Comparator<Outcome>() {
@@ -144,7 +144,7 @@ public class SwarmResultsTest {
     builder.addTestOutcome(suiteName, mutant1, mutation1, state2);
     SwarmResults swarmResults = builder.build();
 
-    assertTrue(swarmResults.hasOutcomesFor(script1, statement1));
+    Assertions.assertTrue(swarmResults.hasOutcomesFor(script1, statement1));
 
     List<Outcome> outcomes = swarmResults.outcomesFor(script1, statement1);
 
@@ -159,7 +159,7 @@ public class SwarmResultsTest {
     SwarmResultsBuilder builder = new SwarmResultsBuilder(swarm, suiteName);
     SwarmResults swarmResults = builder.build();
 
-    assertFalse(swarmResults.hasOutcomesFor(script1, statement1));
+    Assertions.assertFalse(swarmResults.hasOutcomesFor(script1, statement1));
   }
 
   @Test
