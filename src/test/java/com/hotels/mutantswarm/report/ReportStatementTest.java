@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,32 +59,32 @@ public class ReportStatementTest {
     tokens.add(token2);
     
     reportStatement = new ReportStatement(delegate,lines);
-    when(delegate.getIndex()).thenReturn(2);
-    when(delegate.getSql()).thenReturn("this is an SQL query");
-    when(delegate.getTokens()).thenReturn(tokens);
-    when(delegate.getTree()).thenReturn(tree);
   }
 
   @Test
   public void checkGetIndex() {
+    when(delegate.getIndex()).thenReturn(2);
     int result = reportStatement.getIndex();
     assertThat(result,is(2));
   }
   
   @Test
   public void checkGetSql() {
+    when(delegate.getSql()).thenReturn("this is an SQL query");
     String result = reportStatement.getSql();
     assertThat(result,is("this is an SQL query"));
   }
   
   @Test
   public void checkGetTokens() {
+    when(delegate.getTokens()).thenReturn(tokens);
     List<CommonToken> result = reportStatement.getTokens();
     assertThat(result,is(tokens));
   }
   
   @Test
   public void checkGetTree() {
+    when(delegate.getTree()).thenReturn(tree);
     ASTNode result = reportStatement.getTree();
     assertThat(result,is(tree));
   }
