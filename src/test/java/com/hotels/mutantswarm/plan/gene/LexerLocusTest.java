@@ -21,15 +21,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LexerLocusTest {
 
   private LexerLocus lexerLocus;
   private LexerLocus lexerLocus2;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     List<Integer> indexes = Arrays.asList(1,2);
     lexerLocus = new LexerLocus(2,3,indexes);

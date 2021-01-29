@@ -17,18 +17,20 @@ package com.hotels.mutantswarm.report;
 
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 
 public class AssetUtilTest {
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void writeResourceNullException() throws IOException {
-    AssetUtil.writeResourceToFile("unexistent resource path", null);
+    Assertions.assertThrows(NullPointerException.class, () -> AssetUtil.writeResourceToFile("unexistent resource path", null));
   }
   
-  @Test(expected = NullPointerException.class)
+  @Test
   public void readResourceNullException() throws IOException {
-    AssetUtil.readResourceAsString("unexistent resource path");
+    Assertions.assertThrows(NullPointerException.class, () -> AssetUtil.readResourceAsString("unexistent resource path"));
   }
   
 }

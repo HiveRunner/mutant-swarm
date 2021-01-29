@@ -24,15 +24,15 @@ import java.util.List;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ReportStatementTest {
   
   @Mock
@@ -48,7 +48,7 @@ public class ReportStatementTest {
   private ReportStatement reportStatement;
   private List<CommonToken> tokens = new ArrayList<CommonToken>();
   
-  @Before
+  @BeforeEach
   public void setUpMocks() {
     
     lines.add(line1);
