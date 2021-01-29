@@ -25,57 +25,58 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.mutate.Mutation;
 import com.hotels.mutantswarm.plan.Mutant;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OutcomeTest {
-  
+
   @Mock
   private Mutant mutant;
   @Mock
   private Mutation mutation, mutation2;
   @Mock
-  private TestOutcome testOutcome1, testOutcome2, testOutcome3; 
-  
+  private TestOutcome testOutcome1, testOutcome2, testOutcome3;
+
   private List<TestOutcome> testOutcomes;
-  
+
   @Before
   public void setUp() {
     testOutcomes = asList(testOutcome1, testOutcome2, testOutcome3);
   }
-  
+
   @Test
-  public void testStateKilled(){
+  public void testStateKilled() {
     when(testOutcome1.getState()).thenReturn(MutantState.SURVIVED);
     when(testOutcome2.getState()).thenReturn(MutantState.KILLED);
     when(testOutcome3.getState()).thenReturn(MutantState.SURVIVED);
-    
+
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     assertThat(outcome.getState(), is(MutantState.KILLED));
   }
-  
+
   @Test
-  public void testStateSurvived(){
+  public void testStateSurvived() {
     when(testOutcome1.getState()).thenReturn(MutantState.SURVIVED);
     when(testOutcome2.getState()).thenReturn(MutantState.SURVIVED);
     when(testOutcome3.getState()).thenReturn(MutantState.SURVIVED);
-    
+
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     assertThat(outcome.getState(), is(MutantState.SURVIVED));
   }
-  
+
   @Test
-  public void checkToString(){
+  public void checkToString() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
     String result = outcome.toString();
-    assertThat(result, is("Outcome [mutant=mutant, mutation=mutation, state=SURVIVED, testOutcomes=[testOutcome1, testOutcome2, testOutcome3]]"));
+    assertThat(result, is(
+        "Outcome [mutant=mutant, mutation=mutation, state=SURVIVED, testOutcomes=[testOutcome1, testOutcome2, testOutcome3]]"));
   }
-  
+
   @Test
   public void equalsNull() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
@@ -88,14 +89,14 @@ public class OutcomeTest {
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
     assertThat(outcome.equals(outcome2), is(false));
   }
-  
+
   @Test
   public void equalsMutationNull() {
     Outcome outcome = new Outcome(mutant, null, testOutcomes);
     Outcome outcome2 = new Outcome(mutant, mutation, testOutcomes);
     assertThat(outcome.equals(outcome2), is(false));
   }
-  
+
   @Test
   public void equalSame() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);
@@ -103,7 +104,7 @@ public class OutcomeTest {
     assertThat(outcome.equals(outcome2), is(true));
     assertThat(outcome.hashCode(), is(outcome2.hashCode()));
   }
-  
+
   @Test
   public void equalsDifferentMutation() {
     Outcome outcome = new Outcome(mutant, mutation, testOutcomes);

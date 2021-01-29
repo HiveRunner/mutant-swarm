@@ -23,13 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LexerMutatorStoreTest {
 
   @Mock
@@ -106,27 +107,27 @@ public class LexerMutatorStoreTest {
     assertThat(mutators.size(), is(0));
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void checkNullToken() {
     int position = 0;
     when(stream.get(position)).thenReturn(null);
     LexerMutatorStore lexerStore = new LexerMutatorStore();
-    lexerStore.getMutatorsFor(position, stream);
+    Assertions.assertThrows(NullPointerException.class, () -> lexerStore.getMutatorsFor(position, stream));
   }
 
-  @Test(expected = IndexOutOfBoundsException.class)
+  @Test
   public void emptyStream() {
     int position = 0;
     stream = new ArrayList<>();
     LexerMutatorStore lexerStore = new LexerMutatorStore();
-    lexerStore.getMutatorsFor(position, stream);
+    Assertions.assertThrows(IndexOutOfBoundsException.class, () -> lexerStore.getMutatorsFor(position, stream));
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void nullStream() {
     int position = 0;
     LexerMutatorStore lexerStore = new LexerMutatorStore();
-    lexerStore.getMutatorsFor(position, null);
+    Assertions.assertThrows(NullPointerException.class, () -> lexerStore.getMutatorsFor(position, null));
   }
 
 }

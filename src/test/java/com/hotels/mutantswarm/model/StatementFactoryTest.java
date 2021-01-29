@@ -26,15 +26,15 @@ import org.antlr.runtime.TokenRewriteStream;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.apache.hadoop.hive.ql.parse.ParseException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement.Factory;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StatementFactoryTest {
 
   @Mock
@@ -48,7 +48,7 @@ public class StatementFactoryTest {
 
   private Factory factory;
 
-  @Before
+  @BeforeEach
   public void setupMocks() throws ParseException {
     factory = new MutantSwarmStatement.Factory(parseDriver);
     when(parseDriver.lex("SELECT * FROM x WHERE a = 1")).thenReturn(tokenStream);

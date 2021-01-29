@@ -21,7 +21,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
 import org.apache.hadoop.hive.ql.parse.MutantSwarmParseDriver;
 import org.apache.hadoop.hive.ql.parse.ParseException;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MutantSwarmParseDriverTest {
 
@@ -36,10 +37,11 @@ public class MutantSwarmParseDriverTest {
     assertThat(node.toStringTree(),is("(tok_createtable (tok_tabname foobar) tok_liketable (tok_query (tok_from (tok_tabref (tok_tabname bar))) (tok_insert (tok_destination (tok_dir tok_tmp_file)) (tok_select (tok_selexpr (tok_table_or_col c))) (tok_where (= (tok_table_or_col b) 3)))))"));
   }
   
-  @Test(expected = ParseException.class)
+  @Test
   public void checkParseError() throws ParseException {
     String invalidCommand = "CREAGGGTE TABLE foobar AS\nSELECT c ERROR \nFROM bar\nWHERE b = 3";
-    node = mutantSwarmParseDriver.parse(invalidCommand);
+    //node = mutantSwarmParseDriver.parse(invalidCommand);
+    Assertions.assertThrows(ParseException.class, () -> node = mutantSwarmParseDriver.parse(invalidCommand));
   }
 
 }
