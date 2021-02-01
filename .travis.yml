@@ -6,4 +6,4 @@ os:
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version
 script:
-  - mvn -Dtest=\!MutantSwarmExtensionTest package jacoco:report spotbugs:spotbugs checkstyle:checkstyle javadoc:javadoc --batch-mode --show-version --no-transfer-progress
+  - mvn package jacoco:report spotbugs:spotbugs checkstyle:checkstyle javadoc:javadoc --batch-mode --show-version --no-transfer-progress
