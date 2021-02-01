@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

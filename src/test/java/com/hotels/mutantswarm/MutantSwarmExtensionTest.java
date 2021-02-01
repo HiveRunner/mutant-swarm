@@ -30,7 +30,7 @@ import com.klarna.hiverunner.annotations.HiveSetupScript;
 
 import com.hotels.mutantswarm.annotation.MutantSwarmTest;
 
-//@ExtendWith(MutantSwarmExtension.class)
+@ExtendWith(MutantSwarmExtension.class)
 public class MutantSwarmExtensionTest {
 
   @HiveSetupScript
@@ -41,18 +41,18 @@ public class MutantSwarmExtensionTest {
   @HiveSQL(files = { "mutantSwarmTest/scriptToTest1.sql", "mutantSwarmTest/scriptToTest2.sql" })
   public HiveShell hiveShell;
 
-//  @MutantSwarmTest
-//  public void test() {
-//    List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
-//    List<String> expected = Arrays.asList("1\ttrue", "3\ttrue", "3\tfalse", "5\tfalse");
-//    assertThat(expected, is(result));
-//  }
-//
-//  @MutantSwarmTest
-//  public void test2() {
-//    List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
-//    List<String> expected = Arrays.asList("true", "false");
-//    assertThat(expected, is(result));
-//  }
+  @MutantSwarmTest
+  public void test() {
+    List<String> result = hiveShell.executeQuery("SELECT * FROM bar");
+    List<String> expected = Arrays.asList("1\ttrue", "3\ttrue", "3\tfalse", "5\tfalse");
+    assertThat(expected, is(result));
+  }
+
+  @MutantSwarmTest
+  public void test2() {
+    List<String> result = hiveShell.executeQuery("SELECT c FROM foobar");
+    List<String> expected = Arrays.asList("true", "false");
+    assertThat(expected, is(result));
+  }
 
 }
