@@ -339,7 +339,6 @@ public class LineFactoryTest {
     assertThat(scriptLines.size(), is(1));
     List<Line> statementLines = scriptLines.get(0);
     assertThat(statementLines.size(), is(5));
-
     
     when(results.hasOutcomesFor(script2, statement2)).thenReturn(true);
     when(results.outcomesFor(script2, statement2)).thenReturn(asList(outcome1, outcome2, outcome3));
