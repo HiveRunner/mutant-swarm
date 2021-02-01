@@ -27,11 +27,12 @@ import java.util.List;
 
 import org.apache.hadoop.hive.ql.lib.Node;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 import com.hotels.mutantswarm.mutate.Mutator;
@@ -39,13 +40,15 @@ import com.hotels.mutantswarm.mutate.ParserMutatorStore;
 import com.hotels.mutantswarm.plan.gene.ParserGene;
 import com.hotels.mutantswarm.plan.gene.ParserLocus;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ParserMutantFactoryTest {
 
   @Mock
   private MutantSwarmStatement statement;
   @Mock
-  private ASTNode tree, child1, child2;
+  private ASTNode tree;
+  @Mock
+  private ASTNode child1, child2;
   @Mock
   private Mutator mutator1, mutator2;
   @Mock
@@ -53,14 +56,14 @@ public class ParserMutantFactoryTest {
 
   private ParserMutantFactory mutantFactory;
 
-  @Before
+  @BeforeEach
   public void initialiseMocks() {
     mutantFactory = new ParserMutantFactory(store);
+    when(statement.getTree()).thenReturn(tree);
   }
 
   @Test
   public void oneMutatorForASingleGene() {
-    when(statement.getTree()).thenReturn(tree);
     when(store.getMutatorsFor(tree)).thenReturn(asList(mutator1));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
@@ -89,7 +92,6 @@ public class ParserMutantFactoryTest {
 
   @Test
   public void multipleMutatorsForASingleGene() {
-    when(statement.getTree()).thenReturn(tree);
     when(store.getMutatorsFor(tree)).thenReturn(asList(mutator1, mutator2));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
@@ -120,9 +122,10 @@ public class ParserMutantFactoryTest {
 
   @Test
   public void oneMutatorForASingleNestedGene() {
-    when(statement.getTree()).thenReturn(tree);
     when(tree.getChildren()).thenReturn(new ArrayList<Node>(asList(child1, child2)));
+    when(store.getMutatorsFor(tree)).thenReturn(Collections.emptyList());
     when(store.getMutatorsFor(child2)).thenReturn(asList(mutator1));
+    when(store.getMutatorsFor(child1)).thenReturn(Collections.emptyList());
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
     assertThat(mutants.size(), is(1));
@@ -141,8 +144,8 @@ public class ParserMutantFactoryTest {
 
   @Test
   public void oneMutatorForMultipleNestedGenes() {
-    when(statement.getTree()).thenReturn(tree);
     when(tree.getChildren()).thenReturn(new ArrayList<Node>(asList(child1, child2)));
+    when(store.getMutatorsFor(tree)).thenReturn(Collections.emptyList());
     when(store.getMutatorsFor(child1)).thenReturn(asList(mutator1));
     when(store.getMutatorsFor(child2)).thenReturn(asList(mutator2));
 

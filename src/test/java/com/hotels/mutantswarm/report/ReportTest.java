@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.stringtemplate.v4.ST;
 
 import com.google.common.base.Charsets;
@@ -49,7 +49,7 @@ import com.hotels.mutantswarm.mutate.Mutator;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.Swarm;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ReportTest {
   @Mock
   private MutantSwarmSource source;

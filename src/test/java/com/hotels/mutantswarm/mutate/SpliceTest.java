@@ -23,16 +23,17 @@ import java.util.List;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.hadoop.hive.ql.parse.ASTNode;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.plan.gene.Gene;
 import com.hotels.mutantswarm.plan.gene.LexerGene;
 import com.hotels.mutantswarm.plan.gene.ParserGene;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SpliceTest {
   
   @Mock
@@ -77,10 +78,10 @@ public class SpliceTest {
     assertThat(splice.getStopIndex(), is(5));
   }
   
-  @Test (expected = IllegalArgumentException.class)
+  @Test
   public void unknownGeneType(){
     Splice.Factory spliceFactory = new Splice.Factory();
-    spliceFactory.newInstance(gene);
+    Assertions.assertThrows(IllegalArgumentException.class, () -> spliceFactory.newInstance(gene));
   }
   
   @Test

@@ -21,15 +21,16 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.exec.Outcome;
 import com.hotels.mutantswarm.report.Line.LineBuilder;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LineTest {
 
   @Mock
@@ -76,15 +77,15 @@ public class LineTest {
     assertThat(line.getElements().size(), is(2));
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void nullLineNumber() {
-    LineBuilder lineBuilder = new LineBuilder((Integer) null);
+    Assertions.assertThrows(NullPointerException.class, () -> new LineBuilder((Integer) null));
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void nullText() {
     LineBuilder lineBuilder = new LineBuilder(0);
-    lineBuilder.addText(null);
+    Assertions.assertThrows(NullPointerException.class, () -> lineBuilder.addText(null));
   }
 
 }

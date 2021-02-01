@@ -21,11 +21,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.exec.MutatedSourceFactory.MutatedSource;
 import com.hotels.mutantswarm.model.MutantSwarmScript;
@@ -37,7 +37,7 @@ import com.hotels.mutantswarm.mutate.Splice;
 import com.hotels.mutantswarm.plan.Mutant;
 import com.hotels.mutantswarm.plan.gene.Gene;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class MutatedSourceFactoryTest {
 
   @Mock
@@ -59,7 +59,7 @@ public class MutatedSourceFactoryTest {
   
   private MutatedSourceFactory mutatedSourceFactory = new MutatedSourceFactory();
   
-  @Before
+  @BeforeEach
   public void setup(){
     when(mutant.getMutator()).thenReturn(mutator);
     when(mutant.getGene()).thenReturn(gene);

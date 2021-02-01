@@ -18,7 +18,8 @@ package com.hotels.mutantswarm.mutate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class VocabularyTest {
 
@@ -36,9 +37,9 @@ public class VocabularyTest {
     assertThat(id, is(-1));
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void nullName() {
-    Vocabulary.INSTANCE.getId(null);
+    Assertions.assertThrows(NullPointerException.class, () -> Vocabulary.INSTANCE.getId(null));
   }
 
   @Test

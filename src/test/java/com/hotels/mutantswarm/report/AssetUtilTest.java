@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2020 Expedia, Inc.
+ * Copyright (C) 2018-2021 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,19 @@ package com.hotels.mutantswarm.report;
 
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AssetUtilTest {
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void writeResourceNullException() throws IOException {
-    AssetUtil.writeResourceToFile("unexistent resource path", null);
+    Assertions.assertThrows(NullPointerException.class, () -> AssetUtil.writeResourceToFile("unexistent resource path", null));
   }
   
-  @Test(expected = NullPointerException.class)
+  @Test
   public void readResourceNullException() throws IOException {
-    AssetUtil.readResourceAsString("unexistent resource path");
+    Assertions.assertThrows(NullPointerException.class, () -> AssetUtil.readResourceAsString("unexistent resource path"));
   }
   
 }

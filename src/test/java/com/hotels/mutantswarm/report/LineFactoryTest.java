@@ -29,11 +29,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.exec.Outcome;
 import com.hotels.mutantswarm.exec.SwarmResults;
@@ -44,7 +44,7 @@ import com.hotels.mutantswarm.mutate.Splice;
 import com.hotels.mutantswarm.plan.gene.Gene;
 import com.hotels.mutantswarm.plan.gene.Locus;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LineFactoryTest {
 
   @Mock
@@ -65,17 +65,12 @@ public class LineFactoryTest {
   @Mock
   private Locus locus1, locus2;
 
-  @Before
+  @BeforeEach
   public void setup() {
     when(results.hasOutcomesFor(script1, statement1)).thenReturn(true);
     when(results.outcomesFor(script1, statement1)).thenReturn(asList(outcome1, outcome2, outcome3));
     when(script1.getStatements()).thenReturn(singletonList(statement1));
     when(statement1.getIndex()).thenReturn(0);
-
-    when(results.hasOutcomesFor(script2, statement2)).thenReturn(true);
-    when(results.outcomesFor(script2, statement2)).thenReturn(asList(outcome1, outcome2, outcome3));
-    when(script2.getStatements()).thenReturn(singletonList(statement2));
-    when(statement2.getIndex()).thenReturn(0);
 
     // 'a' -> 'null'
     when(outcome1.getMutation()).thenReturn(mutation1);
@@ -344,6 +339,11 @@ public class LineFactoryTest {
     assertThat(scriptLines.size(), is(1));
     List<Line> statementLines = scriptLines.get(0);
     assertThat(statementLines.size(), is(5));
+    
+    when(results.hasOutcomesFor(script2, statement2)).thenReturn(true);
+    when(results.outcomesFor(script2, statement2)).thenReturn(asList(outcome1, outcome2, outcome3));
+    when(script2.getStatements()).thenReturn(singletonList(statement2));
+    when(statement2.getIndex()).thenReturn(0);
 
     // script 2
     scriptLines = stl.buildLinesByStatementIndex(script2);

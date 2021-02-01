@@ -27,16 +27,16 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.exec.Outcome;
 import com.hotels.mutantswarm.mutate.Mutation;
 import com.hotels.mutantswarm.mutate.Splice;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OutcomeUtilTest {
 
   @Mock
