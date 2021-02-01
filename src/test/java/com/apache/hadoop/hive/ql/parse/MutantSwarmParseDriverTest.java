@@ -40,7 +40,6 @@ public class MutantSwarmParseDriverTest {
   @Test
   public void checkParseError() throws ParseException {
     String invalidCommand = "CREAGGGTE TABLE foobar AS\nSELECT c ERROR \nFROM bar\nWHERE b = 3";
-    //node = mutantSwarmParseDriver.parse(invalidCommand);
     Assertions.assertThrows(ParseException.class, () -> node = mutantSwarmParseDriver.parse(invalidCommand));
   }
 

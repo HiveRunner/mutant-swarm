@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
@@ -119,8 +120,8 @@ public class LexerMutantFactoryTest {
   public void oneMutatorForMultipleGenes() {
     List<CommonToken> tokens = asList(token1, token2, token3);
     when(statement.getTokens()).thenReturn(tokens);
-    when(store.getMutatorsFor(1, tokens)).thenReturn(asList(mutator2));
-    when(store.getMutatorsFor(0, tokens)).thenReturn(asList(mutator1));
+    Mockito.lenient().when(store.getMutatorsFor(2, tokens)).thenReturn(asList(mutator2));
+    Mockito.lenient().when(store.getMutatorsFor(0, tokens)).thenReturn(asList(mutator1));
     
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
     assertThat(mutants.size(), is(2));
@@ -140,12 +141,12 @@ public class LexerMutantFactoryTest {
     assertThat(mutant.getMutator(), is(mutator2));
 
     gene = (LexerGene) mutant.getGene();
-    assertThat(gene.getTokens(), is(asList(token2)));
+    assertThat(gene.getTokens(), is(asList(token3)));
 
     locus = (LexerLocus) gene.getLocus();
     assertThat(locus.getScriptIndex(), is(0));
     assertThat(locus.getStatementIndex(), is(0));
-    assertThat(locus.getIndexes(), is(singletonList(1)));
+    assertThat(locus.getIndexes(), is(singletonList(2)));
   }
 
 }
