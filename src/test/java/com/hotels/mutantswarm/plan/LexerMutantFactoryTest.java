@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -31,6 +32,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.beust.jcommander.internal.Lists;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 import com.hotels.mutantswarm.mutate.LexerMutatorStore;
@@ -121,11 +124,11 @@ public class LexerMutantFactoryTest {
     List<CommonToken> tokens = asList(token1, token2, token3);
     when(statement.getTokens()).thenReturn(tokens);
     when(store.getMutatorsFor(0, tokens)).thenReturn(asList(mutator1));
-    when(store.getMutatorsFor(1, tokens)).thenReturn(asList(mutator2));
+    when(store.getMutatorsFor(1, tokens)).thenReturn(Lists.newArrayList());
     when(store.getMutatorsFor(2, tokens)).thenReturn(asList(mutator2));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
-    assertThat(mutants.size(), is(3));
+    assertThat(mutants.size(), is(2));
 
     Mutant mutant = mutants.get(0);
     assertThat(mutant.getMutator(), is(mutator1));
@@ -138,7 +141,7 @@ public class LexerMutantFactoryTest {
     assertThat(locus.getStatementIndex(), is(0));
     assertThat(locus.getIndexes(), is(singletonList(0)));
 
-    mutant = mutants.get(2);
+    mutant = mutants.get(1);
     assertThat(mutant.getMutator(), is(mutator2));
 
     gene = (LexerGene) mutant.getGene();
