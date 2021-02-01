@@ -146,24 +146,24 @@ public class ParserMutantFactoryTest {
   public void oneMutatorForMultipleNestedGenes() {
     when(tree.getChildren()).thenReturn(new ArrayList<Node>(asList(child1, child2)));
     when(store.getMutatorsFor(tree)).thenReturn(Collections.emptyList());
-    when(store.getMutatorsFor(child1)).thenReturn(asList(mutator1));
+    when(store.getMutatorsFor(child1)).thenReturn((Collections.emptyList()));
     when(store.getMutatorsFor(child2)).thenReturn(asList(mutator2));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
-    assertThat(mutants.size(), is(2));
+    assertThat(mutants.size(), is(1));
 
     Mutant mutant = mutants.get(0);
-    assertThat(mutant.getMutator(), is(mutator1));
+    assertThat(mutant.getMutator(), is(mutator2));
 
     ParserGene gene = (ParserGene) mutant.getGene();
-    assertThat(gene.getTree(), is(child1));
+    assertThat(gene.getTree(), is(child2));
 
     ParserLocus locus = (ParserLocus) gene.getLocus();
     assertThat(locus.getScriptIndex(), is(0));
     assertThat(locus.getStatementIndex(), is(0));
-    assertThat(locus.getNodeIndex(), is(1));
+    assertThat(locus.getNodeIndex(), is(2));
 
-    mutant = mutants.get(1);
+    mutant = mutants.get(0);
     assertThat(mutant.getMutator(), is(mutator2));
 
     gene = (ParserGene) mutant.getGene();
