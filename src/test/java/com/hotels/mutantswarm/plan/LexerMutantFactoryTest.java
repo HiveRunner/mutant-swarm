@@ -22,7 +22,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -30,10 +30,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.beust.jcommander.internal.Lists;
 
 import com.hotels.mutantswarm.model.MutantSwarmStatement;
 import com.hotels.mutantswarm.mutate.LexerMutatorStore;
@@ -124,7 +122,7 @@ public class LexerMutantFactoryTest {
     List<CommonToken> tokens = asList(token1, token2, token3);
     when(statement.getTokens()).thenReturn(tokens);
     when(store.getMutatorsFor(0, tokens)).thenReturn(asList(mutator1));
-    when(store.getMutatorsFor(1, tokens)).thenReturn(Lists.newArrayList());
+    when(store.getMutatorsFor(1, tokens)).thenReturn(Collections.emptyList());
     when(store.getMutatorsFor(2, tokens)).thenReturn(asList(mutator2));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
