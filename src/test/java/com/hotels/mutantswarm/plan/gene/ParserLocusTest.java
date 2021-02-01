@@ -20,7 +20,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-
 public class ParserLocusTest {
   
   private ParserLocus parserLocus = new ParserLocus(0,2,4);
