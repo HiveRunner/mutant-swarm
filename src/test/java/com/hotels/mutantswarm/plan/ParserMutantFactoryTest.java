@@ -121,13 +121,13 @@ public class ParserMutantFactoryTest {
   @Test
   public void oneMutatorForASingleNestedGene() {
     when(tree.getChildren()).thenReturn(new ArrayList<Node>(asList(child1, child2)));
-    Mockito.lenient().when(store.getMutatorsFor(child2)).thenReturn(asList(mutator2));
+    Mockito.lenient().when(store.getMutatorsFor(child2)).thenReturn(asList(mutator1));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
     assertThat(mutants.size(), is(1));
 
     Mutant mutant = mutants.get(0);
-    assertThat(mutant.getMutator(), is(mutator2));
+    assertThat(mutant.getMutator(), is(mutator1));
 
     ParserGene gene = (ParserGene) mutant.getGene();
     assertThat(gene.getTree(), is(child2));

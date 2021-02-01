@@ -122,7 +122,7 @@ public class LexerMutantFactoryTest {
     when(statement.getTokens()).thenReturn(tokens);
     Mockito.lenient().when(store.getMutatorsFor(2, tokens)).thenReturn(asList(mutator2));
     Mockito.lenient().when(store.getMutatorsFor(0, tokens)).thenReturn(asList(mutator1));
-    
+
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
     assertThat(mutants.size(), is(2));
 
