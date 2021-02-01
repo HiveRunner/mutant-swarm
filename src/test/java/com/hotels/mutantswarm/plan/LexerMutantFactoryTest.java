@@ -119,9 +119,9 @@ public class LexerMutantFactoryTest {
   public void oneMutatorForMultipleGenes() {
     List<CommonToken> tokens = asList(token1, token2, token3);
     when(statement.getTokens()).thenReturn(tokens);
+    when(store.getMutatorsFor(1, tokens)).thenReturn(asList(mutator2));
     when(store.getMutatorsFor(0, tokens)).thenReturn(asList(mutator1));
-    when(store.getMutatorsFor(2, tokens)).thenReturn(asList(mutator2));
-
+    
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
     assertThat(mutants.size(), is(2));
 
@@ -140,12 +140,12 @@ public class LexerMutantFactoryTest {
     assertThat(mutant.getMutator(), is(mutator2));
 
     gene = (LexerGene) mutant.getGene();
-    assertThat(gene.getTokens(), is(asList(token3)));
+    assertThat(gene.getTokens(), is(asList(token2)));
 
     locus = (LexerLocus) gene.getLocus();
     assertThat(locus.getScriptIndex(), is(0));
     assertThat(locus.getStatementIndex(), is(0));
-    assertThat(locus.getIndexes(), is(singletonList(2)));
+    assertThat(locus.getIndexes(), is(singletonList(1)));
   }
 
 }

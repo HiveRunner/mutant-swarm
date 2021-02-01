@@ -72,11 +72,6 @@ public class LineFactoryTest {
     when(script1.getStatements()).thenReturn(singletonList(statement1));
     when(statement1.getIndex()).thenReturn(0);
 
-    when(results.hasOutcomesFor(script2, statement2)).thenReturn(true);
-    when(results.outcomesFor(script2, statement2)).thenReturn(asList(outcome1, outcome2, outcome3));
-    when(script2.getStatements()).thenReturn(singletonList(statement2));
-    when(statement2.getIndex()).thenReturn(0);
-
     // 'a' -> 'null'
     when(outcome1.getMutation()).thenReturn(mutation1);
     when(mutation1.getSplice()).thenReturn(splice1);
@@ -344,6 +339,12 @@ public class LineFactoryTest {
     assertThat(scriptLines.size(), is(1));
     List<Line> statementLines = scriptLines.get(0);
     assertThat(statementLines.size(), is(5));
+
+    
+    when(results.hasOutcomesFor(script2, statement2)).thenReturn(true);
+    when(results.outcomesFor(script2, statement2)).thenReturn(asList(outcome1, outcome2, outcome3));
+    when(script2.getStatements()).thenReturn(singletonList(statement2));
+    when(statement2.getIndex()).thenReturn(0);
 
     // script 2
     scriptLines = stl.buildLinesByStatementIndex(script2);

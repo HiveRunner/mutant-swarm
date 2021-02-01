@@ -56,11 +56,11 @@ public class ParserMutantFactoryTest {
   @BeforeEach
   public void initialiseMocks() {
     mutantFactory = new ParserMutantFactory(store);
+    when(statement.getTree()).thenReturn(tree);
   }
 
   @Test
   public void oneMutatorForASingleGene() {
-    when(statement.getTree()).thenReturn(tree);
     when(store.getMutatorsFor(tree)).thenReturn(asList(mutator1));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
@@ -89,7 +89,6 @@ public class ParserMutantFactoryTest {
 
   @Test
   public void multipleMutatorsForASingleGene() {
-    when(statement.getTree()).thenReturn(tree);
     when(store.getMutatorsFor(tree)).thenReturn(asList(mutator1, mutator2));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
@@ -120,9 +119,7 @@ public class ParserMutantFactoryTest {
 
   @Test
   public void oneMutatorForASingleNestedGene() {
-    when(statement.getTree()).thenReturn(tree);
     when(tree.getChildren()).thenReturn(new ArrayList<Node>(asList(child1, child2)));
-    when(store.getMutatorsFor(child2)).thenReturn(asList(mutator1));
 
     List<Mutant> mutants = mutantFactory.newMutants(0, statement);
     assertThat(mutants.size(), is(1));
@@ -141,7 +138,6 @@ public class ParserMutantFactoryTest {
 
   @Test
   public void oneMutatorForMultipleNestedGenes() {
-    when(statement.getTree()).thenReturn(tree);
     when(tree.getChildren()).thenReturn(new ArrayList<Node>(asList(child1, child2)));
     when(store.getMutatorsFor(child1)).thenReturn(asList(mutator1));
     when(store.getMutatorsFor(child2)).thenReturn(asList(mutator2));
