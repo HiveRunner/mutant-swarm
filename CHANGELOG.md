@@ -1,4 +1,4 @@
-## [1.1.0] - TBD
+## [1.1.0] - 2021-02-02
 ### Changed
 - Updated `hotels-oss-parent` version from `4.0.1` to `6.2.0`.
 - Updated `HiveRunner` version from `4.1.0` to `5.3.0`.
