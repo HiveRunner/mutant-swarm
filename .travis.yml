@@ -1,9 +1,0 @@
-language: java
-jdk:
-  - openjdk8
-os:
-  - linux
-install:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version
-script:
-  - mvn package jacoco:report spotbugs:spotbugs checkstyle:checkstyle javadoc:javadoc --batch-mode --show-version --no-transfer-progress
