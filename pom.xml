@@ -36,6 +36,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <coveralls.maven.plugin.version>4.3.0</coveralls.maven.plugin.version>
     <hive.execution.engine>mr</hive.execution.engine>
     <junit.jupiter.version>5.7.0</junit.jupiter.version>
     <license.maven.plugin.version>4.1</license.maven.plugin.version>
@@ -318,6 +319,28 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>coveralls</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eluder.coveralls</groupId>
+            <artifactId>coveralls-maven-plugin</artifactId>
+            <version>${coveralls.maven.plugin.version}</version>
+            <dependencies>
+              <dependency>
+                <!-- TODO: this can be removed when a version of coveralls-maven-plugin
+                  that supports Java >=11 is released -->
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.2.3</version>
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>
