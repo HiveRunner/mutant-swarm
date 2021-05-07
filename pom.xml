@@ -38,6 +38,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <coveralls.maven.plugin.version>4.3.0</coveralls.maven.plugin.version>
     <hive.execution.engine>mr</hive.execution.engine>
+    <jacoco.version>0.8.6</jacoco.version>
     <junit.jupiter.version>5.7.0</junit.jupiter.version>
     <license.maven.plugin.version>4.1</license.maven.plugin.version>
     <mockito.version>3.7.7</mockito.version>
@@ -236,6 +237,27 @@
           <releaseProfiles>oss-release</releaseProfiles>
           <goals>deploy</goals>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <executions>
+          <execution>
+            <id>jacoco-initialize</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jacoco-site</id>
+            <phase>package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
