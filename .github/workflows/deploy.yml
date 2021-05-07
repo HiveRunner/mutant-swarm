@@ -22,11 +22,11 @@ jobs:
         java-version: '8'
         # this creates a settings.xml with the following server
         settings-path: ${{ github.workspace }}
-        server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
+        server-id: ossrh # value of the distributionManagement/repository/id field of the pom.xml
         server-username: SONATYPE_USERNAME # env variable for username in deploy
         server-password: SONATYPE_PASSWORD # env variable for token in deploy        
         # only signed artifacts will be released to maven central. this sets up things for the maven-gpg-plugin
-        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }} # value of the GPG private key to import
         gpg-passphrase: GPG_PASSPHRASE # env variable for GPG private key passphrase
        
     - name: Run Maven Targets
