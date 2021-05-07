@@ -1,9 +1,11 @@
 ![Picture of a mutated bee and title text that reads 'Mutant Swarm'](src/main/resources/img/logo.png "Mutant Swarm")
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.hotels/mutant-swarm/badge.svg?subject=com.hotels:mutant-swarm)](https://maven-badges.herokuapp.com/maven-central/com.hotels/mutant-swarm) [![Build Status](https://travis-ci.org/HotelsDotCom/mutant-swarm.svg?branch=main)](https://travis-ci.org/HotelsDotCom/mutant-swarm) ![build](https://github.com/HotelsDotCom/mutant-swarm/workflows/build/badge.svg?event=push) [![Coverage Status](https://coveralls.io/repos/github/HotelsDotCom/mutant-swarm/badge.svg?branch=main)](https://coveralls.io/github/HotelsDotCom/mutant-swarm?branch=main) ![GitHub license](https://img.shields.io/github/license/HotelsDotCom/mutant-swarm.svg)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.hiverunner/mutant-swarm/badge.svg?subject=io.github.hiverunner:mutant-swarm)](https://maven-badges.herokuapp.com/maven-central/io.github.hiverunner/mutant-swarm) 
+[![Build](https://github.com/HiveRunner/mutant-swarm/workflows/build/badge.svg)](https://github.com/HiveRunner/mutant-swarm/actions?query=workflow:"build")
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # Overview
-Mutant Swarm is a mutation testing framework for Hive SQL built on top of [HiveRunner](https://github.com/klarna/HiveRunner).
+Mutant Swarm is a mutation testing framework for Hive SQL built on top of [HiveRunner](https://github.com/HiveRunner/HiveRunner).
 It enables the identification of areas of SQL code bases that have poor test coverage and consequently may be a source
 of operational risk.
 
@@ -16,9 +18,9 @@ You can enable Mutant Swarm on your HiveRunner test suites like so:
 
 ## Dependency
     <dependency>
-      <groupId>com.hotels</groupId>
+      <groupId>io.github.hiverunner</groupId>
       <artifactId>mutant-swarm</artifactId>
-      <version>1.0.0</version>   
+      <version>1.2.0</version>   
       <scope>test</scope>
     </dependency>
 
@@ -103,7 +105,11 @@ If you would like to ask any questions about or discuss MutantSwarm please do so
 [https://groups.google.com/forum/#!forum/hive-runner-user](https://groups.google.com/forum/#!forum/hive-runner-user)
 
 # Credits
-Conceived and designed by [Elliot West](https://github.com/teabot), developed by [Jay Green-Stevens](https://github.com/JayGreeeen).
+This project was initially developed and maintained by [Hotels.com](https://github.com/HotelsDotCom) before moving to the HiveRunner organisation on GitHub.
+
+Conceived and designed by [Elliot West](https://github.com/teabot), developed by [Jay Green-Stevens](https://github.com/JayGreeeen) with 
+ongoing development by [Adrian Woodhead](https://github.com/massdosage) and [Sara Rubio Hermosa](https://github.com/shermosa).
 
 # Legal
+Copyright 2021 The HiveRunner Contributors
 Copyright 2018-2021 Expedia, Inc.

@@ -1,5 +1,6 @@
-## [1.1.1] - TBD
+## [1.2.0] - TBD
 ### Changed
+- Maven Group Id changed from `com.hotels` to `io.github.hiverunner`.
 - Updated `HiveRunner` version from `5.3.0` to `5.4.0`.
 
 ## [1.1.0] - 2021-02-02
