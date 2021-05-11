@@ -24,6 +24,8 @@ You can enable Mutant Swarm on your HiveRunner test suites like so:
       <scope>test</scope>
     </dependency>
 
+Note: Mutant Swarm is supported and tested using Surefire version [3.0.0-M5](https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin/3.0.0-M5) and therefore we recommend that users use this one. If you use other versions (or don't specify any) there might be errors in the Maven testing stage.
+
 ## JUnit4
 HiveRunner JUnit4 tests suites use the `com.klarna.hiverunner.StandaloneHiveRunner` JUnit4 runner implementation. To enable the
 Mutant Swarm runner you simply need to replace this with the `com.hotels.mutantswarm.MutantSwarmRunner` implementation:
